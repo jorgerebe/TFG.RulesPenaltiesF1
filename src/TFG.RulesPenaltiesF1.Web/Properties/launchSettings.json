@@ -1,0 +1,64 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
+        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5187"
+    },
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
+        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7077;http://localhost:5187"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
+        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+      }
+    },
+    "TFG.Jorge.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
+        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+      },
+      "applicationUrl": "http://localhost:57679/"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true,
+      "environmentVariables": {
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
+        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+      }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:57678/",
+      "sslPort": 0
+    }
+  }
+}
