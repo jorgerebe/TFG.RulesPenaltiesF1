@@ -6,9 +6,9 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 using TFG.RulesPenaltiesF1.Web;
 using Serilog;
 using Azure.Identity;
+using TFG.RulesPenaltiesF1.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
 {
@@ -16,6 +16,8 @@ if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development
    builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 }
 
+builder.Services.AddCoreServices(builder.Configuration);
+builder.Services.AddWebServices(builder.Configuration);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
