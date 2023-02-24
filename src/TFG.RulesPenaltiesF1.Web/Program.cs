@@ -2,18 +2,24 @@
 using Autofac.Extensions.DependencyInjection;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Infrastructure;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
-using TFG.RulesPenaltiesF1.Web;
 using Serilog;
 using Azure.Identity;
 using TFG.RulesPenaltiesF1.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+switch(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
 {
-   var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri")!);
-   builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+   case "Production":
+      var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri")!);
+      builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+      break;
+   case "Development":
+      break;
+   case "Testing":
+      break;
 }
 
 builder.Services.AddCoreServices(builder.Configuration);
@@ -59,7 +65,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-
+/*
 // Seed Database
 using (var scope = app.Services.CreateScope())
 {
@@ -77,6 +83,6 @@ using (var scope = app.Services.CreateScope())
     var logger = services.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
   }
-}
+}*/
 
 app.Run();

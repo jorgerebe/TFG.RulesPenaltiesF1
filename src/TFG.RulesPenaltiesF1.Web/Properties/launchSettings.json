@@ -26,7 +26,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Testing",
         "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
         "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
       }
