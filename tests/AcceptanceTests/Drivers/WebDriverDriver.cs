@@ -2,7 +2,7 @@
 using OpenQA.Selenium.Chrome;
 
 namespace AcceptanceTests.Drivers;
-public class WebDriverDriver
+public class WebDriverDriver : IDisposable
 {
    private Lazy<IWebDriver> _webDriver;
 
@@ -17,6 +17,11 @@ public class WebDriverDriver
       {
 
       };
+   }
+
+   public void Dispose()
+   {
+      WebDriver.Dispose();
    }
 
    public IWebDriver WebDriver

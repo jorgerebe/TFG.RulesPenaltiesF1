@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
+using TFG.RulesPenaltiesF1.Web.ViewModels;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers
 {
@@ -56,21 +57,16 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
       // POST: Article/Create
       // To protect from overposting attacks, enable the specific properties you want to bind to.
       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-      /*[HttpPost]
+      [HttpPost]
       [ValidateAntiForgeryToken]
-      public async Task<IActionResult> Create([Bind("Content,Id")] Article article)
+      public async Task<IActionResult> Create([Bind("Content,Id")] ArticleViewModel article)
       {
-         if (ModelState.IsValid)
-         {
-            _context.Add(article);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-         }
+
          return View(article);
       }
 
       // GET: Article/Edit/5
-      public async Task<IActionResult> Edit(int? id)
+      /*public async Task<IActionResult> Edit(int? id)
       {
          if (id == null || _context.Articles == null)
          {

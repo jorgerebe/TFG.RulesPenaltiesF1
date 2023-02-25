@@ -4,7 +4,7 @@ namespace TFG.RulesPenaltiesF1.Core.Entities;
 public class Article : EntityBase, IAggregateRoot
 {
    public string Content { get; private set; }
-   private readonly List<Article> _subArticles = new List<Article>();
+   private readonly List<Article> _subArticles = new();
 
    public IReadOnlyCollection<Article> SubArticles => _subArticles.AsReadOnly();
 

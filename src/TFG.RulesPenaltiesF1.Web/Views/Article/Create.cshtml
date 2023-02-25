@@ -1,33 +1,56 @@
-﻿@model TFG.RulesPenaltiesF1.Core.Entities.Article
+﻿@model ArticleViewModel
 
-@{
-    ViewData["Title"] = "Create";
+<h2>Create Article</h2>
+
+@using (Html.BeginForm("Create", "Article"))
+{
+	@Html.LabelFor(m => m.Content)
+	@Html.TextBoxFor(m => m.Content)
+
+		<h3>Subarticles</h3>
+
+		<div id="subarticles">
+			<div class="subarticle">
+			</div>
+		</div>
+
+		<button type="button" onclick="addSubArticle()">Add subarticle</button>
+
+		<button type="button" onclick="removeSubArticle()">Remove subarticle</button>
+
+		<input type="submit" value="Create" />
 }
 
-<h1>Create</h1>
+@section scripts{
+		<script>
+			var subArticleIndex = 0;
 
-<h4>Article</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+			function addSubArticle() {
+				var index = ++subArticleIndex;
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+				var subArticle = $('<div/>', {
+					class: 'subarticle'
+				});
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+				subArticle.append($('<label/>', {
+					for: 'SubArticles_' + index + '__Content',
+					text: 'Subarticle ' + index + ':'
+				}));
+
+				subArticle.append($('<input/>', {
+					type: 'text',
+					name: 'SubArticles[' + index + '].Content',
+					id: 'SubArticles_' + index + '__Content'
+				}));
+
+				$('#subarticles').append(subArticle);
+			}
+
+			function removeSubArticle() {
+				if (subArticleIndex > 0) {
+					$('#subarticles .subarticle').last().remove();
+					subArticleIndex--;
+				}
+			}
+		</script>
 }

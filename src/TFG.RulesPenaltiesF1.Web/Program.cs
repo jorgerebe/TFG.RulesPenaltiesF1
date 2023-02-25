@@ -5,6 +5,8 @@ using TFG.RulesPenaltiesF1.Infrastructure;
 using Serilog;
 using Azure.Identity;
 using TFG.RulesPenaltiesF1.Web.Configuration;
+using TFG.RulesPenaltiesF1.Web;
+using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,7 +67,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-/*
+
 // Seed Database
 using (var scope = app.Services.CreateScope())
 {
@@ -83,6 +85,6 @@ using (var scope = app.Services.CreateScope())
     var logger = services.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "An error occurred seeding the DB. {exceptionMessage}", ex.Message);
   }
-}*/
+}
 
 app.Run();

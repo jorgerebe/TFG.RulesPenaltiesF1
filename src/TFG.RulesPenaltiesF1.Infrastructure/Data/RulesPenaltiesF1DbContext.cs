@@ -19,7 +19,7 @@ public class RulesPenaltiesF1DbContext : DbContext
 
    public RulesPenaltiesF1DbContext(DbContextOptions<RulesPenaltiesF1DbContext> options) : base(options) { }
 
-   public DbSet<Article> Articles => Set<Article>();
+   public DbSet<Article> Article => Set<Article>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {

@@ -10,21 +10,23 @@ namespace AcceptanceTests.StepDefinitions
 
       private readonly WebDriverDriver _webDriverDriver;
       private readonly WebServerDriver _webServerDriver;
+      private readonly BrowserDriver _browserDriver;
 
       public string HostUrl { get; private set; }
 
-      public HU01_CreateArticlesStepDefinitions(WebDriverDriver webDriverDriver, WebServerDriver webServerDriver)
+      public HU01_CreateArticlesStepDefinitions(WebDriverDriver webDriverDriver, WebServerDriver webServerDriver, BrowserDriver browserDriver)
       {
          _webDriverDriver = webDriverDriver;
          _webServerDriver = webServerDriver;
          HostUrl = _webServerDriver.getUrl();
+         _browserDriver = browserDriver;
       }
         
    
       [Given(@"\[The steward is creating an article]")]
       public void GivenTheStewardIsCreatingAnArticle()
       {
-         _webDriverDriver.WebDriver.Url = HostUrl + "/Home";
+         _browserDriver.GoToUrl(_webServerDriver.getUrl() + "/Home");
       }
 
       [When(@"\[The steward enters the content of the article]")]
@@ -48,7 +50,7 @@ namespace AcceptanceTests.StepDefinitions
       [Then(@"\[The article created should have one subarticle]")]
       public void ThenTheArticleCreatedShouldHaveOneSubarticle()
       {
-         this._webDriverDriver.WebDriver.Title.Should().Be("pepe");
+         _browserDriver.AssertTitle("pepe");
       }
    }
 }

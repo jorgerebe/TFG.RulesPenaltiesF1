@@ -6,6 +6,7 @@ using Module = Autofac.Module;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure;
 
@@ -65,6 +66,11 @@ public class DefaultInfrastructureModule : Module
         .RegisterType<DomainEventDispatcher>()
         .As<IDomainEventDispatcher>()
         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<ArticleRepository>()
+         .As<IArticleRepository>()
+         .InstancePerLifetimeScope();
 
       builder.Register<ServiceFactory>(context =>
       {
