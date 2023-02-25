@@ -14,14 +14,18 @@ public class EfRepository<T> : IRepository<T> where T : EntityBase, IAggregateRo
       _dbContext = dbContext;
    }
 
-   public Task<T> Add(T entity)
+   public async Task<T> Add(T entity)
    {
-      throw new NotImplementedException();
+      _dbContext.Add(entity);
+      await _dbContext.SaveChangesAsync();
+      return entity;
    }
 
-   public Task Delete(T entity)
+   public async Task Delete(T entity)
    {
-      throw new NotImplementedException();
+      _dbContext.Set<T>().Remove(entity);
+
+      await _dbContext.SaveChangesAsync();
    }
 
    public async Task<List<T>> GetAll()

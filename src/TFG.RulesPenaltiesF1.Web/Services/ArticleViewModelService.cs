@@ -58,4 +58,25 @@ public class ArticleViewModelService : IArticleViewModelService
 
       return result;
    }
+
+
+   public Article? MapViewModelToEntity(ArticleViewModel article)
+   {
+      if(article.Content == null)
+      {
+         return null;
+      }
+
+      Article result = new Article(article.Content!);
+
+      foreach(var subarticle in article.SubArticles)
+      {
+         if(subarticle.Content != null)
+         {
+            result.AddSubArticle(new Article(subarticle.Content));
+         }
+      }
+
+      return result;
+   }
 }

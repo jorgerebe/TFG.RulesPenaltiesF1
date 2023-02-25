@@ -2,10 +2,10 @@
 
 <h2>Create Article</h2>
 
-@using (Html.BeginForm("Create", "Article"))
+@using (Html.BeginForm("Create", "Articles"))
 {
 	@Html.LabelFor(m => m.Content)
-	@Html.TextBoxFor(m => m.Content)
+	@Html.TextAreaFor(m => m.Content, new {@class = "form-control"})
 
 		<h3>Subarticles</h3>
 
@@ -37,14 +37,14 @@
 					text: 'Subarticle ' + index + ':'
 				}));
 
-				subArticle.append($('<input/>', {
-					type: 'text',
-					name: 'SubArticles[' + index + '].Content',
-					id: 'SubArticles_' + index + '__Content'
+				subArticle.append($('<textarea/>', {
+					name: 'SubArticles[' + (index-1) + '].Content',
+					id: 'SubArticles_' + (index-1) + '__Content'
 				}));
 
 				$('#subarticles').append(subArticle);
 			}
+
 
 			function removeSubArticle() {
 				if (subArticleIndex > 0) {

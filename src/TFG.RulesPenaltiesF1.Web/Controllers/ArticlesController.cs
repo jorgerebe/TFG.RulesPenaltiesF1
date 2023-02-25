@@ -1,36 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers
 {
-   public class ArticleController : Controller
+   public class ArticlesController : Controller
    {
-      private readonly IArticleViewModelService _service;
+      private readonly IArticleViewModelService _serviceViewModel;
+      private readonly IArticleService _service;
 
-      public ArticleController(IArticleViewModelService service)
+      public ArticlesController(IArticleViewModelService serviceViewModel, IArticleService service)
       {
+         _serviceViewModel = serviceViewModel;
          _service = service;
       }
 
-      // GET: Article
+      // GET: Articles
       public async Task<IActionResult> Index()
       {
-         return View(await _service.GetArticlesAsync());
-         /*return _context.Articles != null ?
-                     View(await _context.Articles.ToListAsync()) :
-                     Problem("Entity set 'RulesPenaltiesF1DbContext.Articles'  is null.");*/
+         return View(await _serviceViewModel.GetArticlesAsync());
       }
 
-      // GET: Article/Details/5
+      // GET: Articles/Details/5
       public async Task<IActionResult> Details(int? id)
       {
          if (id == null)
@@ -38,7 +30,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
             return NotFound();
          }
 
-         var article = await _service.GetByIdAsync(id.Value);
+         var article = await _serviceViewModel.GetByIdAsync(id.Value);
 
          if (article == null)
          {
@@ -48,19 +40,39 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
          return View(article);
       }
 
-      // GET: Article/Create
+      // GET: Articles/Create
       public IActionResult Create()
       {
          return View();
       }
 
-      // POST: Article/Create
+      //POST: Articles/Create
       // To protect from overposting attacks, enable the specific properties you want to bind to.
       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public async Task<IActionResult> Create([Bind("Content,Id")] ArticleViewModel article)
+      public async Task<IActionResult> Create(ArticleViewModel article)
       {
+         try
+         {
+            if(ModelState.IsValid)
+            {
+
+               var articleEntity = _serviceViewModel.MapViewModelToEntity(article);
+
+               if(articleEntity != null)
+               {
+                  await _service.CreateArticleAsync(articleEntity);
+                  return RedirectToAction(nameof(Index));
+               }
+            }
+         }
+         catch (Exception)
+         {
+            ModelState.AddModelError("", "Unable to save changes. " +
+            "Try again, and if the problem persists " +
+            "see your system administrator.");
+         }
 
          return View(article);
       }
@@ -68,7 +80,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
       // GET: Article/Edit/5
       /*public async Task<IActionResult> Edit(int? id)
       {
-         if (id == null || _context.Articles == null)
+         if (id == null)
          {
             return NotFound();
          }

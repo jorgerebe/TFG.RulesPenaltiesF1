@@ -7,4 +7,6 @@ public interface IArticleViewModelService
 {
    Task<List<ArticleViewModel>> GetArticlesAsync();
    Task<ArticleViewModel?> GetByIdAsync(int id);
+
+   Article? MapViewModelToEntity(ArticleViewModel article);
 }
