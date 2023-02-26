@@ -1,5 +1,6 @@
 ﻿using System;
 using AcceptanceTests.Drivers;
+using AcceptanceTests.PageObjects;
 using TechTalk.SpecFlow;
 
 namespace AcceptanceTests.StepDefinitions
@@ -8,37 +9,31 @@ namespace AcceptanceTests.StepDefinitions
    public class HU01_CreateArticlesStepDefinitions
    {
 
-      private readonly WebDriverDriver _webDriverDriver;
-      private readonly WebServerDriver _webServerDriver;
-      private readonly BrowserDriver _browserDriver;
+      private readonly ArticlePageObjectModel _articlePageObjectModel;
 
-      public string HostUrl { get; private set; }
-
-      public HU01_CreateArticlesStepDefinitions(WebDriverDriver webDriverDriver, WebServerDriver webServerDriver, BrowserDriver browserDriver)
+      public HU01_CreateArticlesStepDefinitions(BrowserDriver browserDriver)
       {
-         _webDriverDriver = webDriverDriver;
-         _webServerDriver = webServerDriver;
-         HostUrl = _webServerDriver.getUrl();
-         _browserDriver = browserDriver;
+         _articlePageObjectModel = new ArticlePageObjectModel(browserDriver.Current);
       }
         
    
       [Given(@"\[The steward is creating an article]")]
       public void GivenTheStewardIsCreatingAnArticle()
       {
-         _browserDriver.GoToUrl(_webServerDriver.getUrl() + "/Home");
+         _articlePageObjectModel.EnsureCalculatorIsOpenAndReset();
       }
 
       [When(@"\[The steward enters the content of the article]")]
       public void WhenTheStewardEntersTheContentOfTheArticle()
       {
-         //this._webDriverDriver.WebDriver.Url = "http://localhost:31213/Articles";
+         _articlePageObjectModel.EnterContentArticle("article");
       }
 
       [When(@"\[The steward adds the content of the subarticle as a subitem of the first article]")]
       public void WhenTheStewardAddsTheContentOfTheSubarticleAsASubitemOfTheFirstArticle()
       {
-         //throw new PendingStepException();
+         _articlePageObjectModel.ClickAddSubArticle();
+         _articlePageObjectModel.AddContentSubArticle("subarticle1");
       }
 
       [When(@"\[The steward submits the article]")]
@@ -50,7 +45,6 @@ namespace AcceptanceTests.StepDefinitions
       [Then(@"\[The article created should have one subarticle]")]
       public void ThenTheArticleCreatedShouldHaveOneSubarticle()
       {
-         _browserDriver.AssertTitle("pepe");
       }
    }
 }

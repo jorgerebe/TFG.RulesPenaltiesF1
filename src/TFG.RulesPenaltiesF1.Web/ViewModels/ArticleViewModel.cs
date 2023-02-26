@@ -8,7 +8,7 @@ public class ArticleViewModel
    public int Id { get; set; }
 
    [Required]
-   [StringLength(500, MinimumLength = 5, ErrorMessage ="Maximum size: 500 chars. Minimum length: 5 chars")]
+   [StringLength(500, MinimumLength = 10, ErrorMessage ="Maximum size: 500 chars. Minimum length: 10 chars")]
    [DataType(DataType.Text)]
    public string? Content { get; set; }
 

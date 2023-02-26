@@ -1,31 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace AcceptanceTests.Drivers;
-public class BrowserDriver
+public class BrowserDriver : IDisposable
 {
-   private readonly WebDriverDriver _webDriverDriver;
+   private Lazy<IWebDriver> _currentWebDriverLazy;
+   private bool _isDisposed;
 
-   public BrowserDriver(WebDriverDriver webDriverDriver)
+   public BrowserDriver()
    {
-      _webDriverDriver = webDriverDriver;
+      _currentWebDriverLazy = new Lazy<IWebDriver>((CreateWebDriver));
    }
 
-   public string Title
+   public IWebDriver Current => _currentWebDriverLazy.Value;
+
+   private IWebDriver CreateWebDriver()
    {
-      get { return _webDriverDriver.WebDriver.Title; }
+      var chromeDriverService = ChromeDriverService.CreateDefaultService();
+      var chromeOptions = new ChromeOptions();
+      var chromeDriver = new ChromeDriver(chromeDriverService, chromeOptions);
+
+      return chromeDriver;
    }
 
-   public void AssertTitle(string expectedTitle)
+   public void Dispose()
    {
-      Title.Should().Be(expectedTitle);
-   }
+      if (_isDisposed)
+      {
+         return;
+      }
 
-   internal void GoToUrl(string url)
-   {
-      _webDriverDriver.WebDriver.Url = url;
+      if (_currentWebDriverLazy.IsValueCreated)
+      {
+         Current.Quit();
+      }
+
+      _isDisposed = true;
    }
 }

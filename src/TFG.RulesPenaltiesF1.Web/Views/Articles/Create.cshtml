@@ -14,11 +14,13 @@
 			</div>
 		</div>
 
-		<button type="button" onclick="addSubArticle()">Add subarticle</button>
+		<button type="button" onclick="addSubArticle()" id="idAdSubarticle">Add subarticle</button>
 
-		<button type="button" onclick="removeSubArticle()">Remove subarticle</button>
+		<button type="button" onclick="removeSubArticle()" id="idRemoveSubarticle">Remove subarticle</button>
 
-		<input type="submit" value="Create" />
+		<input type="reset" onclick="resetForm()" value="Reset" id="resetButton"/>
+
+		<input type="submit" value="Create" id="submit"/>
 }
 
 @section scripts{
@@ -50,6 +52,13 @@
 				if (subArticleIndex > 0) {
 					$('#subarticles .subarticle').last().remove();
 					subArticleIndex--;
+				}
+			}
+
+			function resetForm(){
+				console.log("reset pressed");
+				while(subArticleIndex > 0){
+					removeSubArticle();
 				}
 			}
 		</script>

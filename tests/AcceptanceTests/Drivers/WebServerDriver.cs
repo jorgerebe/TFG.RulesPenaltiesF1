@@ -22,6 +22,6 @@ public class WebServerDriver
 
    public string getUrl()
    {
-      return _factory!.HostUrl;
+      return CustomWebApplicationFactory<Program>.HostUrl;
    }
 }

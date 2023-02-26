@@ -14,7 +14,10 @@ using Microsoft.Extensions.Hosting;
 namespace AcceptanceTests.Drivers;
 public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
-   public string HostUrl { get; set; } = "http://localhost:33333"; // we can use any free port
+
+   public static int Port = 33333;
+
+   public static string HostUrl = "http://localhost:"+ Port; // we can use any free port
 
    protected override void ConfigureWebHost(IWebHostBuilder builder)
    {

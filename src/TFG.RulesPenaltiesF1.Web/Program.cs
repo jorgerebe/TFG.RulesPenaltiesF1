@@ -10,6 +10,10 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
+
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 switch(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
@@ -22,18 +26,17 @@ switch(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
       break;
    case "Testing":
       break;
+   default:
+      break;
 }
 
 builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddWebServices(builder.Configuration);
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
-builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
-
 string? connectionString = builder.Configuration["DefaultConnection"];
 
-builder.Services.AddDbContext(connectionString!);
+
+builder.Services.AddDbContext(connectionString!, environment=="Testing");
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

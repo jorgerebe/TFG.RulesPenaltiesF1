@@ -6,10 +6,18 @@ namespace TFG.RulesPenaltiesF1.Infrastructure
 {
    public static class StartupSetup
    {
-      public static void AddDbContext(this IServiceCollection services, string connectionString)
+      public static void AddDbContext(this IServiceCollection services, string connectionString, bool testing)
       {
-         services.AddDbContext<RulesPenaltiesF1DbContext>(options =>
+         if (testing)
+         {
+            services.AddDbContext<RulesPenaltiesF1DbContext>(options =>
+             options.UseSqlite(connectionString));
+         }
+         else
+         {
+            services.AddDbContext<RulesPenaltiesF1DbContext>(options =>
              options.UseSqlServer(connectionString));
+         }
       }
    }
 }
