@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading;
+using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 
@@ -10,27 +7,39 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
 public class EfRepository<T> : IRepository<T> where T : EntityBase, IAggregateRoot
 {
-   public void Add(T entity)
+   private readonly RulesPenaltiesF1DbContext _dbContext;
+
+   public EfRepository(RulesPenaltiesF1DbContext dbContext)
    {
-      throw new NotImplementedException();
+      _dbContext = dbContext;
    }
 
-   public void Delete(T entity)
+   public async Task<T> Add(T entity)
    {
-      throw new NotImplementedException();
+      _dbContext.Add(entity);
+      await _dbContext.SaveChangesAsync();
+      return entity;
    }
 
-   public IQueryable<T> GetAll()
+   public async Task Delete(T entity)
    {
-      throw new NotImplementedException();
+      _dbContext.Set<T>().Remove(entity);
+
+      await _dbContext.SaveChangesAsync();
    }
 
-   public T GetById(int id)
+   public async Task<List<T>> GetAll()
    {
-      throw new NotImplementedException();
+      return await _dbContext.Set<T>()
+         .ToListAsync();
    }
 
-   public void Update(T entity)
+   public async Task<T?> GetByIdAsync<TId>(TId id) where TId: notnull
+   {
+      return await _dbContext.Set<T>().FindAsync(new object[] { id });
+   }
+
+   public Task Update(T entity)
    {
       throw new NotImplementedException();
    }

@@ -6,13 +6,14 @@ using Module = Autofac.Module;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure;
 
 public class DefaultInfrastructureModule : Module
 {
    private readonly bool _isDevelopment = false;
-   private readonly List<Assembly> _assemblies = new List<Assembly>();
+   private readonly List<Assembly> _assemblies = new();
 
    public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly = null)
    {
@@ -66,6 +67,11 @@ public class DefaultInfrastructureModule : Module
         .As<IDomainEventDispatcher>()
         .InstancePerLifetimeScope();
 
+      builder
+         .RegisterType<ArticleRepository>()
+         .As<IArticleRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();
@@ -90,14 +96,14 @@ public class DefaultInfrastructureModule : Module
       }
    }
 
-   private void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)
+   private static void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)
    {
       // NOTE: Add any development only services here
       builder.RegisterType<FakeEmailSender>().As<IEmailSender>()
         .InstancePerLifetimeScope();
    }
 
-   private void RegisterProductionOnlyDependencies(ContainerBuilder builder)
+   private static void RegisterProductionOnlyDependencies(ContainerBuilder builder)
    {
       // NOTE: Add any production only services here
       builder.RegisterType<SmtpEmailSender>().As<IEmailSender>()

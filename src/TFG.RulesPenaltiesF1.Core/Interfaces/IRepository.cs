@@ -2,10 +2,10 @@
 {
    public interface IRepository<T> where T : EntityBase, IAggregateRoot
    {
-      T GetById(int id);
-      IQueryable<T> GetAll();
-      void Add(T entity);
-      void Update(T entity);
-      void Delete(T entity);
+      Task<T?> GetByIdAsync<TId>(TId id) where TId : notnull;
+      Task<List<T>> GetAll();
+      Task<T> Add(T entity);
+      Task Update(T entity);
+      Task Delete(T entity);
    }
 }
