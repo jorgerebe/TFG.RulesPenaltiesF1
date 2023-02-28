@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Support\**" />
+    <EmbeddedResource Remove="Support\**" />
+    <None Remove="Support\**" />
+    <SpecFlowFeatureFiles Remove="Support\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Support\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\launchSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+
+    <PackageReference Include="Selenium.Support" />
+
+    <PackageReference Include="Selenium.WebDriver" />
+
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" />
+
+    <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" />
+    <PackageVersion Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
+    
+    <PackageReference Include="SpecFlow.xUnit" />
+    <PackageVersion Include="SpecFlow.xUnit" Version="3.9.74" />
+    
+    <PackageReference Include="xunit" />
+    
+    <PackageReference Include="xunit.runner.visualstudio" />
+    
+    <PackageReference Include="FluentAssertions" />
+    <PackageVersion Include="FluentAssertions" Version="6.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TFG.RulesPenaltiesF1.Web\TFG.RulesPenaltiesF1.Web.csproj" />
+  </ItemGroup>
+
+</Project>
