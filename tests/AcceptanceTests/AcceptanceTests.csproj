@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Support\**" />
+    <EmbeddedResource Remove="Support\**" />
+    <None Remove="Support\**" />
+    <SpecFlowFeatureFiles Remove="Support\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Support\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Properties\launchSettings.json" />
   </ItemGroup>
 
@@ -46,7 +54,6 @@
 
   <ItemGroup>
     <Folder Include="Features\" />
-    <Folder Include="Support\" />
   </ItemGroup>
 
   <ItemGroup>

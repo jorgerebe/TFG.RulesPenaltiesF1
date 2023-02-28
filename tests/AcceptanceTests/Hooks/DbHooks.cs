@@ -7,14 +7,16 @@ using Microsoft.Extensions.DependencyInjection;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
 namespace AcceptanceTests.Hooks;
+
+[Binding]
 public class DbHooks
 {
 
-   //private readonly RulesPenaltiesF1DbContext _dbContext;
+   private readonly RulesPenaltiesF1DbContext _dbContext;
 
-   /*public DbHooks(/*IServiceProvider services, RulesPenaltiesF1DbContext dbContext)
+   public DbHooks(RulesPenaltiesF1DbContext dbContext)
    {
-      //_dbContext = dbContext;
+      _dbContext = dbContext;
    }
 
    [BeforeScenario(Order =10)]
@@ -28,5 +30,5 @@ public class DbHooks
    public void AfterScenario()
    {
       // Perform any cleanup that requires the _dbContext instance here
-   }*/
+   }
 }

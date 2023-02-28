@@ -15,9 +15,9 @@ public class WebServerHooks
       _webServerDriver.Start();
    }
 
-   //[AfterTestRun]
-   /*public static async Task StopTestServer()
+   [AfterTestRun]
+   public static async Task StopTestServer()
    {
-      //await _webServerDriver!.Stop();
-   }*/
+      await _webServerDriver!.Stop();
+   }
 }

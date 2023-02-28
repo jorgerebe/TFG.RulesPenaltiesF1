@@ -8,24 +8,11 @@ namespace TFG.RulesPenaltiesF1.Infrastructure
 {
    public static class StartupSetup
    {
-      public static void AddDbContext(this IServiceCollection services, string connectionString, bool testing)
+      public static void AddDbContext(this IServiceCollection services, string connectionString)
       {
-         if (testing)
-         {
-            services.AddDbContext<RulesPenaltiesF1DbContext>(options =>
-             options.UseSqlServer(connectionString));
-
-            using (var dbContext = services.BuildServiceProvider().GetService<RulesPenaltiesF1DbContext>()!)
-            {
-               dbContext.Database.EnsureDeletedAsync().Wait();
-               dbContext.Database.EnsureCreatedAsync().Wait();
-            }
-         }
-         else
-         {
-            services.AddDbContext<RulesPenaltiesF1DbContext>(options =>
-             options.UseSqlServer(connectionString));
-         }
+         services.AddDbContext<RulesPenaltiesF1DbContext>(options =>
+            options.UseSqlServer(connectionString));
+         services.AddScoped<RulesPenaltiesF1DbContext, RulesPenaltiesF1DbContext>();
       }
    }
 }

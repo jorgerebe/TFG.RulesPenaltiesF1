@@ -47,8 +47,8 @@ namespace AcceptanceTests.StepDefinitions
       [Then(@"\[The article created is stored]")]
       public void ThenTheArticleCreatedIsStored()
       {
-         /*var number = _articlePageDriver.getNumberOfArticles();
-         _articlePageDriver.getNumberOfArticles().Should().Be(1);*/
+         var number = _articlePageDriver.getNumberOfArticles();
+         _articlePageDriver.getNumberOfArticles().Should().Be(1);
       }
    }
 }
