@@ -10,13 +10,15 @@ namespace AcceptanceTests.StepDefinitions
    {
 
       private readonly ArticlePageObjectModel _articlePageObjectModel;
+      private readonly ArticlePageDriver _articlePageDriver;
 
-      public HU01_CreateArticlesStepDefinitions(BrowserDriver browserDriver)
+      public HU01_CreateArticlesStepDefinitions(BrowserDriver browserDriver, ArticlePageDriver articlePageDriver)
       {
          _articlePageObjectModel = new ArticlePageObjectModel(browserDriver.Current);
+         _articlePageDriver = articlePageDriver;
       }
-        
-   
+
+
       [Given(@"\[The steward is creating an article]")]
       public void GivenTheStewardIsCreatingAnArticle()
       {
@@ -39,12 +41,14 @@ namespace AcceptanceTests.StepDefinitions
       [When(@"\[The steward submits the article]")]
       public void WhenTheStewardSubmitsTheArticle()
       {
-         //throw new PendingStepException();
+         _articlePageObjectModel.ClickSubmitArticle();
       }
 
-      [Then(@"\[The article created should have one subarticle]")]
-      public void ThenTheArticleCreatedShouldHaveOneSubarticle()
+      [Then(@"\[The article created is stored]")]
+      public void ThenTheArticleCreatedIsStored()
       {
+         /*var number = _articlePageDriver.getNumberOfArticles();
+         _articlePageDriver.getNumberOfArticles().Should().Be(1);*/
       }
    }
 }

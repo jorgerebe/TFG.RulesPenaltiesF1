@@ -1,25 +1,23 @@
 ﻿using AcceptanceTests.Drivers;
+using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Web;
 
 namespace AcceptanceTests.Hooks;
 [Binding]
 public class WebServerHooks
 {
-   private readonly WebServerDriver _webServerDriver;
+   private static WebServerDriver? _webServerDriver;
 
-   public WebServerHooks(WebServerDriver webServerDriver)
+   [BeforeTestRun]
+   public static void StartTestServer(WebServerDriver webServerDriver)
    {
       _webServerDriver = webServerDriver;
+      _webServerDriver.Start();
    }
 
-   [BeforeScenario]
-   public void StartTestServer()
+   //[AfterTestRun]
+   /*public static async Task StopTestServer()
    {
-      this._webServerDriver.Start();
-   }
-
-   [AfterScenario]
-   public async Task StopTestServer()
-   {
-      await this._webServerDriver.Stop();
-   }
+      //await _webServerDriver!.Stop();
+   }*/
 }

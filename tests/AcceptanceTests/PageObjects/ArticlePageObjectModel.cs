@@ -23,7 +23,7 @@ public class ArticlePageObjectModel
    private IWebElement ResetButton => _webDriver.FindElement(By.Id("resetButton"));
    private IWebElement GetSubArticle(int subarticle)
    {
-      return _webDriver.FindElement(By.Id("SubArticles_"+numberSubArticle+"__Content"));
+      return _webDriver.FindElement(By.Id("SubArticles_"+(numberSubArticle-1)+"__Content"));
    }
 
    public void EnterContentArticle(string content)

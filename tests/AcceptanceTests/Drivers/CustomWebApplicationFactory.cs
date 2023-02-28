@@ -21,7 +21,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
 
    protected override void ConfigureWebHost(IWebHostBuilder builder)
    {
-      builder.UseEnvironment("Testing");
+      builder.UseEnvironment("Development");
       Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
       builder.UseUrls(HostUrl);
    }

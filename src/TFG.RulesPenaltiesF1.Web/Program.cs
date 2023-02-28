@@ -16,6 +16,8 @@ builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Con
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
+var key = "Testing";
+
 switch(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
 {
    case "Production":
@@ -25,6 +27,7 @@ switch(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
    case "Development":
       break;
    case "Testing":
+      key = "Testing";
       break;
    default:
       break;
@@ -33,10 +36,10 @@ switch(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
 builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddWebServices(builder.Configuration);
 
-string? connectionString = builder.Configuration["DefaultConnection"];
+string? connectionString = builder.Configuration["DefaultConnection" + key];
 
 
-builder.Services.AddDbContext(connectionString!, environment=="Testing");
+builder.Services.AddDbContext("Data Source=MSI\\SQLEXPRESS;Database=RulesPenaltiesF1Testing;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False", environment=="Testing");
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -45,7 +48,7 @@ builder.Services.AddRazorPages();
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
   containerBuilder.RegisterModule(new DefaultCoreModule());
-  containerBuilder.RegisterModule(new DefaultInfrastructureModule(builder.Environment.EnvironmentName == "Development"));
+  containerBuilder.RegisterModule(new DefaultInfrastructureModule(environment == "Testing"));
 });
 
 var app = builder.Build();
