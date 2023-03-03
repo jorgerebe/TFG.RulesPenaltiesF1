@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Support\**" />
-    <EmbeddedResource Remove="Support\**" />
-    <None Remove="Support\**" />
-    <SpecFlowFeatureFiles Remove="Support\**" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Support\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Properties\launchSettings.json" />
   </ItemGroup>
 
@@ -27,6 +19,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
 
@@ -37,6 +35,8 @@
     <PackageReference Include="Selenium.WebDriver" />
 
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" />
+
+    <PackageReference Include="SpecFlow.Autofac" />
 
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" />
     <PackageVersion Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
@@ -49,7 +49,6 @@
     <PackageReference Include="xunit.runner.visualstudio" />
     
     <PackageReference Include="FluentAssertions" />
-    <PackageVersion Include="FluentAssertions" Version="6.10.0" />
   </ItemGroup>
 
   <ItemGroup>

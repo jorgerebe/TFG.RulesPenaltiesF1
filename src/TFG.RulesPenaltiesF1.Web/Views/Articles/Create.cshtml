@@ -6,6 +6,7 @@
 {
 	@Html.LabelFor(m => m.Content)
 	@Html.TextAreaFor(m => m.Content, new {@class = "form-control"})
+	@Html.ValidationMessageFor(m => m.Content);
 
 		<h3>Subarticles</h3>
 
