@@ -12,6 +12,11 @@ public class Article : EntityBase, IAggregateRoot
    {
       ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
 
+      if(content.Length < 10)
+      {
+         throw new ArgumentException("Content of article should be at least 10 characters long");
+      }
+
       Content = content;
    }
 
@@ -26,13 +31,18 @@ public class Article : EntityBase, IAggregateRoot
    {
       ArgumentNullException.ThrowIfNull(article, nameof(article));
 
+      if (!_subArticles.Contains(article))
+      {
+         throw new ArgumentException("The article does not contain the subarticle you are trying to remove");
+      }
+
       _subArticles.Remove(article);
    }
 
-   public void editContent(string newContent)
+   public void EditContent(string newContent)
    {
       ArgumentException.ThrowIfNullOrEmpty(newContent, nameof(newContent));
 
-      this.Content = newContent;
+      Content = newContent;
    }
 }

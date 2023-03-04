@@ -20,4 +20,12 @@ public class ArticleRepository : EfRepository<Article>, IArticleRepository
         .ToListAsync();
    }
 
+   public async Task<Article?> GetArticleById(int id)
+   {
+      return await _dbContext.Article
+                    .Where(b => b.Id == id)
+                    .Include(b => b.SubArticles)
+                    .FirstOrDefaultAsync();
+   }
+
 }
