@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using TFG.RulesPenaltiesF1.Core.Entities;
 
 namespace UnitTests.Core.Entities;
 public class ArticleTests
@@ -15,9 +14,16 @@ public class ArticleTests
    [Fact]
    public void Constructor_ContentFewerThan10Chars_ThrowsException()
    {
-      Action action = () => { new Article("short"); };
+      Action action = () => { new Article("123456789"); };
 
       action.Invoking(a => a()).Should().Throw<ArgumentException>();
+   }
+
+   [Fact]
+   public void Constructor_ContentExactly10Chars_ThrowsException()
+   {
+      Article article = new Article("1234567890");
+      article.Content.Should().BeSameAs("1234567890");
    }
 
    [Fact]

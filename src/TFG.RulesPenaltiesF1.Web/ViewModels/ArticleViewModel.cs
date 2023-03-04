@@ -13,4 +13,14 @@ public class ArticleViewModel
    public string? Content { get; set; }
 
    public List<ArticleViewModel> SubArticles { get; set; } = new ();
+
+   public ArticleViewModel()
+   {
+
+   }
+
+   public ArticleViewModel(string content)
+   {
+      Content = content;
+   }
 }

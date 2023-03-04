@@ -17,7 +17,7 @@ public class ArticlePageObjectModel
    private int numberSubArticle = 0;
 
    private IWebElement ContentArticle => _webDriver.FindElement(By.Id("Content"));
-   private IWebElement AddSubArticle => _webDriver.FindElement(By.Id("idAdSubarticle"));
+   private IWebElement AddSubArticle => _webDriver.FindElement(By.Id("idAddSubarticle"));
    private IWebElement RemoveSubArticle => _webDriver.FindElement(By.Id("idRemoveSubarticle"));
    private IWebElement SubmitArticle => _webDriver.FindElement(By.Id("submit"));
    private IWebElement ResetButton => _webDriver.FindElement(By.Id("resetButton"));

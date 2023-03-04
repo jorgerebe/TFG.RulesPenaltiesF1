@@ -36,6 +36,8 @@
 
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" />
 
+    <PackageReference Include="SpecFlow" />
+
     <PackageReference Include="SpecFlow.Autofac" />
 
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" />
@@ -53,6 +55,7 @@
 
   <ItemGroup>
     <Folder Include="Features\" />
+    <Folder Include="StepDefinitions\" />
   </ItemGroup>
 
   <ItemGroup>
