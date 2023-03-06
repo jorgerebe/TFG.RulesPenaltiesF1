@@ -3,6 +3,7 @@ using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -20,6 +21,8 @@ public class RulesPenaltiesF1DbContext : DbContext
    public RulesPenaltiesF1DbContext(DbContextOptions<RulesPenaltiesF1DbContext> options) : base(options) { }
 
    public DbSet<Article> Article => Set<Article>();
+   public DbSet<PenaltyType> PenaltyType => Set<PenaltyType>();
+   public DbSet<Penalty> Penalty => Set<Penalty>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {

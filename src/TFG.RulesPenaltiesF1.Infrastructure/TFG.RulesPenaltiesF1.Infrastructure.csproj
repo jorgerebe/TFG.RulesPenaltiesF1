@@ -21,8 +21,4 @@
   <ItemGroup>
     <ProjectReference Include="..\TFG.RulesPenaltiesF1.Core\TFG.RulesPenaltiesF1.Core.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Data\Config\" />
-  </ItemGroup>
 </Project>
