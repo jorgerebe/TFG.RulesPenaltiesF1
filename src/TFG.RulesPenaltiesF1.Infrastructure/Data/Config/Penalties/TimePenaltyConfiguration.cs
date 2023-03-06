@@ -7,9 +7,9 @@ public class TimePenaltyConfiguration : IEntityTypeConfiguration<TimePenalty>
 {
    public void Configure(EntityTypeBuilder<TimePenalty> builder)
    {
-      builder.HasBaseType<TimePenalty>();
+      builder.HasBaseType<Penalty>();
       builder.Property(r => r.Seconds).IsRequired(false);
-      builder.HasIndex(r => new { r.Seconds, r.PenaltyType})
+      builder.HasIndex(r => new { r.Seconds, r.PenaltyTypeId })
             .IsUnique();
    }
 }

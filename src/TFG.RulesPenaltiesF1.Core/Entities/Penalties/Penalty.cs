@@ -3,7 +3,11 @@
 namespace TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 public abstract class Penalty : EntityBase, IAggregateRoot
 {
-   public PenaltyType PenaltyType { get; set; }
+   public int PenaltyTypeId { get; set; }
+
+   public PenaltyType? PenaltyType { get; set; }
+
+   protected Penalty() { }
 
    public Penalty(PenaltyType penaltyType)
    {

@@ -8,6 +8,10 @@ public class PenaltyConfiguration : IEntityTypeConfiguration<Penalty>
    public void Configure(EntityTypeBuilder<Penalty> builder)
    {
       builder.HasKey(p => p.Id);
-      builder.Property(p => p.PenaltyType).IsRequired();
+      builder.Property(p => p.PenaltyTypeId).IsRequired();
+
+      builder.HasOne(p => p.PenaltyType)
+         .WithMany()
+         .HasForeignKey(p => p.PenaltyTypeId);
    }
 }

@@ -12,13 +12,13 @@ namespace TFG.RulesPenaltiesF1.Web
       public static readonly Article subarticle1 = new ("Any Competitor whose driver exceeds the limit during any practice session will be\nfined €100 for each km/h above the limit, up to a maximum of €1000.");
       public static readonly Article subarticle2 = new ("During a sprint session or the race, the stewards may impose any of the penalties\nunder Article 54.3a), 54.3b), 54.3c) or 54.3d) on any driver who exceeds the limit.");
 
-      public static readonly PenaltyType DQ = new PenaltyType(1, "Disqualification", "Driver disqualified of the race");
-      public static readonly PenaltyType TP = new PenaltyType(2, "Time Penalty", "Time Penalty");
-      public static readonly PenaltyType GP = new PenaltyType(3, "Drop Grid Positions", "Time Penalty");
-      public static readonly PenaltyType DT = new PenaltyType(4, "Drive-Through", "Drive-Through");
-      public static readonly PenaltyType StopAndGo = new PenaltyType(5, "Stop And Go", "Stop And Go");
-      public static readonly PenaltyType Reprimand = new PenaltyType(6, "Reprimand", "Reprimand");
-      public static readonly PenaltyType Fine = new PenaltyType(7, "Fine", "Fine");
+      public static readonly PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race");
+      public static readonly PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty");
+      public static readonly PenaltyType GP = new PenaltyType("Drop Grid Positions", "Time Penalty");
+      public static readonly PenaltyType DT = new PenaltyType("Drive-Through", "Drive-Through");
+      public static readonly PenaltyType StopAndGo = new PenaltyType("Stop And Go", "Stop And Go");
+      public static readonly PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand");
+      public static readonly PenaltyType Fine = new PenaltyType("Fine", "Fine");
 
       public static readonly TimePenalty tp_5 = new TimePenalty(TP, 5);
       public static readonly TimePenalty tp_10 = new TimePenalty(TP, 10);

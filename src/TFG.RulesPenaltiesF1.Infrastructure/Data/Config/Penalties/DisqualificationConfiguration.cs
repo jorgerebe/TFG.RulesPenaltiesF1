@@ -9,7 +9,12 @@ public class DisqualificationConfiguration : IEntityTypeConfiguration<Disqualifi
    {
       builder.HasBaseType<Penalty>();
       builder.Property(r => r.NextCompetition).IsRequired(false);
-      builder.HasIndex(r => new { r.NextCompetition, r.PenaltyType })
-            .IsUnique(); ;
+
+      builder.HasOne(p => p.PenaltyType)
+         .WithMany()
+         .HasForeignKey(p => p.PenaltyTypeId);
+
+      builder.HasIndex(r => new { r.NextCompetition, r.PenaltyTypeId })
+            .IsUnique();
    }
 }

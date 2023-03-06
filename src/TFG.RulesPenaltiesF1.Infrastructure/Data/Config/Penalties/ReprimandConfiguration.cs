@@ -9,7 +9,7 @@ public class ReprimandConfiguration : IEntityTypeConfiguration<Reprimand>
    {
       builder.HasBaseType<Penalty>();
       builder.Property(r => r.DrivingReprimand).IsRequired(false);
-      builder.HasIndex(r => new { r.DrivingReprimand, r.PenaltyType })
+      builder.HasIndex(r => new { r.DrivingReprimand, r.PenaltyTypeId })
             .IsUnique();
    }
 }
