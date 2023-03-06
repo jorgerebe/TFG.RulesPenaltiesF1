@@ -1,12 +1,10 @@
 ﻿namespace TFG.RulesPenaltiesF1.Core.Entities.Penalties;
-public class StopAndGo : Penalty
+public class StopAndGo : DriveThrough
 {
-   public DriveThrough DriveThrough { get; set; }
    public int Seconds { get; set; }
-
-   public StopAndGo(PenaltyType penaltyType, DriveThrough driveThrough, int seconds) : base(penaltyType)
+   public StopAndGo(PenaltyType penaltyType, int seconds, int elapsedSeconds) : base(penaltyType, elapsedSeconds)
    {
-      DriveThrough = driveThrough;
       Seconds = seconds;
+      ElapsedSeconds = elapsedSeconds;
    }
 }
