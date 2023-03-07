@@ -163,11 +163,6 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 
          await _context.SaveChangesAsync();
          return RedirectToAction(nameof(Index));
-      }
-
-      private bool ArticleExists(int id)
-      {
-         return (_context.Articles?.Any(e => e.Id == id)).GetValueOrDefault();
       }*/
    }
 }

@@ -1,7 +1,7 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
 
 namespace TFG.RulesPenaltiesF1.Core.Interfaces.Services;
-public interface IArticleService
+public interface IRegulationService
 {
-   Task CreateArticleAsync(Article article);
+   Task CreateRegulationAsync(Regulation article);
 }

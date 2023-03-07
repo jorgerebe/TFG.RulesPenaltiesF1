@@ -24,6 +24,8 @@ public class RulesPenaltiesF1DbContext : DbContext
    public DbSet<PenaltyType> PenaltyType => Set<PenaltyType>();
    public DbSet<Penalty> Penalty => Set<Penalty>();
 
+   public DbSet<Regulation> Regulation => Set<Regulation>();
+
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
       base.OnModelCreating(modelBuilder);
