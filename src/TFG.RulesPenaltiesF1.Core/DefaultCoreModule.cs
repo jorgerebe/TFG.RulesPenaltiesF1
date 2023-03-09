@@ -10,6 +10,9 @@ namespace TFG.RulesPenaltiesF1.Core
       {
          builder.RegisterType<ArticleService>()
             .As<IArticleService>().InstancePerLifetimeScope();
+
+         builder.RegisterType<RegulationService>()
+            .As<IRegulationService>().InstancePerLifetimeScope();
       }
    }
 }

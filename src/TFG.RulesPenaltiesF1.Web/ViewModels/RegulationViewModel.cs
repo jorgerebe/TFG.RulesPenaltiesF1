@@ -6,11 +6,13 @@ public class RegulationViewModel
 {
    public int Id { get; set; }
 
+   public int Year { get; set; }
+
    [Required]
    [MinLength(1, ErrorMessage ="There must be at least one article in the regulations")]
-   public List<ArticleViewModel> articles { get; set; } = new();
+   public List<ArticleViewModel> Articles { get; set; } = new();
    
    [Required]
    [MinLength(1, ErrorMessage ="There must be at least one penalty in the regulations")]
-   public List<PenaltyViewModel> penalties { get; set; } = new();
+   public List<PenaltyViewModel> Penalties { get; set; } = new();
 }

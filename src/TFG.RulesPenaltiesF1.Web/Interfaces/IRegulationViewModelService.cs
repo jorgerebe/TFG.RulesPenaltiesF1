@@ -1,4 +1,4 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
 
 namespace TFG.RulesPenaltiesF1.Web.Interfaces;

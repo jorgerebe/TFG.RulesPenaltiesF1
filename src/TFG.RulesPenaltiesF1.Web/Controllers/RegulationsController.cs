@@ -47,8 +47,11 @@ public class RegulationsController : Controller
    }
 
    // GET: Regulations/Create
-   public IActionResult Create()
+   public async Task<ActionResult> Create()
    {
+      //var articles = await _articleServiceViewModel.GetArticlesAsync();
+      ViewBag.Articles = (await _articleServiceViewModel.GetArticlesAsync()).AsEnumerable();
+
       return View();
    }
 

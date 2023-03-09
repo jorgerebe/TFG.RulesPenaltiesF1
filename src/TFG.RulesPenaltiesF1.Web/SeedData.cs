@@ -2,16 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 
 namespace TFG.RulesPenaltiesF1.Web
 {
    public static class SeedData
    {
-
+      /*ARTICLES*/
       public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.\nHowever, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");
       public static readonly Article subarticle1 = new ("Any Competitor whose driver exceeds the limit during any practice session will be\nfined €100 for each km/h above the limit, up to a maximum of €1000.");
       public static readonly Article subarticle2 = new ("During a sprint session or the race, the stewards may impose any of the penalties\nunder Article 54.3a), 54.3b), 54.3c) or 54.3d) on any driver who exceeds the limit.");
 
+      /*PENALTIES*/
       public static readonly PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race");
       public static readonly PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty");
       public static readonly PenaltyType GP = new PenaltyType("Drop Grid Positions", "Time Penalty");
@@ -33,6 +35,10 @@ namespace TFG.RulesPenaltiesF1.Web
       public static readonly Disqualification suspensionNextCompetition = new Disqualification(DQ, true);
       public static readonly Fine fine = new Fine(Fine);
 
+      /*REGULATIONS*/
+
+      public static readonly Regulation regulation = new Regulation(2);
+
       public static void Initialize(IServiceProvider serviceProvider)
       {
          using var dbContext = new RulesPenaltiesF1DbContext(
@@ -52,6 +58,8 @@ namespace TFG.RulesPenaltiesF1.Web
 
          article1.AddSubArticle(subarticle1);
          article1.AddSubArticle(subarticle2);
+
+         regulation.AddArticle(article1);
 
          /*Remove every item from then DB*/
 
@@ -103,6 +111,9 @@ namespace TFG.RulesPenaltiesF1.Web
          dbContext.Penalty.Add(suspensionNextCompetition);
          dbContext.Penalty.Add(tp_10);
          dbContext.Penalty.Add(fine);
+
+         /*Regulations*/
+         dbContext.Regulation.Add(regulation);
 
 
          // Save again

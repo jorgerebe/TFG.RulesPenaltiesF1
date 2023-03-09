@@ -1,4 +1,7 @@
-﻿@model TFG.RulesPenaltiesF1.Core.Entities.Regulation
+﻿@model RegulationViewModel
+
+@using Microsoft.AspNetCore.Html;
+@using TFG.RulesPenaltiesF1.Web.ViewModels
 
 @{
     ViewData["Title"] = "Create";
@@ -9,19 +12,34 @@
 <h4>Regulation</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Year" class="control-label"></label>
+            <input asp-for="Year" class="form-control" />
+            <span asp-validation-for="Year" class="text-danger"></span>
+        </div>
+		<div class="form-group">
+			@Html.LabelFor(m => m.Articles, new { @class = "control-label" })
+			@{
+
+				var articlesList = ((List<ArticleViewModel>)ViewBag.Articles).Select(a => new SelectListItem
+				{
+					Value = a.Id.ToString(),
+					Text =  a.ToString()
+				});
+
+				Console.WriteLine(articlesList.ToList().ToArray()[0].ToString());
+			}
+			@Html.ListBoxFor(m => m.Articles, articlesList, new { @class = "form-control", @multiple = "multiple" })
+
+			@Html.ValidationMessageFor(m => m.Articles, "", new { @class = "text-danger" })
+		</div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
 
 <div>

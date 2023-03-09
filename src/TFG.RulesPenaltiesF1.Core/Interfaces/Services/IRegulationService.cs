@@ -1,4 +1,4 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 
 namespace TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 public interface IRegulationService
