@@ -7,9 +7,9 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 
 public class RegulationViewModelService : IRegulationViewModelService
 {
-   private readonly IRepository<Regulation> _repository;
+   private readonly IPenaltyRepository<Regulation> _repository;
 
-   public RegulationViewModelService(IRepository<Regulation> repository)
+   public RegulationViewModelService(IPenaltyRepository<Regulation> repository)
    {
       _repository = repository;
    }
@@ -21,7 +21,7 @@ public class RegulationViewModelService : IRegulationViewModelService
 
    public async Task<List<RegulationViewModel>> GetRegulationsAsync()
    {
-      var regulations = await _repository.GetAll();
+      var regulations = await _repository.GetAllAsync();
 
       return new List<RegulationViewModel>();
    }

@@ -24,3 +24,7 @@ footer p{
 footer{
     height:70px;
 }
+
+select.form-control option {
+    white-space: normal;
+}

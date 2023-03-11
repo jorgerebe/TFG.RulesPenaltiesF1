@@ -10,9 +10,9 @@ using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 namespace TFG.RulesPenaltiesF1.Core.Services;
 public class ArticleService : IArticleService
 {
-   private readonly IRepository<Article> _repository;
+   private readonly IPenaltyRepository<Article> _repository;
 
-   public ArticleService(IRepository<Article> repository)
+   public ArticleService(IPenaltyRepository<Article> repository)
    {
       _repository = repository;
    }

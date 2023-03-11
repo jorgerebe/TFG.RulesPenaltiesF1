@@ -54,7 +54,7 @@ public class DefaultInfrastructureModule : Module
    private void RegisterCommonDependencies(ContainerBuilder builder)
    {
       builder.RegisterGeneric(typeof(EfRepository<>))
-        .As(typeof(IRepository<>))
+        .As(typeof(IPenaltyRepository<>))
         .InstancePerLifetimeScope();
 
       builder
@@ -70,6 +70,11 @@ public class DefaultInfrastructureModule : Module
       builder
          .RegisterType<ArticleRepository>()
          .As<IArticleRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<PenaltyRepository>()
+         .As<IPenaltyRepository>()
          .InstancePerLifetimeScope();
 
       builder.Register<ServiceFactory>(context =>

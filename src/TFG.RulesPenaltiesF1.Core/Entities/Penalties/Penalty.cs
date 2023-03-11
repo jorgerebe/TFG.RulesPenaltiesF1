@@ -5,7 +5,8 @@ public abstract class Penalty : EntityBase, IAggregateRoot
 {
    public int PenaltyTypeId { get; set; }
 
-   public PenaltyType? PenaltyType { get; set; }
+   public PenaltyType PenaltyType { get; set; } = new PenaltyType(-1);
+   public string? Discriminator { get; set; }
 
    protected Penalty() { }
 

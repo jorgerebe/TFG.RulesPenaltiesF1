@@ -51,6 +51,7 @@ public class RegulationsController : Controller
    {
       //var articles = await _articleServiceViewModel.GetArticlesAsync();
       ViewBag.Articles = (await _articleServiceViewModel.GetArticlesAsync()).AsEnumerable();
+      ViewBag.Penalties = (await _penaltyServiceViewModel.GetPenaltiesAsync()).AsEnumerable();
 
       return View();
    }
@@ -88,7 +89,7 @@ public class RegulationsController : Controller
          "Try again, and if the problem persists " +
          "see your system administrator.");
       }
-      return View(regulation);
+      return Create().Result;
    }
 
      /*// GET: Regulations/Edit/5

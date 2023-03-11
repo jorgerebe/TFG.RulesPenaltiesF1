@@ -8,7 +8,7 @@ public class DropGridPositionsConfiguration : IEntityTypeConfiguration<DropGridP
    public void Configure(EntityTypeBuilder<DropGridPositions> builder)
    {
       builder.HasBaseType<Penalty>();
-      builder.Property(r => r.Positions).IsRequired(false);
+      builder.Property(r => r.Positions).IsRequired();
       builder.HasIndex(r => new { r.Positions, r.PenaltyTypeId})
             .IsUnique();
    }

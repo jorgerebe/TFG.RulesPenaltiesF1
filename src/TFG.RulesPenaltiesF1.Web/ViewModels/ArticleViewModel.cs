@@ -32,7 +32,7 @@ public class ArticleViewModel
 
       foreach(var item in SubArticles)
       {
-         output += ("\n\r" + "\t" + item.ToString());
+         output += ("<br>" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "*" + item.ToString());
       }
 
       return output;

@@ -20,7 +20,7 @@ namespace TFG.RulesPenaltiesF1.Web
       public static readonly PenaltyType DT = new PenaltyType("Drive-Through", "Drive-Through");
       public static readonly PenaltyType StopAndGo = new PenaltyType("Stop And Go", "Stop And Go");
       public static readonly PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand");
-      public static readonly PenaltyType Fine = new PenaltyType("Fine", "Fine");
+      public static readonly PenaltyType Fine = new PenaltyType("Fine", "The competitor must pay a fine");
 
       public static readonly TimePenalty tp_5 = new TimePenalty(TP, 5);
       public static readonly TimePenalty tp_10 = new TimePenalty(TP, 10);
