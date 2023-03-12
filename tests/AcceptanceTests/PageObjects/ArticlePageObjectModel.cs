@@ -60,12 +60,10 @@ public class ArticlePageObjectModel
 
    public void EnsureArticlePageIsOpenAndReset()
    {
-      //Open the calculator page in the browser if not opened yet
       if (_webDriver.Url != ArticleUrl)
       {
          _webDriver.Url = ArticleUrl;
       }
-      //Otherwise reset the calculator by clicking the reset button
       else
       {
          ResetButton.Click();

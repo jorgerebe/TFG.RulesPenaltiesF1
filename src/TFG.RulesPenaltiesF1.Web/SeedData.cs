@@ -56,9 +56,6 @@ namespace TFG.RulesPenaltiesF1.Web
       {
          /* Previous */
 
-         article1.AddSubArticle(subarticle1);
-         article1.AddSubArticle(subarticle2);
-
          regulation.AddArticle(article1);
 
          /*Remove every item from then DB*/
@@ -85,8 +82,28 @@ namespace TFG.RulesPenaltiesF1.Web
          // Populate
 
          /*Articles*/
-         dbContext.Article.Add(article1);
+         PopulateArticles(dbContext);
+         /*Penalties*/
+         PopulatePenalties(dbContext);
+         /*Regulations*/
+         PopulateRegulations(dbContext);
 
+
+         // Save again
+
+         dbContext.SaveChanges();
+      }
+
+      public static void PopulateArticles(RulesPenaltiesF1DbContext dbContext)
+      {
+         article1.AddSubArticle(subarticle1);
+         article1.AddSubArticle(subarticle2);
+
+         dbContext.Article.Add(article1);
+      }
+
+      public static void PopulatePenalties(RulesPenaltiesF1DbContext dbContext)
+      {
          /*Penalty Types*/
          dbContext.PenaltyType.Add(DQ);
          dbContext.PenaltyType.Add(TP);
@@ -111,14 +128,11 @@ namespace TFG.RulesPenaltiesF1.Web
          dbContext.Penalty.Add(suspensionNextCompetition);
          dbContext.Penalty.Add(tp_10);
          dbContext.Penalty.Add(fine);
+      }
 
-         /*Regulations*/
+      public static void PopulateRegulations(RulesPenaltiesF1DbContext dbContext)
+      {
          dbContext.Regulation.Add(regulation);
-
-
-         // Save again
-
-         dbContext.SaveChanges();
       }
    }
 }

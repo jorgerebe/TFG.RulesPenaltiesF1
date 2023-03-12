@@ -4,7 +4,7 @@ using OpenQA.Selenium.Support.UI;
 namespace AcceptanceTests.PageObjects;
 public class RegulationPageObjectModel
 {
-   private const string ArticleUrl = "http://localhost:33333/Regulations/Create";
+   private const string RegulationUrl = "http://localhost:33333/Regulations/Create";
 
    private readonly IWebDriver _webDriver;
 
@@ -20,6 +20,7 @@ public class RegulationPageObjectModel
    private IWebElement Penalties => _webDriver.FindElement(By.Id("Penalties"));
    private SelectElement PenaltiesSelect => new SelectElement(Penalties);
    private IWebElement SubmitRegulation => _webDriver.FindElement(By.Id("submit"));
+   private IWebElement ResetButton => _webDriver.FindElement(By.Id("reset"));
 
    public void EnterNameRegulation(string name)
    {
@@ -40,5 +41,18 @@ public class RegulationPageObjectModel
    public void ClickSubmitRegulation()
    {
       SubmitRegulation.Click();
+   }
+
+   public void EnsureArticlePageIsOpenAndReset()
+   {
+      if (_webDriver.Url != RegulationUrl)
+      {
+         _webDriver.Url = RegulationUrl;
+      }
+      else
+      {
+         ResetButton.Click();
+      }
+
    }
 }

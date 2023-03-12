@@ -1,4 +1,5 @@
 ﻿using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Web;
 
 namespace AcceptanceTests.Hooks;
 
@@ -16,12 +17,22 @@ public class DbHooks
    [BeforeScenario(Order =10)]
    public void BeforeScenario()
    {
+      _dbContext.Database.EnsureDeletedAsync().Wait();
       _dbContext.Database.EnsureCreatedAsync().Wait();
    }
 
    [AfterScenario(Order =10)]
    public void AfterScenario()
    {
-      _dbContext.Database.EnsureDeletedAsync().Wait();
+   }
+
+   [Scope(Feature = "HU03-Regulations")]
+   [BeforeScenario(Order =15)]
+   public void PopulateTestDataRegulations()
+   {
+      SeedData.PopulateArticles(_dbContext);
+      SeedData.PopulatePenalties(_dbContext);
+
+      _dbContext.SaveChanges();
    }
 }

@@ -1,5 +1,4 @@
-﻿using BoDi;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
+﻿using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
 namespace AcceptanceTests.Drivers;
 public class ArticlePageDriver
