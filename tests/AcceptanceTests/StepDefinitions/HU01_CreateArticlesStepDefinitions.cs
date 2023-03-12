@@ -20,7 +20,7 @@ namespace AcceptanceTests.StepDefinitions
       [Given(@"\[The steward is creating an article]")]
       public void GivenTheStewardIsCreatingAnArticle()
       {
-         _articlePageObjectModel.EnsureCalculatorIsOpenAndReset();
+         _articlePageObjectModel.EnsureArticlePageIsOpenAndReset();
       }
 
       [When(@"\[The steward enters the content of the article]")]

@@ -17,7 +17,7 @@ public class RegulationArticle
    {
       if(regulation is null || article is null)
       {
-         throw new ArgumentNullException("There must be a regulation and an article");
+         throw new ArgumentException("There must be a regulation and an article");
       }
 
       Regulation = regulation;

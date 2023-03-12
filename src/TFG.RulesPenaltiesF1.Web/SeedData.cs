@@ -37,7 +37,7 @@ namespace TFG.RulesPenaltiesF1.Web
 
       /*REGULATIONS*/
 
-      public static readonly Regulation regulation = new Regulation(2);
+      public static readonly Regulation regulation = new Regulation("testing");
 
       public static void Initialize(IServiceProvider serviceProvider)
       {

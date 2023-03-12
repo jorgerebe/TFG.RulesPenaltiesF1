@@ -16,11 +16,11 @@
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Year" class="control-label"></label>
-            <input asp-for="Year" class="form-control" />
-            <span asp-validation-for="Year" class="text-danger"></span>
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-		<div class="form-group">
+		<div class="form-group mt-4">
 			@Html.LabelFor(m => m.Articles, new { @class = "control-label" })
 			@{
 
@@ -30,28 +30,28 @@
 					Text =  a.ToString()
 				});
 			}
-			@Html.ListBoxFor(m => m.Articles, articlesList, new { @class = "form-control", @multiple = "multiple" })
+			@Html.ListBoxFor(m => m.Articles, articlesList, new { @class = "form-control articles", @multiple = "multiple" })
 
 			@Html.ValidationMessageFor(m => m.Articles, "", new { @class = "text-danger" })
 		</div>
 
-		<div class="form-group">
+		<div class="form-group mt-4">
 			@Html.LabelFor(m => m.Penalties, new { @class = "control-label" })
 			@{
 
 				var penaltiesList = ((List<PenaltyViewModel>)ViewBag.Penalties).Select(a => new SelectListItem
 				{
 					Value = a.Id.ToString(),
-					Text =  a.Name + a.Description
+					Text =  a.Name + ": " + a.ToString()
 				});
 			}
-			@Html.ListBoxFor(m => m.Penalties, penaltiesList, new { @class = "form-control", @multiple = "multiple" })
+			@Html.ListBoxFor(m => m.Penalties, penaltiesList, new { @class = "form-control", @multiple = "multiple", @size=6 })
 
 			@Html.ValidationMessageFor(m => m.Penalties, "", new { @class = "text-danger" })
 		</div>
 
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
+        <div class="form-group mt-3">
+            <input type="submit" value="Create" class="btn btn-primary" id="submit" />
         </div>
     </form>
 </div>

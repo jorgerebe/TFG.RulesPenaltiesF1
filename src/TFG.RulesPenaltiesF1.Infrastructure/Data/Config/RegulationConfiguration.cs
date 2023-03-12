@@ -14,7 +14,9 @@ public class RegulationConfiguration : IEntityTypeConfiguration<Regulation>
          .WithOne(r => r.Regulation)
          .HasForeignKey(r => r.RegulationId);
 
-      builder.Property(r => r.Year)
+      builder.Property(r => r.Name)
          .IsRequired();
+
+      builder.HasIndex(r => r.Name).IsUnique();
    }
 }

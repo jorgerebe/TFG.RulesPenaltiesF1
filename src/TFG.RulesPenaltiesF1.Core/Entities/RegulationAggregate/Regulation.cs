@@ -3,20 +3,24 @@
 namespace TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 public class Regulation : EntityBase, IAggregateRoot
 {
-   public int Year { get; set; }
+   public string Name { get; set; }
 
    private readonly List<RegulationArticle> _articles = new();
    public IReadOnlyCollection<RegulationArticle> Articles => _articles.AsReadOnly();
 
-   public Regulation(int year)
-   {
+   private readonly List<RegulationPenalty> _penalties = new();
+   public IReadOnlyCollection<RegulationPenalty> Penalties => _penalties.AsReadOnly();
 
+   public Regulation(string name)
+   {
+      Name = name;
    }
 
-   public Regulation(int year, List<RegulationArticle> articles)
+   public Regulation(string name, List<RegulationArticle> articles, List<RegulationPenalty> penalties)
    {
-      Year = year;
+      Name = name;
       _articles = articles;
+      _penalties = penalties;
    }
 
    public void AddArticle(Article article)

@@ -28,3 +28,8 @@ footer{
 select.form-control option {
     white-space: normal;
 }
+
+
+.articles[multiple] option {
+    margin: 10px;
+}

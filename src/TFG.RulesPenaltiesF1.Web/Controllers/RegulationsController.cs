@@ -47,12 +47,9 @@ public class RegulationsController : Controller
    }
 
    // GET: Regulations/Create
-   public async Task<ActionResult> Create()
+   public async Task<IActionResult> Create()
    {
-      //var articles = await _articleServiceViewModel.GetArticlesAsync();
-      ViewBag.Articles = (await _articleServiceViewModel.GetArticlesAsync()).AsEnumerable();
-      ViewBag.Penalties = (await _penaltyServiceViewModel.GetPenaltiesAsync()).AsEnumerable();
-
+      await PopulateListsArticlesAndPenalties();
       return View();
    }
 
@@ -63,17 +60,10 @@ public class RegulationsController : Controller
    [ValidateAntiForgeryToken]
    public async Task<IActionResult> Create(RegulationViewModel regulation)
    {
-      /*if (ModelState.IsValid)
-      {
-            _context.Add(regulation);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-      }*/
       try
       {
          if (ModelState.IsValid)
          {
-
             var regulationEntity = _regulationServiceViewModel.MapViewModelToEntity(regulation);
 
             if (regulationEntity != null)
@@ -89,7 +79,15 @@ public class RegulationsController : Controller
          "Try again, and if the problem persists " +
          "see your system administrator.");
       }
-      return Create().Result;
+
+      await PopulateListsArticlesAndPenalties();
+      return View(regulation);
+   }
+
+   private async Task PopulateListsArticlesAndPenalties()
+   {
+      ViewBag.Articles = (await _articleServiceViewModel.GetArticlesAsync()).AsEnumerable();
+      ViewBag.Penalties = (await _penaltyServiceViewModel.GetPenaltiesAsync()).AsEnumerable();
    }
 
      /*// GET: Regulations/Edit/5

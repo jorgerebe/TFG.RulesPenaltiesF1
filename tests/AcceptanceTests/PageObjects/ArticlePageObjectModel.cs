@@ -58,7 +58,7 @@ public class ArticlePageObjectModel
       SubmitArticle.Click();
    }
 
-   public void EnsureCalculatorIsOpenAndReset()
+   public void EnsureArticlePageIsOpenAndReset()
    {
       //Open the calculator page in the browser if not opened yet
       if (_webDriver.Url != ArticleUrl)

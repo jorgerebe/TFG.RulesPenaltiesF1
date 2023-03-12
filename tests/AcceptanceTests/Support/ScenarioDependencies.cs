@@ -35,5 +35,6 @@ public static class ScenarioDependencies
 
 
       builder.RegisterType<HU01_CreateArticlesStepDefinitions>().InstancePerLifetimeScope();
+      builder.RegisterType<HU03_RegulationsStepDefinitions>().InstancePerLifetimeScope();
    }
 }

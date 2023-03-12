@@ -7,7 +7,7 @@ public class RegulationViewModel
 {
    public int Id { get; set; }
 
-   public int Year { get; set; }
+   public string Name { get; set; } = string.Empty;
 
    [Required]
    [MinLength(1, ErrorMessage ="There must be at least one article in the regulations")]

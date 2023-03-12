@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BoDi;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
+﻿using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
 namespace AcceptanceTests.Hooks;
 
@@ -24,13 +16,12 @@ public class DbHooks
    [BeforeScenario(Order =10)]
    public void BeforeScenario()
    {
-      _dbContext.Database.EnsureDeletedAsync().Wait();
       _dbContext.Database.EnsureCreatedAsync().Wait();
    }
 
    [AfterScenario(Order =10)]
    public void AfterScenario()
    {
-      // Perform any cleanup that requires the _dbContext instance here
+      _dbContext.Database.EnsureDeletedAsync().Wait();
    }
 }

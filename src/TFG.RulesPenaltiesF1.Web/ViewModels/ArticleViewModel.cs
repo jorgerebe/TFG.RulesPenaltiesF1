@@ -1,7 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Html;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -28,11 +25,21 @@ public class ArticleViewModel
 
    public override string ToString()
    {
-      string output = Content!;
+      string output = "Article " + Id;
+      
+      if(SubArticles.Count > 0)
+      {
+         output += " and subarticles: --";
+      }
+
+      output += Content!;
+
+      int i = 1;
 
       foreach(var item in SubArticles)
       {
-         output += ("<br>" + "&nbsp;&nbsp;&nbsp;&nbsp;" + "*" + item.ToString());
+         output += (" ----Subarticle " + i + "----\n\r" + "\t" + "*" + item.Content);
+         i++;
       }
 
       return output;
