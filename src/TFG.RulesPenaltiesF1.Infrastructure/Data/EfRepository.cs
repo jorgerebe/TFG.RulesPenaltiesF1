@@ -4,7 +4,7 @@ using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
-public class EfRepository<T> : IPenaltyRepository<T> where T : EntityBase, IAggregateRoot
+public class EfRepository<T> : IRepository<T> where T : EntityBase, IAggregateRoot
 {
    private readonly RulesPenaltiesF1DbContext _dbContext;
 

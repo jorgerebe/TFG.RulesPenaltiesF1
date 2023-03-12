@@ -9,7 +9,7 @@ public class RegulationPenalty
    public int PenaltyId { get; private set; }
    public Penalty? Penalty { get; private set; }
 
-   protected RegulationPenalty(int regulationId, int penaltyId)
+   public RegulationPenalty(int regulationId, int penaltyId)
    {
       RegulationId = regulationId;
       PenaltyId = penaltyId;

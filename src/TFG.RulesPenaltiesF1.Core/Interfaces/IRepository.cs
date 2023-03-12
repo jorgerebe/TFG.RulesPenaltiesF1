@@ -1,6 +1,6 @@
 ﻿namespace TFG.RulesPenaltiesF1.Core.Interfaces
 {
-   public interface IPenaltyRepository<T> where T : EntityBase, IAggregateRoot
+   public interface IRepository<T> where T : EntityBase, IAggregateRoot
    {
       Task<T?> GetByIdAsync<TId>(TId id) where TId : notnull;
       Task<List<T>> GetAllAsync();

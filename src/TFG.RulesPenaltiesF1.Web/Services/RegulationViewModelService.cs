@@ -7,9 +7,9 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 
 public class RegulationViewModelService : IRegulationViewModelService
 {
-   private readonly IPenaltyRepository<Regulation> _repository;
+   private readonly IRegulationRepository _repository;
 
-   public RegulationViewModelService(IPenaltyRepository<Regulation> repository)
+   public RegulationViewModelService(IRegulationRepository repository)
    {
       _repository = repository;
    }
@@ -23,11 +23,48 @@ public class RegulationViewModelService : IRegulationViewModelService
    {
       var regulations = await _repository.GetAllAsync();
 
-      return new List<RegulationViewModel>();
+      var regulationsViewModel = new List<RegulationViewModel>();
+
+      foreach(var regulation in regulations)
+      {
+         regulationsViewModel.Add(new RegulationViewModel()
+         {
+            Id = regulation.Id,
+            Name = regulation.Name
+         });
+      }
+
+      return regulationsViewModel;
    }
 
-   public Regulation? MapViewModelToEntity(RegulationViewModel article)
+   public async Task<bool> ExistsRegulationWithName(string name)
    {
-      throw new NotImplementedException();
+      return await _repository.ExistsRegulationByName(name);
+   }
+
+   public Regulation? MapViewModelToEntity(RegulationViewModel regulation)
+   {
+      if(regulation is null)
+      {
+         return null;
+      }
+
+      List<RegulationArticle> regulationArticles = new();
+
+      foreach(int id in regulation.Articles)
+      {
+         regulationArticles.Add(new RegulationArticle(0, id));
+      }
+      
+      List<RegulationPenalty> regulationPenalties = new();
+
+      foreach(int id in regulation.Penalties)
+      {
+         regulationPenalties.Add(new RegulationPenalty(0, id));
+      }
+
+      var regulationEntity = new Regulation(regulation.Name, regulationArticles, regulationPenalties);
+
+      return regulationEntity;
    }
 }

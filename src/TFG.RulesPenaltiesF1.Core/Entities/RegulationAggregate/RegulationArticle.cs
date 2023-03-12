@@ -7,7 +7,7 @@ public class RegulationArticle
    public int ArticleId { get; private set; }
    public Article? Article { get; private set; }
 
-   protected RegulationArticle(int regulationId, int articleId)
+   public RegulationArticle(int regulationId, int articleId)
    {
       RegulationId = regulationId;
       ArticleId = articleId;

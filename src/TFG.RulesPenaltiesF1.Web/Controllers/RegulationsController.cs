@@ -60,10 +60,18 @@ public class RegulationsController : Controller
    [ValidateAntiForgeryToken]
    public async Task<IActionResult> Create(RegulationViewModel regulation)
    {
-      try
-      {
          if (ModelState.IsValid)
          {
+            bool pepe = await _regulationServiceViewModel.ExistsRegulationWithName(regulation.Name);
+
+            if (pepe)
+            {
+               ModelState.AddModelError("Name", "A regulation with name '" + regulation.Name + "' already exists");
+
+               await PopulateListsArticlesAndPenalties();
+               return View(regulation);
+            }
+
             var regulationEntity = _regulationServiceViewModel.MapViewModelToEntity(regulation);
 
             if (regulationEntity != null)
@@ -72,13 +80,6 @@ public class RegulationsController : Controller
                return RedirectToAction(nameof(Index));
             }
          }
-      }
-      catch (Exception)
-      {
-         ModelState.AddModelError("", "Unable to save changes. " +
-         "Try again, and if the problem persists " +
-         "see your system administrator.");
-      }
 
       await PopulateListsArticlesAndPenalties();
       return View(regulation);

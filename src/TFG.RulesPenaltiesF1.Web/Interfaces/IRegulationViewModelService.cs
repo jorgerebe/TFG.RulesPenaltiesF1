@@ -9,4 +9,6 @@ public interface IRegulationViewModelService
    Task<RegulationViewModel?> GetRegulationByIdAsync(int id);
 
    Regulation? MapViewModelToEntity(RegulationViewModel article);
+
+   Task<bool> ExistsRegulationWithName(string name);
 }
