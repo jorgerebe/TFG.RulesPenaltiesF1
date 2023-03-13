@@ -6,6 +6,6 @@ public class DriveThroughViewModel : PenaltyViewModel
 
    public override string ToString()
    {
-      return ElapsedTime + " seconds";
+      return base.ToString() + ": " + ElapsedTime + " seconds (if not possible to comply, " + (ElapsedTime) + " seconds will be added at the end)";
    }
 }

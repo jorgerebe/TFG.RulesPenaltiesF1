@@ -6,6 +6,6 @@ public class StopAndGoViewModel : DriveThroughViewModel
 
    public override string ToString()
    {
-      return Seconds + " seconds";
+      return Name + ": " + Description + ": " + Seconds + " seconds (if not possible to comply, " + (ElapsedTime+Seconds) + " seconds will be added at the end)";
    }
 }

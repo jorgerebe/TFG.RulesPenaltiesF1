@@ -7,34 +7,17 @@ public class PenaltyViewModelFactory
    public static PenaltyViewModel CreateViewModel(Penalty penalty)
    {
 
-      var viewModel = new PenaltyViewModel();
-
-
-      switch(penalty)
+      var viewModel = penalty switch
       {
-         case Fine fine:
-            viewModel = CreateViewModel(fine);
-            break;
-         case Disqualification disqualification:
-            viewModel = CreateViewModel(disqualification);
-            break;
-         case StopAndGo stopAndGo:
-            viewModel = CreateViewModel(stopAndGo);
-            break;
-         case DriveThrough driveThrough:
-            viewModel = CreateViewModel(driveThrough);
-            break;
-         case TimePenalty timePenalty:
-            viewModel = CreateViewModel(timePenalty);
-            break;
-         case Reprimand reprimand:
-            viewModel = CreateViewModel(reprimand);
-            break;
-         case DropGridPositions dropGridPositions:
-            viewModel = CreateViewModel(dropGridPositions);
-            break;
-      }
-
+         Fine fine => CreateViewModel(fine),
+         Disqualification disqualification => CreateViewModel(disqualification),
+         StopAndGo stopAndGo => CreateViewModel(stopAndGo),
+         DriveThrough driveThrough => CreateViewModel(driveThrough),
+         TimePenalty timePenalty => CreateViewModel(timePenalty),
+         Reprimand reprimand => CreateViewModel(reprimand),
+         DropGridPositions dropGridPositions => CreateViewModel(dropGridPositions),
+         _ => throw new ArgumentException("Invalid penalty"),
+      };
       return viewModel;
    }
 

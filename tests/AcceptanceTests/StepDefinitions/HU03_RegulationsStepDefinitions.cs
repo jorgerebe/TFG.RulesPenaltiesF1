@@ -9,9 +9,9 @@ namespace AcceptanceTests.StepDefinitions
       private readonly RegulationPageObjectModel _regulationPageObjectModel;
       private readonly RegulationPageDriver _regulationPageDriver;
 
-      public HU03_RegulationsStepDefinitions(RegulationPageObjectModel regulationPageObjectModel, RegulationPageDriver regulationPageDriver)
+      public HU03_RegulationsStepDefinitions(BrowserDriver browserDriver, RegulationPageDriver regulationPageDriver)
       {
-         _regulationPageObjectModel = regulationPageObjectModel;
+         _regulationPageObjectModel = new RegulationPageObjectModel(browserDriver.Current);
          _regulationPageDriver = regulationPageDriver;
       }
 
@@ -31,7 +31,7 @@ namespace AcceptanceTests.StepDefinitions
       [When(@"\[The steward selects the article part of the regulation]")]
       public void WhenTheStewardSelectsTheArticlePartOfTheRegulation()
       {
-         _regulationPageObjectModel.SelectArticle(1);
+         _regulationPageObjectModel.SelectArticle(0);
       }
 
       [When(@"\[The steward selects two penalties for the regulation]")]

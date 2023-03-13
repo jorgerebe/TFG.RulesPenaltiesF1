@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System.Xml.Linq;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace AcceptanceTests.PageObjects;
@@ -40,6 +42,7 @@ public class RegulationPageObjectModel
 
    public void ClickSubmitRegulation()
    {
+      ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", SubmitRegulation);
       SubmitRegulation.Click();
    }
 

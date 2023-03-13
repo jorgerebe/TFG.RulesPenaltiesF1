@@ -2,21 +2,51 @@
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
+using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
 
 namespace TFG.RulesPenaltiesF1.Web.Services;
 
 public class RegulationViewModelService : IRegulationViewModelService
 {
    private readonly IRegulationRepository _repository;
+   private readonly IArticleViewModelService _articleViewModelService;
 
-   public RegulationViewModelService(IRegulationRepository repository)
+   public RegulationViewModelService(IRegulationRepository repository, IArticleViewModelService articleViewModelService)
    {
       _repository = repository;
+      _articleViewModelService = articleViewModelService;
    }
 
-   public Task<RegulationViewModel?> GetRegulationByIdAsync(int id)
+   public async Task<RegulationViewModel?> GetRegulationByIdAsync(int id)
    {
-      throw new NotImplementedException();
+      var regulation = await _repository.GetRegulationByIdAsync(id);
+
+      if(regulation is null)
+      {
+         return null;
+      }
+
+      List<ArticleViewModel> articles = new();
+      
+      foreach(var article in regulation.Articles)
+      {
+         articles.Add(_articleViewModelService.MapEntityToViewModel(article.Article!)!);
+      }
+
+      List<PenaltyViewModel> penalties = new();
+      
+      foreach(var penalty in regulation.Penalties)
+      {
+         penalties.Add(PenaltyViewModelFactory.CreateViewModel(penalty.Penalty!));
+      }
+
+      return new RegulationViewModel()
+      {
+         Id = regulation.Id,
+         Name = regulation.Name,
+         ArticlesContent = articles,
+         PenaltiesContent = penalties
+      };
    }
 
    public async Task<List<RegulationViewModel>> GetRegulationsAsync()

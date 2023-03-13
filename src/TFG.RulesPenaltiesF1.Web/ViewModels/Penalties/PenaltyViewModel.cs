@@ -17,6 +17,6 @@ public class PenaltyViewModel
 
    public override string ToString()
    {
-      return Description;
+      return Name + ": \t" + Description;
    }
 }

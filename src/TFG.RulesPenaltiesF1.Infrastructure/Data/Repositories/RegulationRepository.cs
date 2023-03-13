@@ -16,4 +16,16 @@ public class RegulationRepository : EfRepository<Regulation>, IRegulationReposit
    {
       return await _dbContext.Set<Regulation>().AnyAsync(r => r.Name == name);
    }
+
+   public async Task<Regulation?> GetRegulationByIdAsync(int id)
+   {
+      return await _dbContext.Set<Regulation>()
+         .Include(r => r.Articles)
+            .ThenInclude(a => a.Article)
+               .ThenInclude(a => a!.SubArticles)
+         .Include(r => r.Penalties)
+            .ThenInclude(p => p.Penalty)
+               .ThenInclude(p => p!.PenaltyType)
+         .FirstAsync(r => r.Id == id);
+   }
 }

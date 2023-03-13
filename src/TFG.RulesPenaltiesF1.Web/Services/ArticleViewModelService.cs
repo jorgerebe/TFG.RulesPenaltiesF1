@@ -56,18 +56,19 @@ public class ArticleViewModelService : IArticleViewModelService
       return result;
    }
 
-   private static ArticleViewModel? MapEntityToViewModel(Article article)
+   public ArticleViewModel? MapEntityToViewModel(Article article)
    {
       if(article == null)
       {
          return null;
       }
 
-      ArticleViewModel viewmodel = new ArticleViewModel(article.Content);
+      ArticleViewModel viewmodel = new ArticleViewModel(article.Content)
+      {
+         Id = article.Id
+      };
 
-      viewmodel.Id = article.Id;
-
-      foreach(var subarticle in article.SubArticles)
+      foreach (var subarticle in article.SubArticles)
       {
          if(subarticle.Content != null)
          {

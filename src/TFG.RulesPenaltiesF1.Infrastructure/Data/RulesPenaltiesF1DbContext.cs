@@ -37,7 +37,7 @@ public class RulesPenaltiesF1DbContext : DbContext
 
    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
    {
-      int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
       // ignore events if no dispatcher provided
       if (_dispatcher == null) return result;

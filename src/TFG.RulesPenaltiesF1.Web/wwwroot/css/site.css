@@ -31,5 +31,18 @@ select.form-control option {
 
 
 .articles[multiple] option {
-    margin: 10px;
+    margin: 10px 0px;
+}
+
+ol {
+    counter-reset: item;
+}
+
+ol li {
+    display: block;
+}
+
+ol li:before {
+    content: counters(item, ". ") ". ";
+    counter-increment: item;
 }

@@ -16,7 +16,7 @@ namespace TFG.RulesPenaltiesF1.Web
       /*PENALTIES*/
       public static readonly PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race");
       public static readonly PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty");
-      public static readonly PenaltyType GP = new PenaltyType("Drop Grid Positions", "Time Penalty");
+      public static readonly PenaltyType GP = new PenaltyType("Drop Grid Positions", "Drop Grid Position");
       public static readonly PenaltyType DT = new PenaltyType("Drive-Through", "Drive-Through");
       public static readonly PenaltyType StopAndGo = new PenaltyType("Stop And Go", "Stop And Go");
       public static readonly PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand");

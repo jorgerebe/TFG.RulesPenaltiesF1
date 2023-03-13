@@ -6,6 +6,6 @@ public class DropGridPositionsViewModel : PenaltyViewModel
 
    public override string ToString()
    {
-      return Positions + " positions";
+      return base.ToString() + ": " + Positions + " positions";
    }
 }
