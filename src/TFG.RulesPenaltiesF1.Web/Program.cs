@@ -88,11 +88,11 @@ using (var scope = app.Services.CreateScope())
 
   try
   {
-    /*var context = services.GetRequiredService<RulesPenaltiesF1DbContext>();
+    var context = services.GetRequiredService<RulesPenaltiesF1DbContext>();
 
     //context.Database.Migrate();
     context.Database.EnsureCreated();
-    SeedData.Initialize(services);*/
+    SeedData.Initialize(services);
   }
   catch (Exception ex)
   {

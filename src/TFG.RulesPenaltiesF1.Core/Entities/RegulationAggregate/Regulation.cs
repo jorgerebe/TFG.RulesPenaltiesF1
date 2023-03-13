@@ -1,4 +1,5 @@
-﻿using TFG.RulesPenaltiesF1.Core.Interfaces;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 public class Regulation : EntityBase, IAggregateRoot
@@ -45,6 +46,30 @@ public class Regulation : EntityBase, IAggregateRoot
       if(regulationArticleToRemove != null)
       {
          _articles.Remove(regulationArticleToRemove);
+      }
+   }
+   public void AddPenalty(Penalty penalty)
+   {
+      if(penalty is null)
+      {
+         throw new ArgumentNullException(nameof(penalty));
+      }
+
+      _penalties.Add(new RegulationPenalty(this, penalty));
+   }
+
+   public void RemovePenalty(Penalty penalty)
+   {
+      if (penalty is null)
+      {
+         throw new ArgumentNullException(nameof(penalty));
+      }
+
+      var regulationArticleToRemove = _penalties.Find(x => x.Penalty == penalty);
+
+      if(regulationArticleToRemove != null)
+      {
+         _penalties.Remove(regulationArticleToRemove);
       }
    }
 }

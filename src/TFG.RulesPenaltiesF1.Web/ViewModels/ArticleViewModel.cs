@@ -31,6 +31,10 @@ public class ArticleViewModel
       {
          output += " and subarticles: --";
       }
+      else
+      {
+         output += ": ";
+      }
 
       output += Content!;
 

@@ -26,6 +26,7 @@ public class RulesPenaltiesF1DbContext : DbContext
    public DbSet<Penalty> Penalty => Set<Penalty>();
 
    public DbSet<RegulationArticle> RegulationArticle => Set<RegulationArticle>();
+   public DbSet<RegulationPenalty> RegulationPenalty => Set<RegulationPenalty>();
 
    public DbSet<Regulation> Regulation => Set<Regulation>();
 

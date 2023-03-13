@@ -43,6 +43,7 @@ public class RegulationPageObjectModel
    public void ClickSubmitRegulation()
    {
       ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", SubmitRegulation);
+      Thread.Sleep(1000);
       SubmitRegulation.Click();
    }
 

@@ -13,6 +13,8 @@ namespace TFG.RulesPenaltiesF1.Web
       public static readonly Article subarticle1 = new ("Any Competitor whose driver exceeds the limit during any practice session will be\nfined €100 for each km/h above the limit, up to a maximum of €1000.");
       public static readonly Article subarticle2 = new ("During a sprint session or the race, the stewards may impose any of the penalties\nunder Article 54.3a), 54.3b), 54.3c) or 54.3d) on any driver who exceeds the limit.");
 
+      public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
+
       /*PENALTIES*/
       public static readonly PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race");
       public static readonly PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty");
@@ -54,9 +56,6 @@ namespace TFG.RulesPenaltiesF1.Web
       }
       public static void PopulateTestData(RulesPenaltiesF1DbContext dbContext)
       {
-         /* Previous */
-
-         regulation.AddArticle(article1);
 
          /*Remove every item from then DB*/
 
@@ -71,6 +70,21 @@ namespace TFG.RulesPenaltiesF1.Web
          }
 
          foreach(var item in dbContext.PenaltyType)
+         {
+            dbContext.Remove(item);
+         }
+
+         foreach(var item in dbContext.RegulationArticle)
+         {
+            dbContext.Remove(item);
+         }
+
+         foreach(var item in dbContext.RegulationPenalty)
+         {
+            dbContext.Remove(item);
+         }
+
+         foreach(var item in dbContext.Regulation)
          {
             dbContext.Remove(item);
          }
@@ -100,6 +114,7 @@ namespace TFG.RulesPenaltiesF1.Web
          article1.AddSubArticle(subarticle2);
 
          dbContext.Article.Add(article1);
+         dbContext.Article.Add(article2);
       }
 
       public static void PopulatePenalties(RulesPenaltiesF1DbContext dbContext)
@@ -132,6 +147,11 @@ namespace TFG.RulesPenaltiesF1.Web
 
       public static void PopulateRegulations(RulesPenaltiesF1DbContext dbContext)
       {
+         regulation.AddArticle(article1);
+         regulation.AddArticle(article2);
+         regulation.AddPenalty(tp_5);
+         regulation.AddPenalty(tp_10);
+         regulation.AddPenalty(nodrivingReprimand);
          dbContext.Regulation.Add(regulation);
       }
    }

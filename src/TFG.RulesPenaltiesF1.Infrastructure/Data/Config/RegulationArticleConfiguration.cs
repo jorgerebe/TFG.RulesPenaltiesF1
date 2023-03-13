@@ -12,12 +12,14 @@ public class RegulationArticleConfiguration : IEntityTypeConfiguration<Regulatio
       builder
          .HasOne(r => r.Regulation)
          .WithMany(r => r.Articles)
-         .HasForeignKey(r => r.RegulationId);
-      
+         .HasForeignKey(r => r.RegulationId)
+         .OnDelete(DeleteBehavior.Cascade);
+
       builder
          .HasOne(r => r.Article)
          .WithMany()
-         .HasForeignKey(r => r.ArticleId);
+         .HasForeignKey(r => r.ArticleId)
+         .OnDelete(DeleteBehavior.Cascade);
 
       builder.HasIndex(r => new { r.ArticleId, r.RegulationId }).IsUnique();
    }
