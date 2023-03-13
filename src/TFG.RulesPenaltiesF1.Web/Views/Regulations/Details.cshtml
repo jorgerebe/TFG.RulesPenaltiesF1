@@ -1,0 +1,60 @@
+﻿@model RegulationViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Regulation</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-1">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-2">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+
+	<dl class="row">
+		<dt class = "col-sm-2">
+			Articles
+		</dt>
+	</dl>
+
+	<ol>
+		@foreach(var article in Model.ArticlesContent)
+		{
+			<li class="ordered">@article.Content
+			@if (article.SubArticles.Any())
+			{
+				<ol>
+					@foreach(var subarticle in article.SubArticles)
+					{
+						<li class="ordered">@subarticle.Content</li>
+					}
+				</ol>
+			}
+			</li>
+		}
+	</ol>
+
+	<dl class="row">
+		<dt class = "col-sm-2">
+			Penalties
+		</dt>
+	</dl>
+
+	<ol>
+		@foreach(var penalty in Model.PenaltiesContent)
+		{
+			<li class="ordered">@penalty.ToString()</li>
+		}
+	</ol>
+
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

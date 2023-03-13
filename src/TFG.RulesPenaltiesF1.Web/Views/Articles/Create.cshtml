@@ -2,6 +2,10 @@
 
 <h2>Create Article</h2>
 
+@{
+    ViewData["Title"] = "Create Article";
+}
+
 <form asp-action="Create">
 	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -35,9 +39,13 @@
 
 	<div class="form-group mt-3">
 		<input type="submit" value="Create" class="btn btn-primary" id="submit" />
-		<input type="reset" onclick="resetForm()" value="Reset" class="btn btn-default" id="resetButton" />
+		<input type="reset" onclick="resetForm()" value="Reset" class="btn btn-secondary" id="resetButton" />
 	</div>
 </form>
+<div>
+	<br/>
+	<a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
 		<script>

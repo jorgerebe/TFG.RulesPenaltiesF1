@@ -22,6 +22,8 @@ public static class ScenarioDependencies
       builder.RegisterType<BrowserDriver>().InstancePerLifetimeScope();
       builder.RegisterType<ArticlePageDriver>().InstancePerLifetimeScope();
       builder.RegisterType<ArticlePageObjectModel>().InstancePerLifetimeScope();
+      builder.RegisterType<RegulationPageDriver>().InstancePerLifetimeScope();
+      builder.RegisterType<RegulationPageObjectModel>().InstancePerLifetimeScope();
 
 
       builder.Register(c => new DbContextOptionsBuilder<RulesPenaltiesF1DbContext>()
@@ -35,5 +37,6 @@ public static class ScenarioDependencies
 
 
       builder.RegisterType<HU01_CreateArticlesStepDefinitions>().InstancePerLifetimeScope();
+      builder.RegisterType<HU03_RegulationsStepDefinitions>().InstancePerLifetimeScope();
    }
 }

@@ -24,3 +24,25 @@ footer p{
 footer{
     height:70px;
 }
+
+select.form-control option {
+    white-space: normal;
+}
+
+
+.articles[multiple] option {
+    margin: 10px 0px;
+}
+
+ol {
+    counter-reset: item;
+}
+
+ol li {
+    display: block;
+}
+
+ol li:before {
+    content: counters(item, ". ") ". ";
+    counter-increment: item;
+}

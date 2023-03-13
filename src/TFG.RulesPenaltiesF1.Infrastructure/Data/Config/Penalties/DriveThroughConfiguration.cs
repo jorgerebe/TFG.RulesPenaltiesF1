@@ -8,7 +8,7 @@ public class DriveThroughConfiguration : IEntityTypeConfiguration<DriveThrough>
    public void Configure(EntityTypeBuilder<DriveThrough> builder)
    {
       builder.HasBaseType<Penalty>();
-      builder.Property(r => r.ElapsedSeconds).IsRequired(false);
+      builder.Property(r => r.ElapsedSeconds).IsRequired();
       builder.HasIndex(r => new { r.ElapsedSeconds, r.PenaltyTypeId })
             .IsUnique();
    }

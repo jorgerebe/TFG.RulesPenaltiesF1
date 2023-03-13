@@ -94,11 +94,63 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.ToTable("PenaltyType");
                 });
 
+            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.Regulation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Regulation");
+                });
+
+            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.RegulationArticle", b =>
+                {
+                    b.Property<int>("RegulationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RegulationId", "ArticleId");
+
+                    b.HasIndex("ArticleId", "RegulationId")
+                        .IsUnique();
+
+                    b.ToTable("RegulationArticle");
+                });
+
+            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.RegulationPenalty", b =>
+                {
+                    b.Property<int>("RegulationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PenaltyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RegulationId", "PenaltyId");
+
+                    b.HasIndex("PenaltyId", "RegulationId")
+                        .IsUnique();
+
+                    b.ToTable("RegulationPenalty");
+                });
+
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Disqualification", b =>
                 {
                     b.HasBaseType("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty");
 
-                    b.Property<bool?>("NextCompetition")
+                    b.Property<bool>("NextCompetition")
                         .HasColumnType("bit");
 
                     b.HasIndex("NextCompetition", "PenaltyTypeId")
@@ -112,7 +164,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                 {
                     b.HasBaseType("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty");
 
-                    b.Property<int?>("ElapsedSeconds")
+                    b.Property<int>("ElapsedSeconds")
                         .HasColumnType("int");
 
                     b.HasIndex("ElapsedSeconds", "PenaltyTypeId")
@@ -126,7 +178,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                 {
                     b.HasBaseType("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty");
 
-                    b.Property<int?>("Positions")
+                    b.Property<int>("Positions")
                         .HasColumnType("int");
 
                     b.HasIndex("Positions", "PenaltyTypeId")
@@ -147,7 +199,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                 {
                     b.HasBaseType("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty");
 
-                    b.Property<bool?>("DrivingReprimand")
+                    b.Property<bool>("DrivingReprimand")
                         .HasColumnType("bit");
 
                     b.HasIndex("DrivingReprimand", "PenaltyTypeId")
@@ -161,7 +213,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                 {
                     b.HasBaseType("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty");
 
-                    b.Property<int?>("Seconds")
+                    b.Property<int>("Seconds")
                         .HasColumnType("int");
 
                     b.HasIndex("Seconds", "PenaltyTypeId")
@@ -181,7 +233,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                 {
                     b.HasBaseType("TFG.RulesPenaltiesF1.Core.Entities.Penalties.DriveThrough");
 
-                    b.Property<int?>("Seconds")
+                    b.Property<int>("Seconds")
                         .HasColumnType("int");
 
                     b.HasIndex("ElapsedSeconds", "Seconds", "PenaltyTypeId")
@@ -209,9 +261,54 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Navigation("PenaltyType");
                 });
 
+            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.RegulationArticle", b =>
+                {
+                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.Regulation", "Regulation")
+                        .WithMany("Articles")
+                        .HasForeignKey("RegulationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Regulation");
+                });
+
+            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.RegulationPenalty", b =>
+                {
+                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", "Penalty")
+                        .WithMany()
+                        .HasForeignKey("PenaltyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.Regulation", "Regulation")
+                        .WithMany("Penalties")
+                        .HasForeignKey("RegulationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Penalty");
+
+                    b.Navigation("Regulation");
+                });
+
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Article", b =>
                 {
                     b.Navigation("SubArticles");
+                });
+
+            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.Regulation", b =>
+                {
+                    b.Navigation("Articles");
+
+                    b.Navigation("Penalties");
                 });
 #pragma warning restore 612, 618
         }

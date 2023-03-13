@@ -2,23 +2,27 @@
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 
 namespace TFG.RulesPenaltiesF1.Web
 {
    public static class SeedData
    {
-
+      /*ARTICLES*/
       public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.\nHowever, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");
       public static readonly Article subarticle1 = new ("Any Competitor whose driver exceeds the limit during any practice session will be\nfined €100 for each km/h above the limit, up to a maximum of €1000.");
       public static readonly Article subarticle2 = new ("During a sprint session or the race, the stewards may impose any of the penalties\nunder Article 54.3a), 54.3b), 54.3c) or 54.3d) on any driver who exceeds the limit.");
 
+      public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
+
+      /*PENALTIES*/
       public static readonly PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race");
       public static readonly PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty");
-      public static readonly PenaltyType GP = new PenaltyType("Drop Grid Positions", "Time Penalty");
+      public static readonly PenaltyType GP = new PenaltyType("Drop Grid Positions", "Drop Grid Position");
       public static readonly PenaltyType DT = new PenaltyType("Drive-Through", "Drive-Through");
       public static readonly PenaltyType StopAndGo = new PenaltyType("Stop And Go", "Stop And Go");
       public static readonly PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand");
-      public static readonly PenaltyType Fine = new PenaltyType("Fine", "Fine");
+      public static readonly PenaltyType Fine = new PenaltyType("Fine", "The competitor must pay a fine");
 
       public static readonly TimePenalty tp_5 = new TimePenalty(TP, 5);
       public static readonly TimePenalty tp_10 = new TimePenalty(TP, 10);
@@ -32,6 +36,10 @@ namespace TFG.RulesPenaltiesF1.Web
       public static readonly Disqualification dq = new Disqualification(DQ, false);
       public static readonly Disqualification suspensionNextCompetition = new Disqualification(DQ, true);
       public static readonly Fine fine = new Fine(Fine);
+
+      /*REGULATIONS*/
+
+      public static readonly Regulation regulation = new Regulation("testing");
 
       public static void Initialize(IServiceProvider serviceProvider)
       {
@@ -48,10 +56,6 @@ namespace TFG.RulesPenaltiesF1.Web
       }
       public static void PopulateTestData(RulesPenaltiesF1DbContext dbContext)
       {
-         /* Previous */
-
-         article1.AddSubArticle(subarticle1);
-         article1.AddSubArticle(subarticle2);
 
          /*Remove every item from then DB*/
 
@@ -70,6 +74,21 @@ namespace TFG.RulesPenaltiesF1.Web
             dbContext.Remove(item);
          }
 
+         foreach(var item in dbContext.RegulationArticle)
+         {
+            dbContext.Remove(item);
+         }
+
+         foreach(var item in dbContext.RegulationPenalty)
+         {
+            dbContext.Remove(item);
+         }
+
+         foreach(var item in dbContext.Regulation)
+         {
+            dbContext.Remove(item);
+         }
+
          // Save changes
 
          dbContext.SaveChanges();
@@ -77,8 +96,29 @@ namespace TFG.RulesPenaltiesF1.Web
          // Populate
 
          /*Articles*/
-         dbContext.Article.Add(article1);
+         PopulateArticles(dbContext);
+         /*Penalties*/
+         PopulatePenalties(dbContext);
+         /*Regulations*/
+         PopulateRegulations(dbContext);
 
+
+         // Save again
+
+         dbContext.SaveChanges();
+      }
+
+      public static void PopulateArticles(RulesPenaltiesF1DbContext dbContext)
+      {
+         article1.AddSubArticle(subarticle1);
+         article1.AddSubArticle(subarticle2);
+
+         dbContext.Article.Add(article1);
+         dbContext.Article.Add(article2);
+      }
+
+      public static void PopulatePenalties(RulesPenaltiesF1DbContext dbContext)
+      {
          /*Penalty Types*/
          dbContext.PenaltyType.Add(DQ);
          dbContext.PenaltyType.Add(TP);
@@ -103,11 +143,16 @@ namespace TFG.RulesPenaltiesF1.Web
          dbContext.Penalty.Add(suspensionNextCompetition);
          dbContext.Penalty.Add(tp_10);
          dbContext.Penalty.Add(fine);
+      }
 
-
-         // Save again
-
-         dbContext.SaveChanges();
+      public static void PopulateRegulations(RulesPenaltiesF1DbContext dbContext)
+      {
+         regulation.AddArticle(article1);
+         regulation.AddArticle(article2);
+         regulation.AddPenalty(tp_5);
+         regulation.AddPenalty(tp_10);
+         regulation.AddPenalty(nodrivingReprimand);
+         dbContext.Regulation.Add(regulation);
       }
    }
 }

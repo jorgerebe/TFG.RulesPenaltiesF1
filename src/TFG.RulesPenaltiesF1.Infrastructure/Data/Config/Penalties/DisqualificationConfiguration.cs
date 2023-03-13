@@ -8,7 +8,7 @@ public class DisqualificationConfiguration : IEntityTypeConfiguration<Disqualifi
    public void Configure(EntityTypeBuilder<Disqualification> builder)
    {
       builder.HasBaseType<Penalty>();
-      builder.Property(r => r.NextCompetition).IsRequired(false);
+      builder.Property(r => r.NextCompetition).IsRequired();
 
       builder.HasOne(p => p.PenaltyType)
          .WithMany()

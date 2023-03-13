@@ -4,6 +4,7 @@ using TFG.RulesPenaltiesF1.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -24,6 +25,11 @@ public class RulesPenaltiesF1DbContext : DbContext
    public DbSet<PenaltyType> PenaltyType => Set<PenaltyType>();
    public DbSet<Penalty> Penalty => Set<Penalty>();
 
+   public DbSet<RegulationArticle> RegulationArticle => Set<RegulationArticle>();
+   public DbSet<RegulationPenalty> RegulationPenalty => Set<RegulationPenalty>();
+
+   public DbSet<Regulation> Regulation => Set<Regulation>();
+
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
       base.OnModelCreating(modelBuilder);
@@ -32,7 +38,7 @@ public class RulesPenaltiesF1DbContext : DbContext
 
    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
    {
-      int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
       // ignore events if no dispatcher provided
       if (_dispatcher == null) return result;
