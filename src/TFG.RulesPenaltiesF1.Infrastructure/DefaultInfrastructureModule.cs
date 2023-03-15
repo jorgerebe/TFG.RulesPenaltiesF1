@@ -72,6 +72,16 @@ public class DefaultInfrastructureModule : Module
          .As<IArticleRepository>()
          .InstancePerLifetimeScope();
 
+      builder
+         .RegisterType<PenaltyRepository>()
+         .As<IPenaltyRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<RegulationRepository>()
+         .As<IRegulationRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();

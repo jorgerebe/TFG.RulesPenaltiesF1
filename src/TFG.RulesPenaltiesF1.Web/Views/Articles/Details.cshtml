@@ -1,24 +1,26 @@
 ﻿@model ArticleViewModel
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
+<h2>Article Details</h2>
 
 <div>
-    <h4>Article</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-    </dl>
+<ul>
+	<li>
+		<strong>Content:</strong> @Model.Content
+	</li>
+	@if (Model.SubArticles != null && Model.SubArticles.Any())
+	{
+			<li>
+				<strong>Subarticles:</strong>
+				@foreach (var subArticle in Model.SubArticles)
+				{
+					<ul><li style="margin-left: 20px;">@subArticle.Content</li></ul>
+				}
+			</li>
+	}
+</ul>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+	<a asp-action="Index">Back to List</a>
 </div>

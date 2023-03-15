@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 
@@ -28,7 +27,7 @@ public class EfRepository<T> : IRepository<T> where T : EntityBase, IAggregateRo
       await _dbContext.SaveChangesAsync();
    }
 
-   public async Task<List<T>> GetAll()
+   public async Task<List<T>> GetAllAsync()
    {
       return await _dbContext.Set<T>()
          .ToListAsync();

@@ -1,7 +1,5 @@
-﻿using System;
-using AcceptanceTests.Drivers;
+﻿using AcceptanceTests.Drivers;
 using AcceptanceTests.PageObjects;
-using TechTalk.SpecFlow;
 
 namespace AcceptanceTests.StepDefinitions
 {
@@ -22,20 +20,20 @@ namespace AcceptanceTests.StepDefinitions
       [Given(@"\[The steward is creating an article]")]
       public void GivenTheStewardIsCreatingAnArticle()
       {
-         _articlePageObjectModel.EnsureCalculatorIsOpenAndReset();
+         _articlePageObjectModel.EnsureArticlePageIsOpenAndReset();
       }
 
       [When(@"\[The steward enters the content of the article]")]
       public void WhenTheStewardEntersTheContentOfTheArticle()
       {
-         _articlePageObjectModel.EnterContentArticle("article");
+         _articlePageObjectModel.EnterContentArticle("article pretty longgg");
       }
 
       [When(@"\[The steward adds the content of the subarticle as a subitem of the first article]")]
       public void WhenTheStewardAddsTheContentOfTheSubarticleAsASubitemOfTheFirstArticle()
       {
          _articlePageObjectModel.ClickAddSubArticle();
-         _articlePageObjectModel.AddContentSubArticle("subarticle1");
+         _articlePageObjectModel.AddContentSubArticle("subarticle1 little longer");
       }
 
       [When(@"\[The steward submits the article]")]
@@ -48,7 +46,7 @@ namespace AcceptanceTests.StepDefinitions
       public void ThenTheArticleCreatedIsStored()
       {
          var number = _articlePageDriver.getNumberOfArticles();
-         _articlePageDriver.getNumberOfArticles().Should().Be(1);
+         _articlePageDriver.getNumberOfArticles().Should().Be(2);
       }
    }
 }

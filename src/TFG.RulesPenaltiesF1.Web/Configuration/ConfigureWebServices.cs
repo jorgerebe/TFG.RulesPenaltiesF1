@@ -9,6 +9,8 @@ public static class ConfigureWebServices
    {
 
       services.AddScoped<IArticleViewModelService, ArticleViewModelService>();
+      services.AddScoped<IPenaltyViewModelService, PenaltyViewModelService>();
+      services.AddScoped<IRegulationViewModelService, RegulationViewModelService>();
 
       return services;
    }

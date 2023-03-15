@@ -17,7 +17,7 @@ public class ArticlePageObjectModel
    private int numberSubArticle = 0;
 
    private IWebElement ContentArticle => _webDriver.FindElement(By.Id("Content"));
-   private IWebElement AddSubArticle => _webDriver.FindElement(By.Id("idAdSubarticle"));
+   private IWebElement AddSubArticle => _webDriver.FindElement(By.Id("idAddSubarticle"));
    private IWebElement RemoveSubArticle => _webDriver.FindElement(By.Id("idRemoveSubarticle"));
    private IWebElement SubmitArticle => _webDriver.FindElement(By.Id("submit"));
    private IWebElement ResetButton => _webDriver.FindElement(By.Id("resetButton"));
@@ -58,14 +58,12 @@ public class ArticlePageObjectModel
       SubmitArticle.Click();
    }
 
-   public void EnsureCalculatorIsOpenAndReset()
+   public void EnsureArticlePageIsOpenAndReset()
    {
-      //Open the calculator page in the browser if not opened yet
       if (_webDriver.Url != ArticleUrl)
       {
          _webDriver.Url = ArticleUrl;
       }
-      //Otherwise reset the calculator by clicking the reset button
       else
       {
          ResetButton.Click();

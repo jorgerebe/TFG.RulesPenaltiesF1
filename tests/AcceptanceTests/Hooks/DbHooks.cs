@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
+﻿using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Web;
 
 namespace AcceptanceTests.Hooks;
 
@@ -29,6 +24,15 @@ public class DbHooks
    [AfterScenario(Order =10)]
    public void AfterScenario()
    {
-      // Perform any cleanup that requires the _dbContext instance here
+   }
+
+   [Scope(Feature = "HU03-Regulations")]
+   [BeforeScenario(Order =15)]
+   public void PopulateTestDataRegulations()
+   {
+      SeedData.PopulateArticles(_dbContext);
+      SeedData.PopulatePenalties(_dbContext);
+
+      _dbContext.SaveChanges();
    }
 }

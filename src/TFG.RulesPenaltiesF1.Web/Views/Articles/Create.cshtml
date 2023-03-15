@@ -2,51 +2,94 @@
 
 <h2>Create Article</h2>
 
-@using (Html.BeginForm("Create", "Articles"))
-{
-	@Html.LabelFor(m => m.Content)
-	@Html.TextAreaFor(m => m.Content, new {@class = "form-control"})
-
-		<h3>Subarticles</h3>
-
-		<div id="subarticles">
-			<div class="subarticle">
-			</div>
-		</div>
-
-		<button type="button" onclick="addSubArticle()" id="idAdSubarticle">Add subarticle</button>
-
-		<button type="button" onclick="removeSubArticle()" id="idRemoveSubarticle">Remove subarticle</button>
-
-		<input type="reset" onclick="resetForm()" value="Reset" id="resetButton"/>
-
-		<input type="submit" value="Create" id="submit"/>
+@{
+    ViewData["Title"] = "Create Article";
 }
 
-@section scripts{
+<form asp-action="Create">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+	<div class="form-group">
+		<label asp-for="Content" class="control-label"></label>
+		<textarea asp-for="Content" class="form-control"></textarea>
+		<span asp-validation-for="Content" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<h5><label class="control-label">Subarticles</label></h5>
+		<div id="subarticles" style="margin-left: 20px;">
+			@if(Model != null && Model.SubArticles.Count > 0)
+			{
+				int n = 0;
+				foreach (var subArticle in Model.SubArticles)
+				{
+					<div class="subarticle">
+						<label for="SubArticles_@(n+1)__Content" style="display: block; margin-bottom: 5px;">Subarticle @(n+1):</label>
+						<textarea name="SubArticles[@n].Content" id="SubArticles_@(n)__Content" asp-for="@subArticle.Content" class="form-control" id="subArticle_Content name="subArticle.Content"></textarea>
+						<span asp-validation-for="@Model.SubArticles[@n].Content" class="text-danger"></span>
+					</div>
+
+					n++;
+				}
+			}
+		</div>
+		<button type="button" onclick="addSubArticle()" class="btn btn-primary" id="idAddSubarticle">Add Subarticle</button>
+		<button type="button" onclick="removeSubArticle()" class="btn btn-danger" id="idRemoveSubarticle">Remove Subarticle</button>
+	</div>
+
+	<div class="form-group mt-3">
+		<input type="submit" value="Create" class="btn btn-primary" id="submit" />
+		<input type="reset" onclick="resetForm()" value="Reset" class="btn btn-secondary" id="resetButton" />
+	</div>
+</form>
+<div>
+	<br/>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
 		<script>
-			var subArticleIndex = 0;
+
+			@{
+				int subArticleIndex = 0;
+				if (Model != null)
+				{
+					subArticleIndex = @Model.SubArticles.Count;
+				}
+			}
+
+			var subArticleIndex = @subArticleIndex;
+
 
 			function addSubArticle() {
 				var index = ++subArticleIndex;
 
 				var subArticle = $('<div/>', {
-					class: 'subarticle'
+					class: 'subarticle',
+					style: 'margin-top: 10px; margin-bottom: 10px;'
 				});
 
 				subArticle.append($('<label/>', {
 					for: 'SubArticles_' + index + '__Content',
-					text: 'Subarticle ' + index + ':'
+					text: 'Subarticle ' + index + ':',
+					style: 'display: block; margin-bottom: 5px;'
 				}));
 
 				subArticle.append($('<textarea/>', {
 					name: 'SubArticles[' + (index-1) + '].Content',
-					id: 'SubArticles_' + (index-1) + '__Content'
+					id: 'SubArticles_' + (index-1) + '__Content',
+					class: 'form-control',
+					style: 'width: 100%;'
+				}));
+
+				subArticle.append($('<span/>', {
+					'data-valmsg-for': 'SubArticles[' + (index-1) + '].Content',
+					'data-valmsg-replace': 'true',
+					class: 'text-danger'
 				}));
 
 				$('#subarticles').append(subArticle);
 			}
-
 
 			function removeSubArticle() {
 				if (subArticleIndex > 0) {
@@ -61,5 +104,6 @@
 					removeSubArticle();
 				}
 			}
+
 		</script>
 }

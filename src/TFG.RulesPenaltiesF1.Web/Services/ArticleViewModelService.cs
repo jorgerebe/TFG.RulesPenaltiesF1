@@ -7,7 +7,7 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 
 public class ArticleViewModelService : IArticleViewModelService
 {
-   private IArticleRepository _articleRepository;
+   private readonly IArticleRepository _articleRepository;
 
    public ArticleViewModelService(IArticleRepository articleRepository)
    {
@@ -44,19 +44,40 @@ public class ArticleViewModelService : IArticleViewModelService
 
    public async Task<ArticleViewModel?> GetByIdAsync(int id)
    {
-      var article = await _articleRepository.GetByIdAsync(id);
+      var article = await _articleRepository.GetArticleById(id);
 
       if(article == null)
       {
          return null;
       }
 
-      ArticleViewModel result = new ArticleViewModel()
+      ArticleViewModel? result = MapEntityToViewModel(article);
+
+      return result;
+   }
+
+   public ArticleViewModel? MapEntityToViewModel(Article article)
+   {
+      if(article == null)
+      {
+         return null;
+      }
+
+      ArticleViewModel viewmodel = new ArticleViewModel(article.Content)
       {
          Id = article.Id
       };
 
-      return result;
+      foreach (var subarticle in article.SubArticles)
+      {
+         if(subarticle.Content != null)
+         {
+            ArticleViewModel subarticleViewModel = new ArticleViewModel(subarticle.Content);
+            viewmodel.SubArticles.Add(subarticleViewModel);
+         }
+      }
+
+      return viewmodel;
    }
 
 

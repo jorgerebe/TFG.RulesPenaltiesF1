@@ -5,7 +5,7 @@ public class ArticlePageDriver
 {
    private readonly RulesPenaltiesF1DbContext _dbContext;
 
-   public ArticlePageDriver(IServiceProvider services, RulesPenaltiesF1DbContext dbContext)
+   public ArticlePageDriver(RulesPenaltiesF1DbContext dbContext)
    {
       _dbContext = dbContext;
    }
