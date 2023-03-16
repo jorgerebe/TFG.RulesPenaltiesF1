@@ -7,6 +7,10 @@ using Azure.Identity;
 using TFG.RulesPenaltiesF1.Web.Configuration;
 using TFG.RulesPenaltiesF1.Web;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using Autofac.Core;
+using Microsoft.AspNetCore.Identity;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +50,9 @@ Console.WriteLine(environment);
 Console.WriteLine(connectionString!);
 
 builder.Services.AddDbContext(connectionString!);
+
 builder.Services.AddScoped<RulesPenaltiesF1DbContext, RulesPenaltiesF1DbContext>();
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -57,6 +63,23 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
   containerBuilder.RegisterModule(new DefaultCoreModule());
   containerBuilder.RegisterModule(new DefaultInfrastructureModule(false));
 });
+
+
+/*END IDENTITY*/
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+   options.User.RequireUniqueEmail = true;
+   options.Password.RequireNonAlphanumeric = false;
+   options.Password.RequireUppercase = false;
+   options.Password.RequireLowercase = false;
+   options.Password.RequireDigit = false;
+})
+.AddEntityFrameworkStores<RulesPenaltiesF1DbContext>()
+.AddDefaultUI()
+.AddDefaultTokenProviders();
+
+/*END IDENTITY*/
 
 var app = builder.Build();
 
@@ -70,6 +93,12 @@ else
   app.UseHsts();
 }
 app.UseRouting();
+
+/**/
+
+app.UseAuthentication();
+
+/**/
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
