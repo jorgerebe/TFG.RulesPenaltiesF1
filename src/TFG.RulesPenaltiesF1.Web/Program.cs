@@ -3,11 +3,9 @@ using Autofac.Extensions.DependencyInjection;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Infrastructure;
 using Serilog;
-using Azure.Identity;
 using TFG.RulesPenaltiesF1.Web.Configuration;
 using TFG.RulesPenaltiesF1.Web;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
-using Autofac.Core;
 using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +51,6 @@ builder.Services.AddDbContext(connectionString!);
 
 builder.Services.AddScoped<RulesPenaltiesF1DbContext, RulesPenaltiesF1DbContext>();
 
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -67,7 +64,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 /*END IDENTITY*/
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
    options.User.RequireUniqueEmail = true;
    options.Password.RequireNonAlphanumeric = false;
@@ -97,6 +94,7 @@ app.UseRouting();
 /**/
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 /**/
 
