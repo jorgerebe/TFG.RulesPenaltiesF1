@@ -120,6 +120,11 @@ using (var scope = app.Services.CreateScope())
     //context.Database.Migrate();
     context.Database.EnsureCreated();
     SeedData.Initialize(services);
+
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await SeedDataIdentity.SeedAsync(userManager, roleManager);
   }
   catch (Exception ex)
   {

@@ -16,14 +16,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 
 namespace TFG.RulesPenaltiesF1.Web.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles ="Steward")]
     public class RegisterModel : PageModel
     {
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
@@ -32,12 +35,14 @@ namespace TFG.RulesPenaltiesF1.Web.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
+            RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -51,7 +56,7 @@ namespace TFG.RulesPenaltiesF1.Web.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = new();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -80,6 +85,11 @@ namespace TFG.RulesPenaltiesF1.Web.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name ="Full name")]
             public string FullName { get; set; }
+
+            [Required]
+            public string Role { get; set; }
+
+            public List<SelectListItem> RoleList { get; set; } = new();
          
             [Required]
             [EmailAddress]
@@ -109,19 +119,28 @@ namespace TFG.RulesPenaltiesF1.Web.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            ReturnUrl = returnUrl;
+         if (_roleManager.Roles != null)
+         {
+            Input.RoleList = _roleManager.Roles
+                .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
+                .ToList();
+         }
+
+
+         ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                user.FullName = Input.FullName;    
+                user.FullName = Input.FullName;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -129,6 +148,7 @@ namespace TFG.RulesPenaltiesF1.Web.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, Input.Role);
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
