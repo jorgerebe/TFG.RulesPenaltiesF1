@@ -9,6 +9,7 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,8 +49,6 @@ Console.WriteLine(environment);
 Console.WriteLine(connectionString!);
 
 builder.Services.AddDbContext(connectionString!);
-
-builder.Services.AddScoped<RulesPenaltiesF1DbContext, RulesPenaltiesF1DbContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
