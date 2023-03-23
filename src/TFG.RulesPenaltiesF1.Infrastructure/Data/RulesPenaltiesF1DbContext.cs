@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
-public class RulesPenaltiesF1DbContext : DbContext
+public class RulesPenaltiesF1DbContext : IdentityDbContext
 {
    private readonly IDomainEventDispatcher? _dispatcher;
 

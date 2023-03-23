@@ -3,10 +3,13 @@ using Autofac.Extensions.DependencyInjection;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Infrastructure;
 using Serilog;
-using Azure.Identity;
 using TFG.RulesPenaltiesF1.Web.Configuration;
 using TFG.RulesPenaltiesF1.Web;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +49,6 @@ Console.WriteLine(environment);
 Console.WriteLine(connectionString!);
 
 builder.Services.AddDbContext(connectionString!);
-builder.Services.AddScoped<RulesPenaltiesF1DbContext, RulesPenaltiesF1DbContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -57,6 +59,23 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
   containerBuilder.RegisterModule(new DefaultCoreModule());
   containerBuilder.RegisterModule(new DefaultInfrastructureModule(false));
 });
+
+
+/*END IDENTITY*/
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+   options.User.RequireUniqueEmail = true;
+   options.Password.RequireNonAlphanumeric = false;
+   options.Password.RequireUppercase = false;
+   options.Password.RequireLowercase = false;
+   options.Password.RequireDigit = false;
+})
+.AddEntityFrameworkStores<RulesPenaltiesF1DbContext>()
+.AddDefaultUI()
+.AddDefaultTokenProviders();
+
+/*END IDENTITY*/
 
 var app = builder.Build();
 
@@ -70,6 +89,13 @@ else
   app.UseHsts();
 }
 app.UseRouting();
+
+/**/
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+/**/
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -93,6 +119,11 @@ using (var scope = app.Services.CreateScope())
     //context.Database.Migrate();
     context.Database.EnsureCreated();
     SeedData.Initialize(services);
+
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await SeedDataIdentity.SeedAsync(userManager, roleManager);
   }
   catch (Exception ex)
   {

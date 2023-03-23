@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -47,6 +48,7 @@ public class RegulationsController : Controller
    }
 
    // GET: Regulations/Create
+   [Authorize(Roles ="Steward")]
    public async Task<IActionResult> Create()
    {
       await PopulateListsArticlesAndPenalties();
@@ -58,6 +60,7 @@ public class RegulationsController : Controller
    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
    [HttpPost]
    [ValidateAntiForgeryToken]
+   [Authorize(Roles = "Steward")]
    public async Task<IActionResult> Create(RegulationViewModel regulation)
    {
          if (ModelState.IsValid)
