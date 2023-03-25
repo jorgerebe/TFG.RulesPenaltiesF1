@@ -7,6 +7,7 @@ using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 using TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure;
 
@@ -80,6 +81,11 @@ public class DefaultInfrastructureModule : Module
       builder
          .RegisterType<RegulationRepository>()
          .As<IRegulationRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<CircuitRepository>()
+         .As<ICircuitRepository>()
          .InstancePerLifetimeScope();
 
       builder.Register<ServiceFactory>(context =>

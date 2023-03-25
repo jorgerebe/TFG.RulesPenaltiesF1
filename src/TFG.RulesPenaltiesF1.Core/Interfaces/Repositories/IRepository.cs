@@ -1,4 +1,4 @@
-﻿namespace TFG.RulesPenaltiesF1.Core.Interfaces
+﻿namespace TFG.RulesPenaltiesF1.Core.Interfaces.Repositories
 {
    public interface IRepository<T> where T : EntityBase, IAggregateRoot
    {

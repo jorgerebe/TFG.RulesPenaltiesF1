@@ -40,4 +40,13 @@ public class Circuit : EntityBase, IAggregateRoot
       DriverLapRecord = driverLapRecord;
       YearLapRecord = yearLapRecord;
    }
+
+   public string FormatFastLap()
+   {
+      int minutes = MillisecondsLapRecord / 60000;
+      int seconds = (MillisecondsLapRecord - (60000 * minutes))/1000;
+      int milliseconds = (MillisecondsLapRecord - (60000 * minutes) - (1000*seconds));
+
+      return minutes + ":" + seconds + "." + milliseconds;
+   }
 }

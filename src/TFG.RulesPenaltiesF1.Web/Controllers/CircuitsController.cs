@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -9,17 +10,19 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 {
    public class CircuitsController : Controller
     {
-        private readonly ICircuitViewModelService _service;
+        private readonly ICircuitService _service;
+        private readonly ICircuitViewModelService _viewModelService;
 
-        public CircuitsController(ICircuitViewModelService service)
+        public CircuitsController(ICircuitService service, ICircuitViewModelService viewModelService)
         {
             _service = service;
+            _viewModelService = viewModelService;
         }
 
         // GET: Circuits
         public async Task<IActionResult> Index()
         {
-            var circuits = await _service.GetAllCircuits();
+            var circuits = await _viewModelService.GetAllCircuits();
             return View(circuits);
         }
 
@@ -31,7 +34,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
                 return NotFound();
             }
 
-            var circuit =await _service.GetByIdAsync((int)id);
+            var circuit =await _viewModelService.GetByIdAsync((int)id);
 
             if (circuit == null)
             {
@@ -44,7 +47,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         // GET: Circuits/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["CountryId"] = new SelectList(await _service.GetAllCountries(), "Id", "Name");
+            ViewData["CountryId"] = new SelectList(await _viewModelService.GetAllCountries(), "Id", "Name");
             return View();
         }
 
@@ -53,15 +56,15 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public /*async Task<*/IActionResult/*>*/ Create([Bind("CountryId,Name,Length,Laps,YearFirstGP,MillisecondsLapRecord,DriverLapRecord,YearLapRecord,Id")] Circuit circuit)
+        public async Task<IActionResult> Create([Bind("CountryId,Name,Length,Laps,YearFirstGP,MillisecondsLapRecord,DriverLapRecord,YearLapRecord,Id")] CircuitViewModel circuit)
         {
-            /*if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _context.Add(circuit);
-                await _context.SaveChangesAsync();
+                var circuitEntity = _viewModelService.MapViewModelToEntity(circuit!);
+                await _service.CreateCircuitAsync(circuitEntity!);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CountryId"] = new SelectList(_context.Set<Country>(), "Id", "Name", circuit.CountryId);*/
+            ViewData["CountryId"] = new SelectList(await _viewModelService.GetAllCountries(), "Id", "Name", circuit.CountryId);
             return View(new CircuitViewModel());
         }
 

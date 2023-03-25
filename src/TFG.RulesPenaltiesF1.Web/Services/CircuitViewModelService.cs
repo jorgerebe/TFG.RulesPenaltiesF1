@@ -1,5 +1,5 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Core.Interfaces;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -7,9 +7,9 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 
 public class CircuitViewModelService : ICircuitViewModelService
 {
-   private readonly IRepository<Circuit> _circuitRepository;
+   private readonly ICircuitRepository _circuitRepository;
    private readonly IRepository<Country> _countryRepository;
-   public CircuitViewModelService(IRepository<Circuit> circuitRepository, IRepository<Country> countryRepository)
+   public CircuitViewModelService(ICircuitRepository circuitRepository, IRepository<Country> countryRepository)
    {
       _circuitRepository = circuitRepository;
       _countryRepository = countryRepository;
@@ -17,9 +17,16 @@ public class CircuitViewModelService : ICircuitViewModelService
 
    public async Task<List<CircuitViewModel>> GetAllCircuits()
    {
-      var circuits = await _circuitRepository.GetAllAsync();
+      var circuits = await _circuitRepository.GetAllCircuits();
 
-      return new List<CircuitViewModel>();
+      List<CircuitViewModel> circuitsViewModel = new ();
+
+      foreach(var circuit in circuits)
+      {
+         circuitsViewModel.Add(MapEntityToViewModel(circuit)!);
+      }
+
+      return circuitsViewModel;
    }
 
    public async Task<List<CountryViewModel>> GetAllCountries()
@@ -43,18 +50,46 @@ public class CircuitViewModelService : ICircuitViewModelService
    public async Task<CircuitViewModel?> GetByIdAsync(int id)
    {
 
-      var circuit = await _circuitRepository.GetByIdAsync(id);
+      var circuit = await _circuitRepository.GetCircuitById(id);
 
-      return new CircuitViewModel();
+      if(circuit is null)
+      {
+         return null;
+      }
+
+      var circuitViewModel = MapEntityToViewModel(circuit);
+
+      return circuitViewModel;
    }
 
    public CircuitViewModel? MapEntityToViewModel(Circuit circuit)
    {
-      throw new NotImplementedException();
+      if(circuit == null)
+      {
+         return null;
+      }
+
+
+
+      return new CircuitViewModel()
+      {
+         Id = circuit.Id,
+         Country = new CountryViewModel() { Id = circuit.Country.Id, Name = circuit.Country.Name },
+         Name = circuit.Name,
+         Length = circuit.Length,
+         Laps = circuit.Laps,
+         RaceDistance = circuit.Length * circuit.Laps,
+         YearFirstGP = circuit.YearFirstGP,
+         MillisecondsLapRecord = circuit.MillisecondsLapRecord,
+         DriverLapRecord = circuit.DriverLapRecord,
+         YearLapRecord = circuit.YearLapRecord,
+         InfoLapRecord = circuit.FormatFastLap() + " - " + circuit.DriverLapRecord + " (" + circuit.YearLapRecord + ")"
+      };
    }
 
    public Circuit? MapViewModelToEntity(CircuitViewModel circuit)
    {
       throw new NotImplementedException();
    }
+
 }

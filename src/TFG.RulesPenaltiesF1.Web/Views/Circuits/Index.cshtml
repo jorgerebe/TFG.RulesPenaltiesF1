@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Circuits - Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -28,15 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.YearFirstGP)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MillisecondsLapRecord)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DriverLapRecord)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YearLapRecord)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -50,22 +41,13 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Length)
+                @Html.DisplayFor(modelItem => item.Length) km
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Laps)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.YearFirstGP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MillisecondsLapRecord)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DriverLapRecord)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YearLapRecord)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
