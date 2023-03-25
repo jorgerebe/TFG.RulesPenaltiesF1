@@ -32,10 +32,17 @@ public class CircuitViewModel
    [DisplayName("Year First GP")]
    public int YearFirstGP { get; set; }
 
-
+   [Required]
+   [Range(0, 20)]
+   [DisplayName("Minutes")]
+   public int MinutesLapRecord { get; set; }
 
    [Required]
-   [Range(1, 600000)]
+   [Range(0,59.999)]
+   [DisplayName("Seconds")]
+   public float SecondsLapRecord { get; set; }
+
+
    public int MillisecondsLapRecord { get; set; }
 
    [Required]

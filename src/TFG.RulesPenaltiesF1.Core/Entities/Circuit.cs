@@ -45,8 +45,8 @@ public class Circuit : EntityBase, IAggregateRoot
    {
       int minutes = MillisecondsLapRecord / 60000;
       int seconds = (MillisecondsLapRecord - (60000 * minutes))/1000;
-      int milliseconds = (MillisecondsLapRecord - (60000 * minutes) - (1000*seconds));
+      int milliseconds = (MillisecondsLapRecord - (60000 * minutes) - (1000 * seconds));
 
-      return minutes + ":" + seconds + "." + milliseconds;
+      return minutes + ":" + seconds.ToString("00") + "." + milliseconds.ToString("000");
    }
 }

@@ -94,8 +94,10 @@ public class CircuitViewModelService : ICircuitViewModelService
          return null;
       }
 
-      Circuit circuitEntity = new Circuit(circuit.CountryId, circuit.Name, circuit.Length,
-         circuit.Laps, circuit.YearFirstGP, circuit.MillisecondsLapRecord, circuit.DriverLapRecord, circuit.YearFirstGP);
+      var milliseconds = circuit.MinutesLapRecord * 60000 + (int)(circuit.SecondsLapRecord * 1000);
+
+     Circuit circuitEntity = new Circuit(circuit.CountryId, circuit.Name, circuit.Length,
+         circuit.Laps, circuit.YearFirstGP, milliseconds, circuit.DriverLapRecord, circuit.YearFirstGP);
 
       return circuitEntity;
    }
