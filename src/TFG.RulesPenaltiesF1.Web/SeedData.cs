@@ -41,6 +41,183 @@ namespace TFG.RulesPenaltiesF1.Web
 
       public static readonly Regulation regulation = new Regulation("testing");
 
+      /*COUNTRIES*/
+      public static readonly List<Country> countries = new()
+      {
+         new ("AFGHANISTAN"),
+         new ("ALBANIA"),
+         new ("ALGERIA"),
+         new ("AMERICAN SAMOA"),
+         new ("ANDORRA"),
+         new ("ANGOLA"),
+         new ("ARGENTINA"),
+         new ("ARMENIA"),
+         new ("AUSTRALIA"),
+         new ("AUSTRIA"),
+         new ("AZERBAIJAN"),
+         new ("BAHAMAS"),
+         new ("BAHRAIN"),
+         new ("BANGLADESH"),
+         new ("BARBADOS"),
+         new ("BELARUS"),
+         new ("BELGIUM"),
+         new ("BELIZE"),
+         new ("BENIN"),
+         new ("BERMUDA"),
+         new ("BHUTAN"),
+         new ("BOLIVIA"),
+         new ("BOSNIA AND HERZEGOVINA"),
+         new ("BOTSWANA"),
+         new ("BRAZIL"),
+         new ("BULGARIA"),
+         new ("BURKINA FASO"),
+         new ("BURUNDI"),
+         new ("CAMBODIA"),
+         new ("CAMEROON"),
+         new ("CANADA"),
+         new ("CAPE VERDE ISLANDS"),
+         new ("CHAD"),
+         new ("CHILE"),
+         new ("CHINA"),
+         new ("COLOMBIA"),
+         new ("CONGO"),
+         new ("COSTA RICA"),
+         new ("CROATIA"),
+         new ("CUBA"),
+         new ("CYPRUS"),
+         new ("CZECH REPUBLIC"),
+         new ("DENMARK"),
+         new ("DJIBOUTI"),
+         new ("DOMINICA"),
+         new ("DOMINICAN REPUBLIC"),
+         new ("ECUADOR"),
+         new ("EGYPT"),
+         new ("EL SALVADOR"),
+         new ("ERITREA"),
+         new ("ESTONIA"),
+         new ("ETHIOPIA"),
+         new ("FIJI"),
+         new ("FINLAND"),
+         new ("FRANCE"),
+         new ("FRENCH POLYNESIA"),
+         new ("GABON"),
+         new ("GAMBIA"),
+         new ("GEORGIA"),
+         new ("GERMANY"),
+         new ("GHANA"),
+         new ("GREECE"),
+         new ("GRENADA"),
+         new ("GUATEMALA"),
+         new ("GUINEA"),
+         new ("GUYANA"),
+         new ("HAITI"),
+         new ("HONDURAS"),
+         new ("HUNGARY"),
+         new ("ICELAND"),
+         new ("INDIA"),
+         new ("INDONESIA"),
+         new ("IRAN"),
+         new ("IRAQ"),
+         new ("IRELAND"),
+         new ("ISRAEL"),
+         new ("ITALY"),
+         new ("JAMAICA"),
+         new ("JAPAN"),
+         new ("JORDAN"),
+         new ("KAZAKHSTAN"),
+         new ("KENYA"),
+         new ("NORTHERN IRELAND"),
+         new ("NORTH KOREA"),
+         new ("SOUTH KOREA"),
+         new ("KUWAIT"),
+         new ("LATVIA"),
+         new ("LEBANON"),
+         new ("LIBERIA"),
+         new ("LIBYA"),
+         new ("LITHUANIA"),
+         new ("LUXEMBOURG"),
+         new ("MADAGASCAR"),
+         new ("MALAWI"),
+         new ("MALAYSIA"),
+         new ("MALDIVES"),
+         new ("MALI"),
+         new ("MALTA"),
+         new ("MAURITANIA"),
+         new ("MAURITIUS"),
+         new ("MEXICO"),
+         new ("MONACO"),
+         new ("MONGOLIA"),
+         new ("MONTENEGRO"),
+         new ("MOROCCO"),
+         new ("MOZAMBIQUE"),
+         new ("NAMIBIA"),
+         new ("NEPAL"),
+         new ("NETHERLANDS"),
+         new ("NEW ZEALAND"),
+         new ("NICARAGUA"),
+         new ("NIGER"),
+         new ("NIGERIA"),
+         new ("NORWAY"),
+         new ("OMAN"),
+         new ("PAKISTAN"),
+         new ("PANAMA"),
+         new ("PAPUA NEW GUINEA"),
+         new ("PARAGUAY"),
+         new ("PERU"),
+         new ("PHILIPPINES"),
+         new ("POLAND"),
+         new ("PORTUGAL"),
+         new ("QATAR"),
+         new ("ROMANIA"),
+         new ("RWANDA"),
+         new ("SAUDI ARABIA"),
+         new ("SENEGAL"),
+         new ("SERBIA"),
+         new ("SIERRA LEONE"),
+         new ("SINGAPORE"),
+         new ("SLOVAKIA"),
+         new ("SLOVENIA"),
+         new ("SOLOMON ISLANDS"),
+         new ("SOMALIA"),
+         new ("SOUTH AFRICA"),
+         new ("SPAIN"),
+         new ("SRI LANKA"),
+         new ("SUDAN"),
+         new ("SURINAME"),
+         new ("SWAZILAND"),
+         new ("SWEDEN"),
+         new ("SWITZERLAND"),
+         new ("TAIWAN"),
+         new ("TAJIKISTAN"),
+         new ("THAILAND"),
+         new ("TOGO"),
+         new ("TRINIDAD AND TOBAGO"),
+         new ("TUNISIA"),
+         new ("TURKEY"),
+         new ("TURKMENISTAN"),
+         new ("TUVALU"),
+         new ("UGANDA"),
+         new ("UKRAINE"),
+         new ("UNITED ARAB EMIRATES"),
+         new ("UNITED KINGDOM"),
+         new ("UNITED STATES"),
+         new ("URUGUAY"),
+         new ("UZBEKISTAN"),
+         new ("VANUATU"),
+         new ("VENEZUELA"),
+         new ("VIET NAM"),
+         new ("YEMEN"),
+         new ("ZAMBIA"),
+      };
+
+      /*Circuits*/
+      public static readonly List<Circuit> circuits = new()
+      {
+         new(countries[12],"Bahrain International Circuit",5.412f,57,2004,91447,"Pedro de la Rosa", 2005),
+         new(countries[8],"Albert Park Circuit",5.278f,58,1996,80260,"Charles Leclerc", 2022)
+      };
+
+
       public static void Initialize(IServiceProvider serviceProvider)
       {
          using var dbContext = new RulesPenaltiesF1DbContext(
@@ -89,6 +266,16 @@ namespace TFG.RulesPenaltiesF1.Web
             dbContext.Remove(item);
          }
 
+         foreach (var item in dbContext.Country)
+         {
+            dbContext.Remove(item);
+         }
+
+         foreach (var item in dbContext.Circuit)
+         {
+            dbContext.Remove(item);
+         }
+
          // Save changes
 
          dbContext.SaveChanges();
@@ -102,6 +289,12 @@ namespace TFG.RulesPenaltiesF1.Web
          /*Regulations*/
          PopulateRegulations(dbContext);
 
+         dbContext.SaveChanges();
+
+         /*Countries*/
+         PopulateCountries(dbContext);
+         /*Circuits*/
+         PopulateCircuits(dbContext);
 
          // Save again
 
@@ -153,6 +346,23 @@ namespace TFG.RulesPenaltiesF1.Web
          regulation.AddPenalty(tp_10);
          regulation.AddPenalty(nodrivingReprimand);
          dbContext.Regulation.Add(regulation);
+      }
+
+      public static void PopulateCountries(RulesPenaltiesF1DbContext dbContext)
+      {
+         foreach(var country in countries)
+         {
+            dbContext.Country.Add(country);
+         }
+      }
+
+      public static void PopulateCircuits(RulesPenaltiesF1DbContext dbContext)
+      {
+         foreach(var circuit in circuits)
+         {
+            Console.WriteLine(circuit.Id + " - " + circuit.Name);
+            dbContext.Circuit.Add(circuit);
+         }
       }
    }
 }

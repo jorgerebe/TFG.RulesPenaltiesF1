@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 {
     [DbContext(typeof(RulesPenaltiesF1DbContext))]
-    partial class RulesPenaltiesF1DbContextModelSnapshot : ModelSnapshot
+    [Migration("20230325115345_HU09_01_Circuits")]
+    partial class HU09_01_Circuits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,9 +265,8 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DriverLapRecord")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DriverLapRecord")
+                        .HasColumnType("int");
 
                     b.Property<float>("Laps")
                         .HasColumnType("real");
@@ -307,9 +309,6 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Country");
                 });

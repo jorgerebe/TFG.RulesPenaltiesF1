@@ -9,4 +9,10 @@ public class Country : EntityBase, IAggregateRoot
    {
       Name = name;
    }
+
+   public Country(int id, string name)
+   {
+      Id = id;
+      Name = name;
+   }
 }

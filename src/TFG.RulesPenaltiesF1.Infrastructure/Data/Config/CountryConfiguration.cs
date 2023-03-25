@@ -12,5 +12,8 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
       builder.Property(p => p.Name)
           .HasMaxLength(50)
           .IsRequired();
+
+      builder.HasIndex(c => c.Name)
+         .IsUnique();
    }
 }

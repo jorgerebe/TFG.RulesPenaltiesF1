@@ -13,11 +13,11 @@ public class Circuit : EntityBase, IAggregateRoot
    public float Laps { get; set; }
    public int YearFirstGP { get; set; }
    public int MillisecondsLapRecord { get; set; }
-   public int DriverLapRecord { get; set; }
+   public string DriverLapRecord { get; set; }
    public int YearLapRecord { get; set; }
 
 
-   public Circuit(Country country, string name, float length, float laps, int yearFirstGP, int millisecondsLapRecord, int driverLapRecord, int yearLapRecord)
+   public Circuit(Country country, string name, float length, float laps, int yearFirstGP, int millisecondsLapRecord, string driverLapRecord, int yearLapRecord)
    {
       Country = country;
       Name = name;
@@ -29,7 +29,7 @@ public class Circuit : EntityBase, IAggregateRoot
       YearLapRecord = yearLapRecord;
    }
    
-   public Circuit(int countryId, string name, float length, float laps, int yearFirstGP, int millisecondsLapRecord, int driverLapRecord, int yearLapRecord)
+   public Circuit(int countryId, string name, float length, float laps, int yearFirstGP, int millisecondsLapRecord, string driverLapRecord, int yearLapRecord)
    {
       CountryId = countryId;
       Name = name;
