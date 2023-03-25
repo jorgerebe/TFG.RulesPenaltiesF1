@@ -8,6 +8,7 @@ public class CircuitViewModel
    public int Id { get; set; }
 
    [Required]
+   [DisplayName("Country")]
    public int CountryId { get; set; }
 
    public CountryViewModel Country { get; set; } = new();
@@ -23,21 +24,21 @@ public class CircuitViewModel
    [Range(1, 1000)]
    public float Laps { get; set; }
 
-   [Required]
-   [Range(1900, 3000)]
    [DisplayName("Race Distance")]
    public float RaceDistance { get; set; }
 
    [Required]
+   [Range(1900, 3000)]
    [DisplayName("Year First GP")]
    public int YearFirstGP { get; set; }
+
+
 
    [Required]
    [Range(1, 600000)]
    public int MillisecondsLapRecord { get; set; }
 
    [Required]
-   [Range(0, 100)]
    public string DriverLapRecord { get; set; } = string.Empty;
 
    [Required]

@@ -9,6 +9,10 @@ public class CircuitConfiguration : IEntityTypeConfiguration<Circuit>
    {
       builder.HasKey(ci => ci.Id);
 
+      builder.HasOne(p => p.Country)
+         .WithMany()
+         .HasForeignKey(p => p.CountryId);
+
       builder.Property(p => p.Name)
           .HasMaxLength(100)
           .IsRequired();
@@ -30,5 +34,8 @@ public class CircuitConfiguration : IEntityTypeConfiguration<Circuit>
 
       builder.Property(p => p.YearLapRecord)
           .IsRequired();
+
+      builder.HasIndex(c => c.Name)
+         .IsUnique();
    }
 }

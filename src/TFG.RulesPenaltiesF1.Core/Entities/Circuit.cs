@@ -3,7 +3,7 @@
 namespace TFG.RulesPenaltiesF1.Core.Entities;
 public class Circuit : EntityBase, IAggregateRoot
 {
-   public Country Country { get; set; } = new Country("");
+   public Country? Country { get; set; } = null;
    public int CountryId { get; set; }
 
    public string Name { get; set; }

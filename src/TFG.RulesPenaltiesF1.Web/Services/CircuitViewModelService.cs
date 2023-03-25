@@ -74,7 +74,7 @@ public class CircuitViewModelService : ICircuitViewModelService
       return new CircuitViewModel()
       {
          Id = circuit.Id,
-         Country = new CountryViewModel() { Id = circuit.Country.Id, Name = circuit.Country.Name },
+         Country = new CountryViewModel() { Id = circuit.Country!.Id, Name = circuit.Country.Name },
          Name = circuit.Name,
          Length = circuit.Length,
          Laps = circuit.Laps,
@@ -89,7 +89,15 @@ public class CircuitViewModelService : ICircuitViewModelService
 
    public Circuit? MapViewModelToEntity(CircuitViewModel circuit)
    {
-      throw new NotImplementedException();
+      if(circuit is null)
+      {
+         return null;
+      }
+
+      Circuit circuitEntity = new Circuit(circuit.CountryId, circuit.Name, circuit.Length,
+         circuit.Laps, circuit.YearFirstGP, circuit.MillisecondsLapRecord, circuit.DriverLapRecord, circuit.YearFirstGP);
+
+      return circuitEntity;
    }
 
 }

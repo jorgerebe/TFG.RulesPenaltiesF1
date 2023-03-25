@@ -61,8 +61,11 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
             if (ModelState.IsValid)
             {
                 var circuitEntity = _viewModelService.MapViewModelToEntity(circuit!);
-                await _service.CreateCircuitAsync(circuitEntity!);
-                return RedirectToAction(nameof(Index));
+                if(circuitEntity is not null)
+                {
+                     await _service.CreateCircuitAsync(circuitEntity!);
+                     return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["CountryId"] = new SelectList(await _viewModelService.GetAllCountries(), "Id", "Name", circuit.CountryId);
             return View(new CircuitViewModel());
