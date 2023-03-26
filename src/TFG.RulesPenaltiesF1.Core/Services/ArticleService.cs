@@ -1,5 +1,5 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Core.Interfaces;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 
 namespace TFG.RulesPenaltiesF1.Core.Services;

@@ -65,9 +65,9 @@ public class RegulationsController : Controller
    {
          if (ModelState.IsValid)
          {
-            bool pepe = await _regulationServiceViewModel.ExistsRegulationWithName(regulation.Name);
+            bool exists = await _regulationServiceViewModel.ExistsRegulationWithName(regulation.Name);
 
-            if (pepe)
+            if (exists)
             {
                ModelState.AddModelError("Name", "A regulation with name '" + regulation.Name + "' already exists");
 
