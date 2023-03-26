@@ -22,7 +22,7 @@ public class CircuitViewModel
 
    [Required]
    [Range(1, 1000)]
-   public float Laps { get; set; }
+   public int Laps { get; set; }
 
    [DisplayName("Race Distance")]
    public float RaceDistance { get; set; }
