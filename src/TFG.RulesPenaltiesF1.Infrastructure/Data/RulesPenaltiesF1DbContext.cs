@@ -31,6 +31,7 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<Regulation> Regulation => Set<Regulation>();
    public DbSet<Country> Country => Set<Country>();
    public DbSet<Circuit> Circuit => Set<Circuit>();
+   public DbSet<Competitor> Competitor => Set<Competitor>();
 
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
