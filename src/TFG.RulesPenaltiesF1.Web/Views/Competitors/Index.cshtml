@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TFG.RulesPenaltiesF1.Core.Entities.Competitor>
+﻿@model IEnumerable<CompetitorViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -20,7 +20,7 @@
                 @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TeamPrincipal)
+                @Html.DisplayNameFor(model => model.TeamPrincipalName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PowerUnit)
@@ -38,7 +38,7 @@
                 @Html.DisplayFor(modelItem => item.Location)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TeamPrincipal.Id)
+                @Html.DisplayFor(modelItem => item.TeamPrincipalName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PowerUnit)

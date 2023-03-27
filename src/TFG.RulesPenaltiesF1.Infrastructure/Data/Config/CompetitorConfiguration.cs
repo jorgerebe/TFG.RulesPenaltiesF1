@@ -12,10 +12,11 @@ public class CompetitorConfiguration : IEntityTypeConfiguration<Competitor>
    {
       builder.HasKey(c => c.Id);
 
-      builder.HasOne(c => c.TeamPrincipal)
+      builder.HasOne<ApplicationUser>()
                    .WithOne()
                    .HasForeignKey<Competitor>(c => c.TeamPrincipalID)
-                   .OnDelete(DeleteBehavior.Restrict);
+                   .OnDelete(DeleteBehavior.Restrict)
+                   .IsRequired(false);
 
       builder.Property(c => c.Name)
              .IsRequired()
@@ -28,5 +29,8 @@ public class CompetitorConfiguration : IEntityTypeConfiguration<Competitor>
       builder.Property(c => c.PowerUnit)
              .IsRequired()
              .HasMaxLength(100);
+
+      builder.HasIndex(c => c.Name)
+         .IsUnique();
    }
 }

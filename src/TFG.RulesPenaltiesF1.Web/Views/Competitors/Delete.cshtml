@@ -1,4 +1,4 @@
-﻿@model TFG.RulesPenaltiesF1.Core.Entities.Competitor
+﻿@model CompetitorViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -25,11 +25,8 @@
             @Html.DisplayFor(model => model.Location)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TeamPrincipal)
+            @Html.DisplayNameFor(model => model.TeamPrincipalName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TeamPrincipal.Id)
-        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PowerUnit)
         </dt>

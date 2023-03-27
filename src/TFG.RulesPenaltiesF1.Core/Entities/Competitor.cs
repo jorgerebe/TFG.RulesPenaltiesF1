@@ -1,17 +1,16 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities.Users;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
-using Microsoft.AspNetCore.Identity;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities;
 public class Competitor : EntityBase, IAggregateRoot
 {
    public string Name { get; set; }
    public string Location { get; set; }
-   public IdentityUser? TeamPrincipal { get; set; }
+   public User? TeamPrincipal { get; set; }
    public string? TeamPrincipalID { get; set; }
    public string PowerUnit { get; set; }
 
-   public Competitor(string name, string location, IdentityUser teamPrincipal, string powerUnit)
+   public Competitor(string name, string location, User teamPrincipal, string powerUnit)
    {
       Name = name;
       Location = location;

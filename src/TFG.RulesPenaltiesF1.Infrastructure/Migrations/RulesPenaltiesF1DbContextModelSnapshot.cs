@@ -324,6 +324,9 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.HasIndex("TeamPrincipalID")
                         .IsUnique()
                         .HasFilter("[TeamPrincipalID] IS NOT NULL");
@@ -632,12 +635,10 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Competitor", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "TeamPrincipal")
+                    b.HasOne("TFG.RulesPenaltiesF1.Infrastructure.Identity.ApplicationUser", null)
                         .WithOne()
                         .HasForeignKey("TFG.RulesPenaltiesF1.Core.Entities.Competitor", "TeamPrincipalID")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("TeamPrincipal");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", b =>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Build.Framework;
+﻿using System.ComponentModel;
+using Microsoft.Build.Framework;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -13,6 +14,7 @@ public class CompetitorViewModel
    public string Location { get; set; } = string.Empty;
 
    [Required]
+   [DisplayName("Team Principal")]
    public string TeamPrincipalId { get; set; } = string.Empty;
 
    public string TeamPrincipalName { get; set; } = string.Empty;

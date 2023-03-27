@@ -1,42 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
+using TFG.RulesPenaltiesF1.Web.Interfaces;
+using TFG.RulesPenaltiesF1.Web.ViewModels;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers
 {
-    public class CompetitorsController : Controller
+   public class CompetitorsController : Controller
     {
-        private readonly RulesPenaltiesF1DbContext _context;
+        private readonly ICompetitorViewModelService _viewModelService;
+        private readonly ICompetitorService _service;
 
-        public CompetitorsController(RulesPenaltiesF1DbContext context)
+        public CompetitorsController(ICompetitorViewModelService viewModelService, ICompetitorService service)
         {
-            _context = context;
+            _viewModelService = viewModelService;
+            _service = service;
         }
 
         // GET: Competitors
         public async Task<IActionResult> Index()
         {
-            var rulesPenaltiesF1DbContext = _context.Competitor.Include(c => c.TeamPrincipal);
-            return View(await rulesPenaltiesF1DbContext.ToListAsync());
+            var competitors = await _viewModelService.GetAllCompetitors();
+            return View(competitors);
         }
 
         // GET: Competitors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Competitor == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var competitor = await _context.Competitor
-                .Include(c => c.TeamPrincipal)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var competitor = await _viewModelService.GetByIdAsync((int)id);
+
             if (competitor == null)
             {
                 return NotFound();
@@ -46,9 +45,9 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         }
 
         // GET: Competitors/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TeamPrincipalID"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["TeamPrincipalID"] = new SelectList(await _viewModelService.GetAllTeamPrincipals(), "Id", "FullName");
             return View();
         }
 
@@ -57,19 +56,22 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Location,TeamPrincipalID,PowerUnit,Id")] Competitor competitor)
+        public async Task<IActionResult> Create([Bind("Name,Location,TeamPrincipalId,PowerUnit,Id")] CompetitorViewModel competitor)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(competitor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var competitorEntity = _viewModelService.MapViewModelToEntity(competitor);
+                if(competitorEntity is not null)
+                {
+                     await _service.CreateCompetitorAsync(competitorEntity);
+                     return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["TeamPrincipalID"] = new SelectList(_context.Users, "Id", "Id", competitor.TeamPrincipalID);
+            ViewData["TeamPrincipalID"] = new SelectList(await _viewModelService.GetAllTeamPrincipals(), "Id", "FullName");
             return View(competitor);
         }
 
-        // GET: Competitors/Edit/5
+        /*// GET: Competitors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Competitor == null)
@@ -163,6 +165,6 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         private bool CompetitorExists(int id)
         {
           return (_context.Competitor?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        }*/
     }
 }

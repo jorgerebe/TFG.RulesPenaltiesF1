@@ -33,6 +33,12 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Competitor_Name",
+                table: "Competitor",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Competitor_TeamPrincipalID",
                 table: "Competitor",
                 column: "TeamPrincipalID",
