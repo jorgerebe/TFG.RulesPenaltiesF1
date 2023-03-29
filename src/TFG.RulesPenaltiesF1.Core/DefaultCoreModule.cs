@@ -13,6 +13,12 @@ namespace TFG.RulesPenaltiesF1.Core
 
          builder.RegisterType<RegulationService>()
             .As<IRegulationService>().InstancePerLifetimeScope();
+
+         builder.RegisterType<CircuitService>()
+            .As<ICircuitService>().InstancePerLifetimeScope();
+
+         builder.RegisterType<CompetitorService>()
+            .As<ICompetitorService>().InstancePerLifetimeScope();
       }
    }
 }

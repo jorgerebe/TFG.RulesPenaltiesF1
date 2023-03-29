@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Core.Interfaces;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
 public class ArticleRepository : EfRepository<Article>, IArticleRepository

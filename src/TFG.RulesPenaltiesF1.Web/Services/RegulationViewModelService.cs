@@ -1,5 +1,5 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
-using TFG.RulesPenaltiesF1.Core.Interfaces;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
 using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;

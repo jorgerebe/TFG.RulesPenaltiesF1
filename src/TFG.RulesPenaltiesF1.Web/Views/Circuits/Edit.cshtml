@@ -1,0 +1,70 @@
+﻿@model CircuitViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Circuit</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Length" class="control-label"></label>
+                <input asp-for="Length" class="form-control" />
+                <span asp-validation-for="Length" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Laps" class="control-label"></label>
+                <input asp-for="Laps" class="form-control" />
+                <span asp-validation-for="Laps" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="YearFirstGP" class="control-label"></label>
+                <input asp-for="YearFirstGP" class="form-control" />
+                <span asp-validation-for="YearFirstGP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MillisecondsLapRecord" class="control-label"></label>
+                <input asp-for="MillisecondsLapRecord" class="form-control" />
+                <span asp-validation-for="MillisecondsLapRecord" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DriverLapRecord" class="control-label"></label>
+                <input asp-for="DriverLapRecord" class="form-control" />
+                <span asp-validation-for="DriverLapRecord" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="YearLapRecord" class="control-label"></label>
+                <input asp-for="YearLapRecord" class="form-control" />
+                <span asp-validation-for="YearLapRecord" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

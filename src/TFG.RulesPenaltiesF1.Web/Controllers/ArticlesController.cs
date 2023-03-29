@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using Microsoft.AspNetCore.Mvc;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -41,6 +43,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
       }
 
       // GET: Articles/Create
+      [Authorize(Roles = "Steward")]
       public IActionResult Create()
       {
          return View();
@@ -51,6 +54,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
+      [Authorize(Roles = "Steward")]
       public async Task<IActionResult> Create(ArticleViewModel article)
       {
          try

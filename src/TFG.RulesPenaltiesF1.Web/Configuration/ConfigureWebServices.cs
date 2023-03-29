@@ -11,6 +11,8 @@ public static class ConfigureWebServices
       services.AddScoped<IArticleViewModelService, ArticleViewModelService>();
       services.AddScoped<IPenaltyViewModelService, PenaltyViewModelService>();
       services.AddScoped<IRegulationViewModelService, RegulationViewModelService>();
+      services.AddScoped<ICircuitViewModelService, CircuitViewModelService>();
+      //services.AddScoped<ICompetitorViewModelService, CompetitorViewModelService>();
 
       return services;
    }
