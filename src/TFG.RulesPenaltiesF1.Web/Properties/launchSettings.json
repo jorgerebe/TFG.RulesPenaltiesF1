@@ -48,11 +48,7 @@
       "publishAllPorts": true,
       "useSSL": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production",
-        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
-        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es",
-        "AZURE_PASSWORD": "***REMOVED***"
-
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/"
       }
     }
   },

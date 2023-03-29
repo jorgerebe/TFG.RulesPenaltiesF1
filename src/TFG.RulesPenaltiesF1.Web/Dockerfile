@@ -11,6 +11,7 @@ ENV ASPNETCORE_ENVIRONMENT="Production"
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["nuget.config", "."]
+COPY ["Directory.Packages.props", "."]
 COPY ["src/TFG.RulesPenaltiesF1.Web/TFG.RulesPenaltiesF1.Web.csproj", "src/TFG.RulesPenaltiesF1.Web/"]
 COPY ["src/TFG.RulesPenaltiesF1.Infrastructure/TFG.RulesPenaltiesF1.Infrastructure.csproj", "src/TFG.RulesPenaltiesF1.Infrastructure/"]
 COPY ["src/TFG.RulesPenaltiesF1.Core/TFG.RulesPenaltiesF1.Core.csproj", "src/TFG.RulesPenaltiesF1.Core/"]
