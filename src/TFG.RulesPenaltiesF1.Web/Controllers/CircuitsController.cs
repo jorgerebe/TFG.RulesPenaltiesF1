@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -45,6 +44,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         }
 
         // GET: Circuits/Create
+        [Authorize(Roles ="Steward")]
         public async Task<IActionResult> Create()
         {
             ViewData["CountryId"] = new SelectList(await _viewModelService.GetAllCountries(), "Id", "Name");
@@ -56,6 +56,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Steward")]
         public async Task<IActionResult> Create([Bind("CountryId,Name,Length,Laps,YearFirstGP,MinutesLapRecord,SecondsLapRecord,DriverLapRecord,YearLapRecord,Id")] CircuitViewModel circuit)
         {
             if (ModelState.IsValid)

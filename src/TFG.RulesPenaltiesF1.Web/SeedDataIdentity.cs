@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities.Users;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 
@@ -18,10 +17,11 @@ public static class SeedDataIdentity
          }
       }
 
-      if (await userManager.FindByEmailAsync("admin@example.com") == null)
+      if (await userManager.FindByEmailAsync("steward@steward.com") == null)
       {
          ApplicationUser user = new ApplicationUser
          {
+            FullName = "Nish Shetty",
             UserName = "steward@steward.com",
             Email = "steward@steward.com"
          };
@@ -31,6 +31,23 @@ public static class SeedDataIdentity
          if (result.Succeeded)
          {
             await userManager.AddToRoleAsync(user, "Steward");
+         }
+      }
+
+      if (await userManager.FindByEmailAsync("horner@teamprincipal.com") == null)
+      {
+         ApplicationUser user = new ApplicationUser
+         {
+            FullName = "Christian Horner",
+            UserName = "horner@teamprincipal.com",
+            Email = "horner@teamprincipal.com"
+         };
+
+         IdentityResult result = await userManager.CreateAsync(user, "Horner.");
+
+         if (result.Succeeded)
+         {
+            await userManager.AddToRoleAsync(user, "TeamPrincipal");
          }
       }
    }
