@@ -276,6 +276,11 @@ namespace TFG.RulesPenaltiesF1.Web
             dbContext.Remove(item);
          }
 
+         foreach (var item in dbContext.Competitor)
+         {
+            dbContext.Remove(item);
+         }
+
          // Save changes
 
          dbContext.SaveChanges();

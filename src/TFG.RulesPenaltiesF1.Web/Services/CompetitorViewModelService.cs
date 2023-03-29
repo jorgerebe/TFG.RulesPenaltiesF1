@@ -57,15 +57,13 @@ public class CompetitorViewModelService : ICompetitorViewModelService
       return TeamPrincipals;
    }
 
-   public Task<CircuitViewModel?> GetByIdAsync(int id)
+
+   public Task<CompetitorViewModel?> GetByIdAsync(int id)
    {
       throw new NotImplementedException();
    }
 
-   Task<CompetitorViewModel?> ICompetitorViewModelService.GetByIdAsync(int id)
-   {
-      throw new NotImplementedException();
-   }
+
    public CompetitorViewModel? MapEntityToViewModel(Competitor competitor)
    {
       ArgumentNullException.ThrowIfNull(competitor);
