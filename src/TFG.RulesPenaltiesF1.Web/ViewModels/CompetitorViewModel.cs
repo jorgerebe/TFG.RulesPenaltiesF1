@@ -17,6 +17,7 @@ public class CompetitorViewModel
    [DisplayName("Team Principal")]
    public string TeamPrincipalId { get; set; } = string.Empty;
 
+   [DisplayName("Team Principal")]
    public string TeamPrincipalName { get; set; } = string.Empty;
 
    [Required]

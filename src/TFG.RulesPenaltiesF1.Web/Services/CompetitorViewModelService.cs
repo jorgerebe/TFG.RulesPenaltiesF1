@@ -1,23 +1,17 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Users;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
-using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
 namespace TFG.RulesPenaltiesF1.Web.Services;
 
 public class CompetitorViewModelService : ICompetitorViewModelService
 {
-   private readonly UserManager<ApplicationUser> _userManager;
-   private readonly RoleManager<IdentityRole> _roleManager;
-   private readonly IRepository<Competitor> _repository;
-   public CompetitorViewModelService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IRepository<Competitor> repository)
+
+   private readonly ICompetitorRepository _repository;
+   public CompetitorViewModelService(ICompetitorRepository repository)
    {
-      _userManager = userManager;
-      _roleManager = roleManager;
       _repository = repository;
    }
 
@@ -38,34 +32,28 @@ public class CompetitorViewModelService : ICompetitorViewModelService
 
    public async Task<List<IUser>> GetAllTeamPrincipals()
    {
-      List<IUser> TeamPrincipals = new();
+      List<IUser> teamPrincipals = new();
+      teamPrincipals = await _repository.GetTeamPrincipals();
 
-      var role = await _roleManager.FindByNameAsync(UserRole.TeamPrincipal.ToString());
-      if (role == null)
+      return teamPrincipals;
+   }
+
+
+   public async Task<CompetitorViewModel?> GetByIdAsync(int id)
+   {
+      var competitor = await _repository.GetCompetitorById(id);
+
+      if(competitor is null)
       {
-         // handle role not found
-         return TeamPrincipals;
+         return null;
       }
 
-      var users = await _userManager.GetUsersInRoleAsync(role.Name!);
+      CompetitorViewModel competitorViewModel = MapEntityToViewModel(competitor)!;
 
-      foreach (var user in users)
-      {
-         TeamPrincipals.Add(user);
-      }
-
-      return TeamPrincipals;
+      return competitorViewModel;
    }
 
-   public Task<CircuitViewModel?> GetByIdAsync(int id)
-   {
-      throw new NotImplementedException();
-   }
 
-   Task<CompetitorViewModel?> ICompetitorViewModelService.GetByIdAsync(int id)
-   {
-      throw new NotImplementedException();
-   }
    public CompetitorViewModel? MapEntityToViewModel(Competitor competitor)
    {
       ArgumentNullException.ThrowIfNull(competitor);
@@ -89,5 +77,10 @@ public class CompetitorViewModelService : ICompetitorViewModelService
       Competitor competitorEntity = new Competitor(competitor.Name, competitor.Location, competitor.TeamPrincipalId!, competitor.PowerUnit);
 
       return competitorEntity;
+   }
+
+   public async Task<bool> ExistsCompetitorWithName(string name)
+   {
+      return await _repository.ExistsCompetitorByName(name);
    }
 }

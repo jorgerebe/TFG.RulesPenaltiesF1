@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
@@ -45,6 +46,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         }
 
         // GET: Competitors/Create
+        [Authorize(Roles ="Steward")]
         public async Task<IActionResult> Create()
         {
             ViewData["TeamPrincipalID"] = new SelectList(await _viewModelService.GetAllTeamPrincipals(), "Id", "FullName");
@@ -56,10 +58,20 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Steward")]
         public async Task<IActionResult> Create([Bind("Name,Location,TeamPrincipalId,PowerUnit,Id")] CompetitorViewModel competitor)
         {
             if (ModelState.IsValid)
             {
+                bool exists = await _viewModelService.ExistsCompetitorWithName(competitor.Name);
+
+               if (exists)
+               {
+                    ModelState.AddModelError("Name", "A regulation with name '" + competitor.Name + "' already exists");
+                    ViewData["TeamPrincipalID"] = new SelectList(await _viewModelService.GetAllTeamPrincipals(), "Id", "FullName");
+                    return View(competitor);
+               }
+
                 var competitorEntity = _viewModelService.MapViewModelToEntity(competitor);
                 if(competitorEntity is not null)
                 {
