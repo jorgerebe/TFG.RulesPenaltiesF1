@@ -88,6 +88,11 @@ public class DefaultInfrastructureModule : Module
          .As<ICircuitRepository>()
          .InstancePerLifetimeScope();
 
+      builder
+         .RegisterType<CompetitorRepository>()
+         .As<ICompetitorRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();

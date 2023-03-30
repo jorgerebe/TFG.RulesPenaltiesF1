@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
+using Microsoft.AspNetCore.Identity;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+using Autofac.Core;
 
 namespace TFG.RulesPenaltiesF1.Web
 {
@@ -217,11 +220,14 @@ namespace TFG.RulesPenaltiesF1.Web
          new(countries[8],"Albert Park Circuit",5.278f,58,1996,80260,"Charles Leclerc", 2022)
       };
 
+      /*Competitors in its method*/
+      
 
-      public static void Initialize(IServiceProvider serviceProvider)
+      public async static Task Initialize(IServiceProvider serviceProvider)
       {
          using var dbContext = new RulesPenaltiesF1DbContext(
              serviceProvider.GetRequiredService<DbContextOptions<RulesPenaltiesF1DbContext>>(), null);
+         using var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
          // Check if DB has already been seeded before populating
 
          if (dbContext.Article.Any())
@@ -229,9 +235,9 @@ namespace TFG.RulesPenaltiesF1.Web
             return;
          }
 
-         PopulateTestData(dbContext);
+         await PopulateTestData(dbContext, userManager);
       }
-      public static void PopulateTestData(RulesPenaltiesF1DbContext dbContext)
+      public async static Task PopulateTestData(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
       {
 
          /*Remove every item from then DB*/
@@ -300,7 +306,8 @@ namespace TFG.RulesPenaltiesF1.Web
          PopulateCountries(dbContext);
          /*Circuits*/
          PopulateCircuits(dbContext);
-
+         /*Competitors*/
+         await PopulateCompetitors(dbContext, userManager);
          // Save again
 
          dbContext.SaveChanges();
@@ -367,6 +374,19 @@ namespace TFG.RulesPenaltiesF1.Web
          {
             Console.WriteLine(circuit.Id + " - " + circuit.Name);
             dbContext.Circuit.Add(circuit);
+         }
+      }
+
+      public static async Task PopulateCompetitors(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
+      {
+         List<Competitor> competitors = new()
+         {
+            new("McLaren", "Woking, United Kingdom", (await userManager.FindByEmailAsync("stella@teamprincipal.com"))!.Id, "Mercedes")
+         };
+
+         foreach(var competitor in competitors)
+         {
+            dbContext.Competitor.Add(competitor);
          }
       }
    }

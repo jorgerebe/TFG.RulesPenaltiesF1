@@ -69,7 +69,7 @@ public class RegulationsController : Controller
 
             if (exists)
             {
-               ModelState.AddModelError("Name", "A regulation with name '" + regulation.Name + "' already exists");
+               ModelState.AddModelError("Name", "A competitor with name '" + regulation.Name + "' already exists");
 
                await PopulateListsArticlesAndPenalties();
                return View(regulation);

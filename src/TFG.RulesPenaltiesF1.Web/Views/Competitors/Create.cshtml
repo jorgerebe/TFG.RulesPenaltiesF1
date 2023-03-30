@@ -1,7 +1,7 @@
 ﻿@model CompetitorViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Competitor";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -32,7 +32,7 @@
                 <input asp-for="PowerUnit" class="form-control" />
                 <span asp-validation-for="PowerUnit" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -40,6 +40,7 @@
 </div>
 
 <div>
+    <br/>
     <a asp-action="Index">Back to List</a>
 </div>
 
