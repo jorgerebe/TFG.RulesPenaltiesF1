@@ -221,7 +221,19 @@ namespace TFG.RulesPenaltiesF1.Web
       };
 
       /*Competitors in its method*/
-      
+
+      public static List<Competitor> competitors = new();
+
+      /*Competitions*/
+      public static List<Competition> competitions = new()
+      {
+         new(circuits[0], "Bahrain Grand Prix", false, 10),
+         new(circuits[1], "Australian Grand Prix", true, 12)
+      };
+
+      /*Seasons in its method*/
+
+
 
       public async static Task Initialize(IServiceProvider serviceProvider)
       {
@@ -287,6 +299,11 @@ namespace TFG.RulesPenaltiesF1.Web
             dbContext.Remove(item);
          }
 
+         foreach (var item in dbContext.Season)
+         {
+            dbContext.Remove(item);
+         }
+
          // Save changes
 
          dbContext.SaveChanges();
@@ -308,8 +325,10 @@ namespace TFG.RulesPenaltiesF1.Web
          PopulateCircuits(dbContext);
          /*Competitors*/
          await PopulateCompetitors(dbContext, userManager);
-         // Save again
+         /*Seasons*/
+         PopulateSeasons(dbContext);
 
+         // Save again
          dbContext.SaveChanges();
       }
 
@@ -379,15 +398,21 @@ namespace TFG.RulesPenaltiesF1.Web
 
       public static async Task PopulateCompetitors(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
       {
-         List<Competitor> competitors = new()
-         {
-            new("McLaren", "Woking, United Kingdom", (await userManager.FindByEmailAsync("stella@teamprincipal.com"))!.Id, "Mercedes")
-         };
+         competitors.Add(new Competitor("McLaren", "Woking, United Kingdom", (await userManager.FindByEmailAsync("stella@teamprincipal.com"))!.Id, "Mercedes"));
+         competitors.Add(new Competitor("Red Bull Racing", "Milton Keynes, United Kingdom", (await userManager.FindByEmailAsync("horner@teamprincipal.com"))!.Id, "Mercedes"));
+         competitors.Add(new Competitor("Scuderia Ferrari", "Maranello, Italy", (await userManager.FindByEmailAsync("vasseur@teamprincipal.com"))!.Id, "Mercedes"));
 
          foreach(var competitor in competitors)
          {
             dbContext.Competitor.Add(competitor);
          }
+      }
+
+      public static void PopulateSeasons(RulesPenaltiesF1DbContext dbContext)
+      {
+         Season season1 = new Season(2023, competitors, competitions, regulation);
+
+         dbContext.Season.Add(season1);
       }
    }
 }
