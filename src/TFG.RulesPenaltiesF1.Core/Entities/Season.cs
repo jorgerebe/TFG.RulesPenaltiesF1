@@ -9,9 +9,11 @@ public class Season : EntityBase, IAggregateRoot
 
    private readonly List<Competitor> _competitors = new();
    public IReadOnlyCollection<Competitor> Competitors => _competitors.AsReadOnly();
+   public List<int> CompetitorsId { get; set;} = new();
 
    private readonly List<Competition> _competitions = new();
    public IReadOnlyCollection<Competition> Competitions => _competitions.AsReadOnly();
+   public List<int> CompetitionsId { get; set; } = new();
 
    public int RegulationId { get; set; }
    public Regulation? Regulation { get; set; }
@@ -42,7 +44,7 @@ public class Season : EntityBase, IAggregateRoot
       RegulationId = Regulation.Id;
    }
 
-   public Season(int year, List<Competitor> competitors, List<Competition> competitions, int regulationId)
+   public Season(int year, List<int> competitors, List<int> competitions, int regulationId)
    {
       Year = year;
 
@@ -50,13 +52,13 @@ public class Season : EntityBase, IAggregateRoot
       {
          throw new ArgumentException("There must be at least 3 competitors");
       }
-      _competitors = competitors;
+		CompetitorsId = competitors;
 
       if (competitions is null || competitions.Count == 0)
       {
          throw new ArgumentException("There must be at least 2 competitions");
       }
-      _competitions = competitions;
+		CompetitionsId = competitions;
 
       RegulationId = regulationId;
    }

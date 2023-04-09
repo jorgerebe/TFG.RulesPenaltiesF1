@@ -11,7 +11,10 @@ public class SeasonViewModel
 
    [Required]
    [MinLength(3)]
-   public List<CompetitorViewModel> Competitors { get; set; } = new();   
+   public List<int> Competitors { get; set; } = new();
+
+   public List<CompetitorViewModel> CompetitorsContent { get; set; } = new();
+
 
    [Required]
    [MinLength(2)]

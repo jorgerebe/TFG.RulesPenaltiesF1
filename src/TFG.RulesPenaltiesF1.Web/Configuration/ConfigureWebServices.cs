@@ -13,6 +13,7 @@ public static class ConfigureWebServices
       services.AddScoped<IRegulationViewModelService, RegulationViewModelService>();
       services.AddScoped<ICircuitViewModelService, CircuitViewModelService>();
       services.AddScoped<ICompetitorViewModelService, CompetitorViewModelService>();
+      services.AddScoped<ISeasonViewModelService, SeasonViewModelService>();
 
       return services;
    }

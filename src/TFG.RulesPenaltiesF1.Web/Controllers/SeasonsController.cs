@@ -1,38 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
+using TFG.RulesPenaltiesF1.Web.Interfaces;
+using TFG.RulesPenaltiesF1.Web.ViewModels;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers
 {
    public class SeasonsController : Controller
     {
-        private readonly RulesPenaltiesF1DbContext _context;
+        private readonly ICircuitViewModelService _circuitViewModelService;
+        private readonly ISeasonViewModelService _seasonViewModelService;
+        private readonly IRegulationViewModelService _regulationViewModelService;
+        private readonly ICompetitorViewModelService _competitorViewModelService;
 
-        public SeasonsController(RulesPenaltiesF1DbContext context)
+        public SeasonsController(ICircuitViewModelService circuitViewModelService, ISeasonViewModelService seasonViewModelService,
+           IRegulationViewModelService regulationViewModelService, ICompetitorViewModelService competitorViewModelService)
         {
-            _context = context;
+            _circuitViewModelService = circuitViewModelService;
+            _seasonViewModelService = seasonViewModelService;
+            _regulationViewModelService = regulationViewModelService;
+            _competitorViewModelService = competitorViewModelService;
         }
 
         // GET: Seasons
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var rulesPenaltiesF1DbContext = _context.Season.Include(s => s.Regulation);
-            return View(await rulesPenaltiesF1DbContext.ToListAsync());
+            return View(new List<SeasonViewModel>());
         }
 
         // GET: Seasons/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Season == null)
-            {
-                return NotFound();
-            }
 
-            var season = await _context.Season
-                .Include(s => s.Regulation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var season = await _seasonViewModelService.GetByIdAsync(id);
+
             if (season == null)
             {
                 return NotFound();
@@ -42,10 +43,21 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         }
 
         // GET: Seasons/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["RegulationId"] = new SelectList(_context.Regulation, "Id", "Name");
-            return View();
+            SeasonViewModel season = new SeasonViewModel();
+            List<CompetitionViewModel> competitions = new()
+            {
+               new CompetitionViewModel(),
+               new CompetitionViewModel(),
+               new CompetitionViewModel()
+            };
+            season.Competitions = competitions;
+
+            ViewData["RegulationId"] = new SelectList(await _regulationViewModelService.GetRegulationsAsync(), "Id", "Name");
+            ViewData["Circuits"] = await _circuitViewModelService.GetAllCircuits();
+            ViewData["Competitors"] = (await _competitorViewModelService.GetAllCompetitors());
+            return View(season);
         }
 
         // POST: Seasons/Create
@@ -53,112 +65,33 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Year,RegulationId,Id")] Season season)
+        public async Task<IActionResult> Create(SeasonViewModel season)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(season);
+                List<int> weeks = new();
+                List<string> name = new();
+					 int n = 0;
+                foreach(var competition in season.Competitions)
+                {
+						if (weeks.Contains(competition.Week))
+                  {
+							ModelState.AddModelError("Week", "Two competitors can't happen in the same week'");
+						}
+						if (name.Contains(competition.Name))
+                  {
+							ModelState.AddModelError("Name", "Two competitions in the same season can't have the same name");
+						}
+						n++;
+                }
+                /*_context.Add(season);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));*/
             }
-            ViewData["RegulationId"] = new SelectList(_context.Regulation, "Id", "Name", season.RegulationId);
+            ViewData["RegulationId"] = new SelectList(await _regulationViewModelService.GetRegulationsAsync(), "Id", "Name");
+            ViewData["Circuits"] = new SelectList(await _circuitViewModelService.GetAllCircuits(), "Id", "Name");
+            ViewBag.Competitors = (await _competitorViewModelService.GetAllCompetitors()).AsEnumerable();
             return View(season);
         }
-
-        // GET: Seasons/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Season == null)
-            {
-                return NotFound();
-            }
-
-            var season = await _context.Season.FindAsync(id);
-            if (season == null)
-            {
-                return NotFound();
-            }
-            ViewData["RegulationId"] = new SelectList(_context.Regulation, "Id", "Name", season.RegulationId);
-            return View(season);
-        }
-
-        // POST: Seasons/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Year,RegulationId,Id")] Season season)
-        {
-            if (id != season.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(season);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SeasonExists(season.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["RegulationId"] = new SelectList(_context.Regulation, "Id", "Name", season.RegulationId);
-            return View(season);
-        }
-
-        // GET: Seasons/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Season == null)
-            {
-                return NotFound();
-            }
-
-            var season = await _context.Season
-                .Include(s => s.Regulation)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (season == null)
-            {
-                return NotFound();
-            }
-
-            return View(season);
-        }
-
-        // POST: Seasons/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Season == null)
-            {
-                return Problem("Entity set 'RulesPenaltiesF1DbContext.Season'  is null.");
-            }
-            var season = await _context.Season.FindAsync(id);
-            if (season != null)
-            {
-                _context.Season.Remove(season);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool SeasonExists(int id)
-        {
-          return (_context.Season?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-    }
+   }
 }
