@@ -8,8 +8,8 @@ using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Autofac.Core;
 
 namespace TFG.RulesPenaltiesF1.Web
-{
-   public static class SeedData
+	{
+	public static class SeedData
    {
       /*ARTICLES*/
       public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.\nHowever, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");

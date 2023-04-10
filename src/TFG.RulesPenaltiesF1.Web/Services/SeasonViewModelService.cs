@@ -1,5 +1,4 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -76,7 +75,7 @@ public class SeasonViewModelService : ISeasonViewModelService
 			competitions.Add(new Competition(competition.CircuitId, competition.Name, competition.IsSprint, competition.Week));
 		}
 
-		Season seasonEntity = new(season.Year, competitors, competitions, new Regulation(season.RegulationId));
+		Season seasonEntity = new(season.Year, competitors, competitions, season.RegulationId);
 
 		return seasonEntity;
 	}

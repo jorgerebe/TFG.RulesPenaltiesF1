@@ -34,4 +34,17 @@ public class SeasonRepository : EfRepository<Season>, ISeasonRepository
 
 		return season;
 	}
+
+	public async Task<Season> AddSeason(Season season)
+	{
+		_dbContext.Add(season);
+
+		foreach(var competitor in season.Competitors)
+		{
+			_dbContext.Competitor.Attach(competitor);
+		}
+
+		await _dbContext.SaveChangesAsync();
+		return season;
+	}
 }

@@ -21,5 +21,6 @@ public class CompetitionViewModel
    public bool IsSprint { get; set; }
 
    [Required]
+	[Range(1, 53, ErrorMessage ="A year can't have less than 1 week or more than 53")]
    public int Week { get; set; }
 }

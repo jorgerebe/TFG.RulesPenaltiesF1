@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
@@ -6,7 +7,7 @@ using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers
-{
+	{
 	public class SeasonsController : Controller
 	{
 		private readonly ICircuitViewModelService _circuitViewModelService;
@@ -20,13 +21,13 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 		public SeasonsController(ICircuitViewModelService circuitViewModelService, ISeasonViewModelService seasonViewModelService,
 			ISeasonService seasonService,
 			IRegulationViewModelService regulationViewModelService, ICompetitorViewModelService competitorViewModelService)
-			{
+		{
 			_circuitViewModelService = circuitViewModelService;
 			_seasonViewModelService = seasonViewModelService;
 			_seasonService = seasonService;
 			_regulationViewModelService = regulationViewModelService;
 			_competitorViewModelService = competitorViewModelService;
-			}
+		}
 
 		// GET: Seasons
 		public async Task<IActionResult> Index()
@@ -49,12 +50,12 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 		}
 
 		// GET: Seasons/Create
+		[Authorize(Roles ="Steward")]
 		public async Task<IActionResult> Create()
 		{
 			SeasonViewModel season = new SeasonViewModel();
 			List<CompetitionViewModel> competitions = new()
 			{
-					new CompetitionViewModel(),
 					new CompetitionViewModel(),
 					new CompetitionViewModel()
 			};
@@ -72,6 +73,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles ="Steward")]
 		public async Task<IActionResult> Create([Bind("Year,Competitors,Competitions,RegulationId")] SeasonViewModel season)
 		{
 			if (ModelState.IsValid)
@@ -115,7 +117,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 			}
 			await PopulateListsArticlesAndPenalties();
 			return View(season);
-			}
+		}
 
 		private async Task PopulateListsArticlesAndPenalties()
 		{

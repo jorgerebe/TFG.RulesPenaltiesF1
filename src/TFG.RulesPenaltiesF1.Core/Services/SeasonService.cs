@@ -6,9 +6,9 @@ namespace TFG.RulesPenaltiesF1.Core.Services;
 
 public class SeasonService : ISeasonService
 {
-	private readonly IRepository<Season> _repository;
+	private readonly ISeasonRepository _repository;
 
-	public SeasonService(IRepository<Season> repository)
+	public SeasonService(ISeasonRepository repository)
 	{
 		_repository = repository;
 	}
@@ -17,6 +17,6 @@ public class SeasonService : ISeasonService
 	{
 		ArgumentNullException.ThrowIfNull(season);
 
-		await _repository.Add(season);
+		await _repository.AddSeason(season);
 	}
 }
