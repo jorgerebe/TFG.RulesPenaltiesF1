@@ -37,6 +37,7 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<Competitor> Competitor => Set<Competitor>();
    public DbSet<ApplicationUser> User => Set<ApplicationUser>();
 
+   public DbSet<Season> Season => Set<Season>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {

@@ -93,6 +93,11 @@ public class DefaultInfrastructureModule : Module
          .As<ICompetitorRepository>()
          .InstancePerLifetimeScope();
 
+      builder
+         .RegisterType<SeasonRepository>()
+         .As<ISeasonRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();
@@ -102,11 +107,11 @@ public class DefaultInfrastructureModule : Module
 
       var mediatrOpenTypes = new[]
       {
-   typeof(IRequestHandler<,>),
-   typeof(IRequestExceptionHandler<,,>),
-   typeof(IRequestExceptionAction<,>),
-   typeof(INotificationHandler<>),
- };
+			typeof(IRequestHandler<,>),
+			typeof(IRequestExceptionHandler<,,>),
+			typeof(IRequestExceptionAction<,>),
+			typeof(INotificationHandler<>),
+		};
 
       foreach (var mediatrOpenType in mediatrOpenTypes)
       {

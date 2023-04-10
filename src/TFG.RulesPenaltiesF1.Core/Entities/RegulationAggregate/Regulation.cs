@@ -4,7 +4,7 @@ using TFG.RulesPenaltiesF1.Core.Interfaces;
 namespace TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 public class Regulation : EntityBase, IAggregateRoot
 {
-   public string Name { get; set; }
+	public string Name { get; set; } = string.Empty;
 
    private readonly List<RegulationArticle> _articles = new();
    public IReadOnlyCollection<RegulationArticle> Articles => _articles.AsReadOnly();
@@ -12,7 +12,17 @@ public class Regulation : EntityBase, IAggregateRoot
    private readonly List<RegulationPenalty> _penalties = new();
    public IReadOnlyCollection<RegulationPenalty> Penalties => _penalties.AsReadOnly();
 
-   public Regulation(string name)
+	private Regulation()
+	{
+
+	}
+
+	public Regulation(int id)
+	{
+		Id = id;
+	}
+
+	public Regulation(string name)
    {
       Name = name;
    }

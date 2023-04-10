@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 {
     [DbContext(typeof(RulesPenaltiesF1DbContext))]
-    partial class RulesPenaltiesF1DbContextModelSnapshot : ModelSnapshot
+    [Migration("20230406181741_HU11_01_Seasons")]
+    partial class HU11_01_Seasons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,7 +243,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasIndex("SeasonId");
 
-                    b.ToTable("SeasonCompetitor", (string)null);
+                    b.ToTable("SeasonCompetitor");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Article", b =>
@@ -263,7 +266,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("Article", (string)null);
+                    b.ToTable("Article");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Circuit", b =>
@@ -308,7 +311,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Circuit", (string)null);
+                    b.ToTable("Circuit");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Competition", b =>
@@ -344,7 +347,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasIndex("Week", "SeasonId")
                         .IsUnique();
 
-                    b.ToTable("Competition", (string)null);
+                    b.ToTable("Competition");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Competitor", b =>
@@ -382,7 +385,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[TeamPrincipalID] IS NOT NULL");
 
-                    b.ToTable("Competitor", (string)null);
+                    b.ToTable("Competitor");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Country", b =>
@@ -403,7 +406,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Country", (string)null);
+                    b.ToTable("Country");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", b =>
@@ -425,7 +428,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasIndex("PenaltyTypeId");
 
-                    b.ToTable("Penalty", (string)null);
+                    b.ToTable("Penalty");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Penalty");
 
@@ -452,7 +455,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PenaltyType", (string)null);
+                    b.ToTable("PenaltyType");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.Regulation", b =>
@@ -472,7 +475,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Regulation", (string)null);
+                    b.ToTable("Regulation");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.RegulationArticle", b =>
@@ -488,7 +491,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasIndex("ArticleId", "RegulationId")
                         .IsUnique();
 
-                    b.ToTable("RegulationArticle", (string)null);
+                    b.ToTable("RegulationArticle");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.RegulationPenalty", b =>
@@ -504,7 +507,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasIndex("PenaltyId", "RegulationId")
                         .IsUnique();
 
-                    b.ToTable("RegulationPenalty", (string)null);
+                    b.ToTable("RegulationPenalty");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Season", b =>
@@ -528,7 +531,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasIndex("Year")
                         .IsUnique();
 
-                    b.ToTable("Season", (string)null);
+                    b.ToTable("Season");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Infrastructure.Identity.ApplicationUser", b =>
@@ -616,7 +619,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[Seconds] IS NOT NULL");
 
-                    b.ToTable("Penalty", null, t =>
+                    b.ToTable("Penalty", t =>
                         {
                             t.Property("Seconds")
                                 .HasColumnName("TimePenalty_Seconds");
