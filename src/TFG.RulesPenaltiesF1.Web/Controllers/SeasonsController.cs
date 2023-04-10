@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -8,38 +10,43 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 	public class SeasonsController : Controller
 	{
 		private readonly ICircuitViewModelService _circuitViewModelService;
+
 		private readonly ISeasonViewModelService _seasonViewModelService;
+		private readonly ISeasonService _seasonService;
+
 		private readonly IRegulationViewModelService _regulationViewModelService;
 		private readonly ICompetitorViewModelService _competitorViewModelService;
 
 		public SeasonsController(ICircuitViewModelService circuitViewModelService, ISeasonViewModelService seasonViewModelService,
+			ISeasonService seasonService,
 			IRegulationViewModelService regulationViewModelService, ICompetitorViewModelService competitorViewModelService)
 			{
 			_circuitViewModelService = circuitViewModelService;
 			_seasonViewModelService = seasonViewModelService;
+			_seasonService = seasonService;
 			_regulationViewModelService = regulationViewModelService;
 			_competitorViewModelService = competitorViewModelService;
 			}
 
 		// GET: Seasons
 		public async Task<IActionResult> Index()
-			{
+		{
 			return View(await _seasonViewModelService.GetSeasonsAsync());
-			}
+		}
 
 		// GET: Seasons/Details/5
 		public async Task<IActionResult> Details(int id)
-			{
+		{
 
 			var season = await _seasonViewModelService.GetByIdAsync(id);
 
 			if (season == null)
-				{
+			{
 				return NotFound();
-				}
+			}
 
 			return View(season);
-			}
+		}
 
 		// GET: Seasons/Create
 		public async Task<IActionResult> Create()
@@ -101,9 +108,10 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 
 					n++;
 				}
-				/*_context.Add(season);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));*/
+
+				Season seasonEntity = _seasonViewModelService.MapViewModelToEntity(season)!;
+				await _seasonService.CreateSeasonAsync(seasonEntity);
+				return RedirectToAction(nameof(Index));
 			}
 			await PopulateListsArticlesAndPenalties();
 			return View(season);

@@ -21,4 +21,17 @@ public class SeasonRepository : EfRepository<Season>, ISeasonRepository
 
 		return season;
 	}
+
+	public async Task<Season?> GetSeasonById(int id)
+	{
+		var season = await _dbContext.Set<Season>()
+			.Where(s => s.Id == id)
+			.Include(s => s.Regulation)
+			.Include(s => s.Competitions)
+				.ThenInclude(c => c.Circuit)
+			.Include(s => s.Competitors)
+			.FirstOrDefaultAsync();
+
+		return season;
+	}
 }

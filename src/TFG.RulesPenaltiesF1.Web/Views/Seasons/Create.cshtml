@@ -9,12 +9,9 @@
 
 <h4>Season</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            @Html.ValidationMessage("Pepe")
-            @Html.ValidationMessage("Week")
-            @Html.ValidationMessage("Name")
+<form asp-action="Create">
+    <div class="row">
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
@@ -78,16 +75,27 @@
                 </div>
                 <button type="button" onclick="addCompetition()" class="btn btn-primary mt-3" id="add-competition-btn">Add Competition</button>
             </div>
-            <div class="form-group mt-4">
-                <label asp-for="RegulationId" class="control-label"></label>
-                <select asp-for="RegulationId" class ="form-control" asp-items="ViewBag.RegulationId"></select>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+        <div class="form-group mt-4 align-items-center">
+            <div class="row">
+                <div class="col-md-3">
+                    <label asp-for="RegulationId" class="control-label"></label>
+                    <select asp-for="RegulationId" class ="form-control" asp-items="ViewBag.RegulationId"></select>
+                </div>
+                <div class="col-md-3">
+                    <a class="mt-2" id="regulationlink" href="/Regulations/Details/2" target="_blank">See regulation</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group mt-3">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+</form>
 
 <div>
     <br/>
@@ -101,6 +109,17 @@
 
         @{int nCompetitions = Model == null ? 0 : Model.Competitions.Count;}
         var n = @nCompetitions;
+
+        $('#RegulationId').on('change', onChangeRegulation);
+
+        onChangeRegulation();
+
+
+        function onChangeRegulation(){
+            console.log("onchange");
+            var selectedValue = $('#RegulationId').val();
+            $('#regulationlink').attr('href', '/Regulations/Details/' + selectedValue);
+        }
 
 
         function addCompetition() {
