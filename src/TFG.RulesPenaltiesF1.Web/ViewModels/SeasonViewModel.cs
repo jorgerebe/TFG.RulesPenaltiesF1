@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -21,9 +22,11 @@ public class SeasonViewModel
    public List<CompetitionViewModel> Competitions { get; set; } = new();
 
    [Required]
+	[DisplayName("Regulation")]
    public int RegulationId { get; set; } = new();
 
-   public RegulationViewModel Regulation { get; set; } = new();
+
+   public RegulationViewModel? Regulation { get; set; }
 
 
 }

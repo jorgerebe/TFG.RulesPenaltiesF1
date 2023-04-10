@@ -12,7 +12,7 @@ public class Competition : EntityBase
    public bool IsSprint { get; set; }
    public int Week { get; set; }
 
-   public Competition(Circuit circuit, string name, bool isSprint, int week)
+	public Competition(Circuit circuit, string name, bool isSprint, int week)
    {
       ArgumentNullException.ThrowIfNull(circuit, nameof(circuit));
       ArgumentException.ThrowIfNullOrEmpty(name, nameof(name));

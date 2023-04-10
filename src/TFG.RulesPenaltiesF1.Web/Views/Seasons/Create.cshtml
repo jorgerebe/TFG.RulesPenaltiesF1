@@ -12,6 +12,9 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            @Html.ValidationMessage("Pepe")
+            @Html.ValidationMessage("Week")
+            @Html.ValidationMessage("Name")
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
@@ -33,35 +36,35 @@
 			    @Html.ValidationMessageFor(m => m.Competitors, "", new { @class = "text-danger" })
 		    </div>
             <div class="form-group">
-                <h5><label class="control-label">Competitions</label></h5>
+                <h5><label class="control-label mt-4">Competitions</label></h5>
                 <div id="competitions" style="margin-left:20px">
                     @if(Model != null && Model.Competitions.Count > 0)
                     {
                         int n = 0;
                         foreach(var competition in Model.Competitions)
                         {
-                            <div class="competition">
+                            <div class="competition mt-3">
                                 <h6>Competition @(n+1)</h6>
                                 <div class="competition" style=margin-left:20px;>
-                                    <div class="form-group">
+                                    <div class="form-group mt-3">
                                         <label asp-for="@Model.Competitions[@n].Name" class="control-label"></label>
                                         <input type="text" asp-for="@Model.Competitions[n].Name" class="form-control">
 		                                <span asp-validation-for="@Model.Competitions[n].Name" class="text-danger"></span>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group mt-3">
                                         <label asp-for="@Model.Competitions[@n].CircuitId" class="control-label"></label>
                                         <select asp-for="@Model.Competitions[@n].CircuitId" class ="form-control" asp-items="@(new SelectList(ViewBag.Circuits, "Id", "Name"))"></select>
                                         <span asp-validation-for="@Model.Competitions[n].CircuitId" class="text-danger"></span>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group mt-3">
                                         <label asp-for="@Model.Competitions[@n].IsSprint" class="control-label"></label>
                                         <input class="form-check-input" type="checkbox" asp-for="@Model.Competitions[n].IsSprint" class="form-control">
 		                                <span asp-validation-for="@Model.Competitions[n].IsSprint" class="text-danger"></span>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group mt-3">
                                         <label asp-for="@Model.Competitions[@n].Week" class="control-label"></label>
                                         <input type="number" asp-for="@Model.Competitions[n].Week" class="form-control">
 		                                <span asp-validation-for="@Model.Competitions[n].Week" class="text-danger"></span>
@@ -73,13 +76,13 @@
                         }
                     }
                 </div>
-                <button type="button" onclick="addCompetition()" class="btn btn-primary" id="add-competition-btn">Add Competition</button>
+                <button type="button" onclick="addCompetition()" class="btn btn-primary mt-3" id="add-competition-btn">Add Competition</button>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-4">
                 <label asp-for="RegulationId" class="control-label"></label>
                 <select asp-for="RegulationId" class ="form-control" asp-items="ViewBag.RegulationId"></select>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -87,6 +90,7 @@
 </div>
 
 <div>
+    <br/>
     <a asp-action="Index">Back to List</a>
 </div>
 
@@ -105,16 +109,16 @@
 
             // Create a new competition form template using the current number of competitions
             var competitionFormTemplate = `
-            <div class="competition">
+            <div class="competition mt-3">
                 <h6>Competition ${n + 1}</h6>
                 <div class="competition" style="margin-left: 20px;">
-                    <div class="form-group">
-                        <label for="Competitions_${n}__Name" class="control-label">Competition Name</label>
+                    <div class="form-group mt-3">
+                        <label for="Competitions_${n}__Name" class="control-label">Name</label>
                         <input type="text" id="Competitions_${n}__Name" name="Competitions[${n}].Name" class="form-control">
                         <span class="text-danger" id="Competitions_${n}__Name-error" data-valmsg-for="Competitions[${n}].Name"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="Competitions_${n}__CircuitId" class="control-label">Circuit ID</label>
+                    <div class="form-group mt-3">
+                        <label for="Competitions_${n}__CircuitId" class="control-label">Circuit</label>
                         <select id="Competitions_${n}__CircuitId" name="Competitions[${n}].CircuitId" class="form-control">
                             @foreach (var circuit in ViewBag.Circuits)
                             {
@@ -123,12 +127,12 @@
                         </select>
                         <span class="text-danger" id="Competitions_${n}__CircuitId-error" data-valmsg-for="Competitions[${n}].CircuitId"></span>
                     </div>
-                    <div class="form-group">
-                        <label for="Competitions_${n}__IsSprint" class="control-label">Is Sprint</label>
+                    <div class="form-group mt-3">
+                        <label for="Competitions_${n}__IsSprint" class="control-label">Sprint Race</label>
                         <input type="checkbox" id="Competitions_${n}__IsSprint" name="Competitions[${n}].IsSprint" class="form-check-input">
                         <span class="text-danger" id="Competitions_${n}__IsSprint-error" data-valmsg-for="Competitions[${n}].IsSprint"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label for="Competitions_${n}__Week" class="control-label">Week</label>
                         <input type="number" id="Competitions_${n}__Week" name="Competitions[${n}].Week" class="form-control">
                         <span class="text-danger" id="Competitions_${n}__Week-error" data-valmsg-for="Competitions[${n}].Week"></span>

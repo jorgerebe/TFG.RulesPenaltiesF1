@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SeasonViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Seasons - Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,9 +16,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Year)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Regulation)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -27,9 +24,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Regulation!.Name)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>

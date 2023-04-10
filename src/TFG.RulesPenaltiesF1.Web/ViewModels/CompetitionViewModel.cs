@@ -14,7 +14,7 @@ public class CompetitionViewModel
    [DisplayName("Circuit")]
    public int CircuitId { get; set; }
 
-   public CircuitViewModel Circuit { get; set; } = new();
+   public CircuitViewModel? Circuit { get; set; }
 
    [Required]
    [DisplayName("Sprint Race")]
