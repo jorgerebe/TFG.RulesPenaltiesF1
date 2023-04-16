@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Microsoft.Build.Framework;
+using System.ComponentModel.DataAnnotations;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
