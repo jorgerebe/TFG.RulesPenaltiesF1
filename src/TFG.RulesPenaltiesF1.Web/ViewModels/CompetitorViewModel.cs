@@ -21,5 +21,6 @@ public class CompetitorViewModel
    public string TeamPrincipalName { get; set; } = string.Empty;
 
    [Required]
-   public string PowerUnit { get; set; } = string.Empty;
+	[DisplayName("Power Unit")]
+	public string PowerUnit { get; set; } = string.Empty;
 }
