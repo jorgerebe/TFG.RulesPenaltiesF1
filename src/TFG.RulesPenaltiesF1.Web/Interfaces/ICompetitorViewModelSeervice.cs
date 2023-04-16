@@ -11,4 +11,5 @@ public interface ICompetitorViewModelService
    Task<CompetitorViewModel?> GetByIdAsync(int id);
    Competitor? MapViewModelToEntity(CompetitorViewModel competitor);
    CompetitorViewModel? MapEntityToViewModel(Competitor competitor);
+   Task<bool> ExistsCompetitorWithName(string name);
 }

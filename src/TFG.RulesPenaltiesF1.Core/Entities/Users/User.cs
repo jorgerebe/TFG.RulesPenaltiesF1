@@ -2,22 +2,19 @@
 public class User : IUser
 {
    public string Id { get; set; }
-   public string? Email { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-   public string FullName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-   public string Role { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+   public string? Email { get; set; }
+   public string FullName { get; set; }
 
-   public User(string id, string email, string fullName, string role)
+   public User(string id, string email, string fullName)
    {
       Id = id;
       Email = email;
       FullName = fullName;
-      Role = role;
    }
 
-   public User(string id, string fullName, string role)
+   public User(string id, string fullName)
    {
       Id = id;
       FullName = fullName;
-      Role = role;
    }
 }

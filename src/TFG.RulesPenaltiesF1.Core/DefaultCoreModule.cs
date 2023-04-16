@@ -19,6 +19,9 @@ namespace TFG.RulesPenaltiesF1.Core
 
          builder.RegisterType<CompetitorService>()
             .As<ICompetitorService>().InstancePerLifetimeScope();
+
+         builder.RegisterType<SeasonService>()
+            .As<ISeasonService>().InstancePerLifetimeScope();
       }
    }
 }

@@ -34,20 +34,30 @@ public static class SeedDataIdentity
          }
       }
 
-      if (await userManager.FindByEmailAsync("horner@teamprincipal.com") == null)
+      await PopulateUsers("steward@steward.com", "Nish Shetty", UserRole.Steward, "Steward.", userManager, roleManager);
+      await PopulateUsers("horner@teamprincipal.com", "Christian Horner", UserRole.TeamPrincipal, "Horner.", userManager, roleManager);
+      await PopulateUsers("stella@teamprincipal.com", "Andrea Stella", UserRole.TeamPrincipal, "Stella.", userManager, roleManager);
+      await PopulateUsers("wolff@teamprincipal.com", "Toto Wolff", UserRole.TeamPrincipal, "Wolff.", userManager, roleManager);
+      await PopulateUsers("vasseur@teamprincipal.com", "Frédéric Vasseur", UserRole.TeamPrincipal, "Vasseur.", userManager, roleManager);
+      await PopulateUsers("szafnauer@teamprincipal.com", "Otmar Szafnauer", UserRole.TeamPrincipal, "Szafnauer.", userManager, roleManager);
+   }
+
+   private static async Task PopulateUsers(string email, string name, UserRole role, string password, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+   {
+      if (await userManager.FindByEmailAsync(email) == null)
       {
          ApplicationUser user = new ApplicationUser
          {
-            FullName = "Christian Horner",
-            UserName = "horner@teamprincipal.com",
-            Email = "horner@teamprincipal.com"
+            FullName = name,
+            UserName = email,
+            Email = email
          };
 
-         IdentityResult result = await userManager.CreateAsync(user, "Horner.");
+         IdentityResult result = await userManager.CreateAsync(user, password);
 
          if (result.Succeeded)
          {
-            await userManager.AddToRoleAsync(user, "TeamPrincipal");
+            await userManager.AddToRoleAsync(user, role.ToString());
          }
       }
    }

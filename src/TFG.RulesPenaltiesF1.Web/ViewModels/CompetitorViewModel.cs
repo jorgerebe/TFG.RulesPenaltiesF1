@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Microsoft.Build.Framework;
+using System.ComponentModel.DataAnnotations;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -17,8 +17,10 @@ public class CompetitorViewModel
    [DisplayName("Team Principal")]
    public string TeamPrincipalId { get; set; } = string.Empty;
 
+   [DisplayName("Team Principal")]
    public string TeamPrincipalName { get; set; } = string.Empty;
 
    [Required]
-   public string PowerUnit { get; set; } = string.Empty;
+	[DisplayName("Power Unit")]
+	public string PowerUnit { get; set; } = string.Empty;
 }

@@ -7,6 +7,8 @@ using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities.Users;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -33,7 +35,9 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<Country> Country => Set<Country>();
    public DbSet<Circuit> Circuit => Set<Circuit>();
    public DbSet<Competitor> Competitor => Set<Competitor>();
+   public DbSet<ApplicationUser> User => Set<ApplicationUser>();
 
+   public DbSet<Season> Season => Set<Season>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {

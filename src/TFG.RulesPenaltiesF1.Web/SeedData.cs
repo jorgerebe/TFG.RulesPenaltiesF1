@@ -3,10 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
+using Microsoft.AspNetCore.Identity;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+using Autofac.Core;
 
 namespace TFG.RulesPenaltiesF1.Web
-{
-   public static class SeedData
+	{
+	public static class SeedData
    {
       /*ARTICLES*/
       public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.\nHowever, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");
@@ -217,11 +220,26 @@ namespace TFG.RulesPenaltiesF1.Web
          new(countries[8],"Albert Park Circuit",5.278f,58,1996,80260,"Charles Leclerc", 2022)
       };
 
+      /*Competitors in its method*/
 
-      public static void Initialize(IServiceProvider serviceProvider)
+      public static List<Competitor> competitors = new();
+
+      /*Competitions*/
+      public static List<Competition> competitions = new()
+      {
+         new(circuits[0], "Bahrain Grand Prix", false, 10),
+         new(circuits[1], "Australian Grand Prix", true, 12)
+      };
+
+      /*Seasons in its method*/
+
+
+
+      public async static Task Initialize(IServiceProvider serviceProvider)
       {
          using var dbContext = new RulesPenaltiesF1DbContext(
              serviceProvider.GetRequiredService<DbContextOptions<RulesPenaltiesF1DbContext>>(), null);
+         using var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
          // Check if DB has already been seeded before populating
 
          if (dbContext.Article.Any())
@@ -229,9 +247,9 @@ namespace TFG.RulesPenaltiesF1.Web
             return;
          }
 
-         PopulateTestData(dbContext);
+         await PopulateTestData(dbContext, userManager);
       }
-      public static void PopulateTestData(RulesPenaltiesF1DbContext dbContext)
+      public async static Task PopulateTestData(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
       {
 
          /*Remove every item from then DB*/
@@ -276,6 +294,16 @@ namespace TFG.RulesPenaltiesF1.Web
             dbContext.Remove(item);
          }
 
+         foreach (var item in dbContext.Competitor)
+         {
+            dbContext.Remove(item);
+         }
+
+         foreach (var item in dbContext.Season)
+         {
+            dbContext.Remove(item);
+         }
+
          // Save changes
 
          dbContext.SaveChanges();
@@ -295,9 +323,12 @@ namespace TFG.RulesPenaltiesF1.Web
          PopulateCountries(dbContext);
          /*Circuits*/
          PopulateCircuits(dbContext);
+         /*Competitors*/
+         await PopulateCompetitors(dbContext, userManager);
+         /*Seasons*/
+         PopulateSeasons(dbContext);
 
          // Save again
-
          dbContext.SaveChanges();
       }
 
@@ -363,6 +394,25 @@ namespace TFG.RulesPenaltiesF1.Web
             Console.WriteLine(circuit.Id + " - " + circuit.Name);
             dbContext.Circuit.Add(circuit);
          }
+      }
+
+      public static async Task PopulateCompetitors(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
+      {
+         competitors.Add(new Competitor("McLaren", "Woking, United Kingdom", (await userManager.FindByEmailAsync("stella@teamprincipal.com"))!.Id, "Mercedes"));
+         competitors.Add(new Competitor("Red Bull Racing", "Milton Keynes, United Kingdom", (await userManager.FindByEmailAsync("horner@teamprincipal.com"))!.Id, "Mercedes"));
+         competitors.Add(new Competitor("Scuderia Ferrari", "Maranello, Italy", (await userManager.FindByEmailAsync("vasseur@teamprincipal.com"))!.Id, "Mercedes"));
+
+         foreach(var competitor in competitors)
+         {
+            dbContext.Competitor.Add(competitor);
+         }
+      }
+
+      public static void PopulateSeasons(RulesPenaltiesF1DbContext dbContext)
+      {
+         Season season1 = new Season(2023, competitors, competitions, regulation);
+
+         dbContext.Season.Add(season1);
       }
    }
 }

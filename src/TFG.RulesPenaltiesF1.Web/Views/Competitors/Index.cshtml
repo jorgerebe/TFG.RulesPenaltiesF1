@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<CompetitorViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Competitors";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Competitors - Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -18,9 +18,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TeamPrincipalName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PowerUnit)
@@ -36,9 +33,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TeamPrincipalName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PowerUnit)
