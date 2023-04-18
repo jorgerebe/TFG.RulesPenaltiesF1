@@ -22,7 +22,7 @@ public class Driver : EntityBase, IAggregateRoot
 		CompetitorId = null;
 	}
 
-	public Driver(string name, DateOnly dateBirth, Competitor competitor)
+	public Driver(string name, DateOnly dateBirth, Competitor? competitor)
 	{
 		ArgumentException.ThrowIfNullOrEmpty(name);
 		ArgumentNullException.ThrowIfNull(dateBirth);
@@ -44,10 +44,8 @@ public class Driver : EntityBase, IAggregateRoot
 		CompetitorId = competitorId;
 	}
 
-	public void AddTeam(Competitor competitor)
+	public void AddTeam(Competitor? competitor)
 	{
-		ArgumentNullException.ThrowIfNull(competitor);
-
 		Competitor = competitor;
 	}
 }
