@@ -1,6 +1,8 @@
-﻿namespace TFG.RulesPenaltiesF1.Core.Entities;
+﻿using TFG.RulesPenaltiesF1.Core.Interfaces;
 
-public class Driver
+namespace TFG.RulesPenaltiesF1.Core.Entities;
+
+public class Driver : EntityBase, IAggregateRoot
 {
 	public string Name { get; set; }
 	public DateOnly DateBirth { get; set; }
