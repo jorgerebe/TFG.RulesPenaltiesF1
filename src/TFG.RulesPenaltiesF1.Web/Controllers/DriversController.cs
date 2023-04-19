@@ -2,37 +2,43 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
+using TFG.RulesPenaltiesF1.Web.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers
 	{
 	public class DriversController : Controller
-    {
-        private readonly RulesPenaltiesF1DbContext _context;
+   {
+		private readonly IDriverViewModelService _driverViewModelService;
+		private readonly IDriverService _driverService;
 
-        public DriversController(RulesPenaltiesF1DbContext context)
-        {
-            _context = context;
-        }
+      private readonly ICompetitorViewModelService _competitorService;
+
+      public DriversController(IDriverViewModelService driverViewModelService, IDriverService driverService,
+			ICompetitorViewModelService competitorService)
+      {
+			_driverViewModelService = driverViewModelService;
+			_driverService = driverService;
+			_competitorService = competitorService;
+      }
 
         // GET: Drivers
         public async Task<IActionResult> Index()
         {
-            var rulesPenaltiesF1DbContext = _context.Driver.Include(d => d.Competitor);
-            return View(await rulesPenaltiesF1DbContext.ToListAsync());
+            var drivers = await _driverViewModelService.GetAllDrivers();
+            return View(drivers);
         }
 
         // GET: Drivers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Driver == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var driver = await _context.Driver
-                .Include(d => d.Competitor)
-                .FirstOrDefaultAsync(m => m.Id == id);
+				var driver = await _driverViewModelService.GetDriverById((int)id);
+            
             if (driver == null)
             {
                 return NotFound();
@@ -42,9 +48,9 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         }
 
         // GET: Drivers/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompetitorId"] = new SelectList(_context.Competitor, "Id", "Name");
+            ViewData["CompetitorId"] = new SelectList(await _competitorService.GetAllCompetitorsWithTeamPrincipals(), "Id", "Name");
             return View();
         }
 
@@ -57,16 +63,16 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(driver);
+                /*_context.Add(driver);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));*/
             }
-            ViewData["CompetitorId"] = new SelectList(_context.Competitor, "Id", "Name", driver.CompetitorId);
+            ViewData["CompetitorId"] = new SelectList(await _competitorService.GetAllCompetitorsWithTeamPrincipals(), "Id", "Name", driver.CompetitorId);
             return View(driver);
         }
 
         // GET: Drivers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        /*public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Driver == null)
             {
@@ -80,12 +86,12 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
             }
             ViewData["CompetitorId"] = new SelectList(_context.Competitor, "Id", "Name", driver.CompetitorId);
             return View(driver);
-        }
+        }*/
 
         // POST: Drivers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CompetitorId")] Driver driver)
         {
@@ -116,10 +122,10 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
             }
             ViewData["CompetitorId"] = new SelectList(_context.Competitor, "Id", "Name", driver.CompetitorId);
             return View(driver);
-        }
+        }*/
 
         // GET: Drivers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        /*public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Driver == null)
             {
@@ -135,10 +141,10 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
             }
 
             return View(driver);
-        }
+        }*/
 
         // POST: Drivers/Delete/5
-        [HttpPost, ActionName("Delete")]
+        /*[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -159,6 +165,6 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         private bool DriverExists(int id)
         {
           return (_context.Driver?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        }*/
     }
 }

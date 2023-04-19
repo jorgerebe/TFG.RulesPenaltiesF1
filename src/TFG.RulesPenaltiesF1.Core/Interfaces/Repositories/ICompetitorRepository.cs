@@ -7,5 +7,6 @@ public interface ICompetitorRepository : IRepository<Competitor>
 {
    Task<Competitor?> GetCompetitorById(int id);
    Task<List<IUser>> GetTeamPrincipals();
-   Task<bool> ExistsCompetitorByName(string name);
+	Task<List<Competitor>> GetAllCompetitorsWithTeamPrincipals();
+	Task<bool> ExistsCompetitorByName(string name);
 }
