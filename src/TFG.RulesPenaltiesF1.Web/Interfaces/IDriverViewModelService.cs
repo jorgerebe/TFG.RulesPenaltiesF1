@@ -6,7 +6,7 @@ namespace TFG.RulesPenaltiesF1.Web.Interfaces;
 public interface IDriverViewModelService
 {
 	Task<List<DriverViewModel>> GetAllDrivers();
-	Task<DriverViewModel> GetDriverById(int id);
+	Task<DriverViewModel?> GetDriverById(int id);
 
 	Driver? MapViewModelToEntity(DriverViewModel driver);
 	DriverViewModel? MapEntityToViewModel(Driver driver);

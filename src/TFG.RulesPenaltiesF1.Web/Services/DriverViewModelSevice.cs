@@ -28,9 +28,16 @@ public class DriverViewModelSevice : IDriverViewModelService
 		return driversViewModels;
 	}
 
-	public Task<DriverViewModel> GetDriverById(int id)
+	public async Task<DriverViewModel?> GetDriverById(int id)
 	{
-		throw new NotImplementedException();
+		var driver = await _repository.GetDriverById(id);
+
+		if(driver is null)
+		{
+			return null;
+		}
+
+		return MapEntityToViewModel(driver!);
 	}
 
 	public DriverViewModel? MapEntityToViewModel(Driver driver)
@@ -43,7 +50,9 @@ public class DriverViewModelSevice : IDriverViewModelService
 		DriverViewModel driverViewModel = new()
 		{
 			Id = driver.Id,
+			Name = driver.Name,
 			DateBirth = driver.DateBirth,
+			LicensePoints = driver.LicensePoints,
 			Competitor = driver.Competitor is not null ? new CompetitorViewModel() { Id = driver.Competitor!.Id, Name = driver.Competitor.Name} : null
 		};
 

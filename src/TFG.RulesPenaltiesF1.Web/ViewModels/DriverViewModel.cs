@@ -15,6 +15,9 @@ public class DriverViewModel
 	[DisplayName("Date birth")]
 	public DateOnly DateBirth { get; set; }
 
+	[DisplayName("License Points")]
+	public int LicensePoints { get; set; }
+
 	[Required]
 	[DisplayName("Competitor")]
 	public int CompetitorId { get; set; }
