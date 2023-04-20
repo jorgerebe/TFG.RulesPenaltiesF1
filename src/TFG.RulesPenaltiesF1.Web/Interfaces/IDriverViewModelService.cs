@@ -7,6 +7,7 @@ public interface IDriverViewModelService
 {
 	Task<List<DriverViewModel>> GetAllDrivers();
 	Task<DriverViewModel?> GetDriverById(int id);
+	Task<bool> ExistsDriverByName(string name);
 
 	Driver? MapViewModelToEntity(DriverViewModel driver);
 	DriverViewModel? MapEntityToViewModel(Driver driver);

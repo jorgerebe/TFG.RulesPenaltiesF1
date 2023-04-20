@@ -4,23 +4,14 @@ namespace TFG.RulesPenaltiesF1.Core.Entities;
 
 public class Driver : EntityBase, IAggregateRoot
 {
-	public string Name { get; set; }
+	public string Name { get; set; } = string.Empty;
 	public DateOnly DateBirth { get; set; }
 	public int LicensePoints { get; set; }
 
 	public Competitor? Competitor { get; set; }
 	public int? CompetitorId { get; set; }
 
-	public Driver(string name, DateOnly dateBirth)
-	{
-		ArgumentException.ThrowIfNullOrEmpty(name);
-		ArgumentNullException.ThrowIfNull(dateBirth);
-
-		Name = name;
-		DateBirth = dateBirth;
-		LicensePoints = 0;
-		CompetitorId = null;
-	}
+	private Driver() { }
 
 	public Driver(string name, DateOnly dateBirth, Competitor? competitor)
 	{

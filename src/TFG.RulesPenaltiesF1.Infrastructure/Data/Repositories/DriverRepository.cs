@@ -25,4 +25,10 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 			.Where(d => d.Id == id)
 			.Include(d => d.Competitor).FirstOrDefaultAsync();
 	}
+
+	public async Task<Driver?> GetDriverByName(string name)
+	{
+		return await _dbContext.Set<Driver>()
+			.Where(d => d.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+	}
 }

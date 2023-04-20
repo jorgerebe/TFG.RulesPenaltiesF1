@@ -40,6 +40,11 @@ public class DriverViewModelSevice : IDriverViewModelService
 		return MapEntityToViewModel(driver!);
 	}
 
+	public async Task<bool> ExistsDriverByName(string name)
+	{
+		return await _repository.GetDriverByName(name) is not null;
+	}
+
 	public DriverViewModel? MapEntityToViewModel(Driver driver)
 	{
 		if (driver is null)
