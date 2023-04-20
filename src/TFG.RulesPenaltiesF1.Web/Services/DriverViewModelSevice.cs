@@ -58,7 +58,8 @@ public class DriverViewModelSevice : IDriverViewModelService
 			Name = driver.Name,
 			DateBirth = driver.DateBirth,
 			LicensePoints = driver.LicensePoints,
-			Competitor = driver.Competitor is not null ? new CompetitorViewModel() { Id = driver.Competitor!.Id, Name = driver.Competitor.Name} : null
+			Competitor = driver.Competitor is not null ? new CompetitorViewModel() { Id = driver.Competitor!.Id, Name = driver.Competitor.Name} : null,
+			CompetitorId = driver.CompetitorId is null ? -1 : (int)driver.CompetitorId
 		};
 
 		return driverViewModel;

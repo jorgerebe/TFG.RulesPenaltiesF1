@@ -1,4 +1,4 @@
-﻿@model DriverViewModel
+﻿    @model DriverViewModel
 
 @{
     ViewData["Title"] = "Create Driver";
@@ -20,12 +20,14 @@
             </div>
             <div class="form-group mt-2">
                 <label asp-for="DateBirth" class="control-label"></label>
-                <input type="date" asp-for="DateBirth" class="form-control datepicker" />
+                <input type="date" asp-for="DateBirth" class="form-control" />
                 <span asp-validation-for="DateBirth" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
                 <label asp-for="CompetitorId" class="control-label"></label>
-                <select asp-for="CompetitorId" class ="form-control" asp-items="ViewBag.CompetitorId"></select>
+                <select asp-for="CompetitorId" class ="form-control" asp-items="ViewBag.CompetitorId">
+                    <option value="-1">&lt;&lt;&lt;No Team&gt;&gt;&gt;</option>
+                </select>
             </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -41,12 +43,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        var datepicker = new bootstrap.Datepicker(document.querySelector('.datepicker'), {
-            format: 'mm/dd/yyyy',
-            startDate: '-18y',
-            endDate: 'today',
-            autoclose: true
-        });
-    </script>
 }

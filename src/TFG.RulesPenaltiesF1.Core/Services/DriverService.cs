@@ -19,4 +19,11 @@ public class DriverService : IDriverService
 
 		await _repository.Add(driver);
 	}
+
+	public async Task UpdateDriverAsync(Driver driver)
+	{
+		ArgumentNullException.ThrowIfNull(driver);
+
+		await _repository.Update(driver);
+	}
 }
