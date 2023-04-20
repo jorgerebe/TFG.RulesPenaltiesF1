@@ -14,7 +14,7 @@ public class RegulationRepository : EfRepository<Regulation>, IRegulationReposit
 
    public async Task<bool> ExistsRegulationByName(string name)
    {
-      return await _dbContext.Set<Regulation>().AnyAsync(r => r.Name == name);
+      return await _dbContext.Set<Regulation>().AnyAsync(r => r.Name.ToLower() == name.ToLower());
    }
 
    public async Task<Regulation?> GetRegulationByIdAsync(int id)

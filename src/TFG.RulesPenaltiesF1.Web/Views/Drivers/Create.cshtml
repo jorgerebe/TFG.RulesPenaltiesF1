@@ -1,0 +1,52 @@
+﻿@model DriverViewModel
+
+@{
+    ViewData["Title"] = "Create Driver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Driver</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-2">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="DateBirth" class="control-label"></label>
+                <input type="date" asp-for="DateBirth" class="form-control datepicker" />
+                <span asp-validation-for="DateBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="CompetitorId" class="control-label"></label>
+                <select asp-for="CompetitorId" class ="form-control" asp-items="ViewBag.CompetitorId"></select>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <br/>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var datepicker = new bootstrap.Datepicker(document.querySelector('.datepicker'), {
+            format: 'mm/dd/yyyy',
+            startDate: '-18y',
+            endDate: 'today',
+            autoclose: true
+        });
+    </script>
+}
