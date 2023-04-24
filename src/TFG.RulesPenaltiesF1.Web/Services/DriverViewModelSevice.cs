@@ -72,13 +72,18 @@ public class DriverViewModelSevice : IDriverViewModelService
 			return null;
 		}
 
+		Driver driverEntity;
+
 		if(driver.CompetitorId == -1)
 		{
-			return new Driver(driver.Name, driver.DateBirth, null);
+			driverEntity = new Driver(driver.Name, driver.DateBirth, null);
 		}
 		else
 		{
-			return new Driver(driver.Name, driver.DateBirth, driver.CompetitorId);
+			driverEntity = new Driver(driver.Name, driver.DateBirth, driver.CompetitorId);
 		}
+
+		driverEntity.Id = driver.Id;
+		return driverEntity;
 	}
 }

@@ -39,8 +39,9 @@ public class EfRepository<T> : IRepository<T> where T : EntityBase, IAggregateRo
       return await _dbContext.Set<T>().FindAsync(new object[] { id });
    }
 
-   public Task Update(T entity)
+   public async Task Update(T entity)
    {
-      throw new NotImplementedException();
-   }
+		_dbContext.Update(entity);
+		await _dbContext.SaveChangesAsync();
+	}
 }

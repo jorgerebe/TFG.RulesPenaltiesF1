@@ -23,7 +23,7 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 	{
 		return await _dbContext.Set<Driver>()
 			.Where(d => d.Id == id)
-			.Include(d => d.Competitor).FirstOrDefaultAsync();
+			.Include(d => d.Competitor).AsNoTracking().FirstOrDefaultAsync();
 	}
 
 	public async Task<Driver?> GetDriverByName(string name)

@@ -106,15 +106,37 @@ public class DriversController : Controller
 	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Edit(int id, [Bind("CompetitorId,Id")] DriverViewModel driver)
+	public async Task<IActionResult> Edit(int id, DriverViewModel driver)
 	{
 		 if (id != driver.Id)
 		 {
 			  return NotFound();
 		 }
 
-		 await _driverService.UpdateDriverAsync(_driverViewModelService.MapViewModelToEntity(driver)!);
-		 return RedirectToAction(nameof(Index));
+		 var driverViewModel = await _driverViewModelService.GetDriverById(id);
+
+		 if(driverViewModel is null)
+		 {
+				return NotFound();
+		 }
+
+		 driverViewModel.Competitor = null;
+
+		if (driver.CompetitorId < -1)
+		{
+			driverViewModel.Competitor = null;
+		}
+		else if (await _competitorService.GetByIdAsync(driver.CompetitorId) is not null)
+		{
+			driverViewModel.CompetitorId = driver.CompetitorId;
+		}
+		else
+		{
+			return NotFound();
+		}
+		await _driverService.UpdateDriverAsync(_driverViewModelService.MapViewModelToEntity(driverViewModel)!);
+
+		return RedirectToAction(nameof(Index));
 	}
 
 	private async Task PopulateCompetitors(int competitorId)
