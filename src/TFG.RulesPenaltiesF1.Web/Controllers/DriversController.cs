@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
@@ -42,12 +44,12 @@ public class DriversController : Controller
       {
             return NotFound();
       }
-
-      return View(driver);
+		return View(driver);
    }
 
-   // GET: Drivers/Create
-   public async Task<IActionResult> Create()
+	// GET: Drivers/Create
+	[Authorize(Roles = "Steward")]
+	public async Task<IActionResult> Create()
    {
 		await PopulateCompetitors(-1);
       return View();
@@ -58,7 +60,8 @@ public class DriversController : Controller
    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
    [HttpPost]
    [ValidateAntiForgeryToken]
-   public async Task<IActionResult> Create([Bind("Name,DateBirth,LicensePoints,CompetitorId")] DriverViewModel driver)
+	[Authorize(Roles = "Steward")]
+	public async Task<IActionResult> Create([Bind("Name,DateBirth,LicensePoints,CompetitorId")] DriverViewModel driver)
    {
       if (ModelState.IsValid)
       {
@@ -83,6 +86,7 @@ public class DriversController : Controller
    }
 
 	// GET: Drivers/Edit/5
+	[Authorize(Roles = "Steward")]
 	public async Task<IActionResult> Edit(int? id)
 	{
 		 if (id is null)
@@ -106,6 +110,7 @@ public class DriversController : Controller
 	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 	[HttpPost]
 	[ValidateAntiForgeryToken]
+	[Authorize(Roles = "Steward")]
 	public async Task<IActionResult> Edit(int id, DriverViewModel driver)
 	{
 		 if (id != driver.Id)
