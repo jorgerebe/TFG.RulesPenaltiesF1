@@ -74,7 +74,7 @@ public class DriverViewModelSevice : IDriverViewModelService
 
 		Driver driverEntity;
 
-		if(driver.CompetitorId == -1)
+		if(driver.CompetitorId == -1 || driver.Competitor is null)
 		{
 			driverEntity = new Driver(driver.Name, driver.DateBirth, null);
 		}

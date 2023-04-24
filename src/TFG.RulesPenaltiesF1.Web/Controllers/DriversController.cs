@@ -125,9 +125,7 @@ public class DriversController : Controller
 				return NotFound();
 		 }
 
-		 driverViewModel.Competitor = null;
-
-		if (driver.CompetitorId < -1)
+		if (driver.CompetitorId == -1)
 		{
 			driverViewModel.Competitor = null;
 		}
