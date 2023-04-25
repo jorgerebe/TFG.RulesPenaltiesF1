@@ -8,8 +8,8 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 
 public class CompetitorViewModelService : ICompetitorViewModelService
 {
+	private readonly ICompetitorRepository _repository;
 
-   private readonly ICompetitorRepository _repository;
    public CompetitorViewModelService(ICompetitorRepository repository)
    {
       _repository = repository;
@@ -30,10 +30,23 @@ public class CompetitorViewModelService : ICompetitorViewModelService
       return competitorViewModels;
    }
 
-   public async Task<List<IUser>> GetAllTeamPrincipals()
+	public async Task<List<CompetitorViewModel>> GetAllCompetitorsWithTeamPrincipals()
+	{
+		var competitors = await _repository.GetAllCompetitorsWithTeamPrincipals();
+
+		List<CompetitorViewModel> competitorViewModels = new();
+
+		foreach (var competitor in competitors)
+		{
+			competitorViewModels.Add(MapEntityToViewModel(competitor)!);
+		}
+
+		return competitorViewModels;
+	}
+
+	public async Task<List<IUser>> GetAllTeamPrincipals()
    {
-      List<IUser> teamPrincipals = new();
-      teamPrincipals = await _repository.GetTeamPrincipals();
+      List<IUser> teamPrincipals = await _repository.GetTeamPrincipals();
 
       return teamPrincipals;
    }

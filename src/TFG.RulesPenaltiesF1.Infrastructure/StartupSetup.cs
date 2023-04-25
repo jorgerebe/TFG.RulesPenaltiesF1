@@ -1,12 +1,10 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
-using TFG.RulesPenaltiesF1.Infrastructure.Migrations;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure
-{
-   public static class StartupSetup
+	{
+	public static class StartupSetup
    {
       public static void AddDbContext(this IServiceCollection services, string connectionString)
       {

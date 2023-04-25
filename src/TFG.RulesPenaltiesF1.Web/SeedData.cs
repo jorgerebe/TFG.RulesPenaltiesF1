@@ -231,11 +231,13 @@ namespace TFG.RulesPenaltiesF1.Web
          new(circuits[1], "Australian Grand Prix", true, 12)
       };
 
-      /*Seasons in its method*/
+		/*Seasons in its method*/
+
+		/*Drivers in its method*/
+		public static List<Driver> drivers = new();
 
 
-
-      public async static Task Initialize(IServiceProvider serviceProvider)
+		public async static Task Initialize(IServiceProvider serviceProvider)
       {
          using var dbContext = new RulesPenaltiesF1DbContext(
              serviceProvider.GetRequiredService<DbContextOptions<RulesPenaltiesF1DbContext>>(), null);
@@ -327,6 +329,8 @@ namespace TFG.RulesPenaltiesF1.Web
          await PopulateCompetitors(dbContext, userManager);
          /*Seasons*/
          PopulateSeasons(dbContext);
+			/*Drivers*/
+			PopulateDrivers(dbContext);
 
          // Save again
          dbContext.SaveChanges();
@@ -399,8 +403,9 @@ namespace TFG.RulesPenaltiesF1.Web
       public static async Task PopulateCompetitors(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
       {
          competitors.Add(new Competitor("McLaren", "Woking, United Kingdom", (await userManager.FindByEmailAsync("stella@teamprincipal.com"))!.Id, "Mercedes"));
-         competitors.Add(new Competitor("Red Bull Racing", "Milton Keynes, United Kingdom", (await userManager.FindByEmailAsync("horner@teamprincipal.com"))!.Id, "Mercedes"));
-         competitors.Add(new Competitor("Scuderia Ferrari", "Maranello, Italy", (await userManager.FindByEmailAsync("vasseur@teamprincipal.com"))!.Id, "Mercedes"));
+         competitors.Add(new Competitor("Red Bull Racing", "Milton Keynes, United Kingdom", (await userManager.FindByEmailAsync("horner@teamprincipal.com"))!.Id, "Honda RBPT"));
+         competitors.Add(new Competitor("Scuderia Ferrari", "Maranello, Italy", (await userManager.FindByEmailAsync("vasseur@teamprincipal.com"))!.Id, "Ferrari"));
+         competitors.Add(new Competitor("Mercedes-AMG Formula One Team", "Brackley, United Kingdom", (await userManager.FindByEmailAsync("wolff@teamprincipal.com"))!.Id, "Mercedes"));
 
          foreach(var competitor in competitors)
          {
@@ -414,5 +419,20 @@ namespace TFG.RulesPenaltiesF1.Web
 
          dbContext.Season.Add(season1);
       }
+
+
+		public static void PopulateDrivers(RulesPenaltiesF1DbContext dbContext)
+		{
+			drivers.Add(new Driver("Lewis Hamilton", new DateOnly(1985, 1, 7), competitors[3]));
+			drivers.Add(new Driver("George Russell", new DateOnly(1998, 2, 15), competitors[3]));
+			drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2]));
+			drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1]));
+			drivers.Add(new Driver("Oscar Piastri", new DateOnly(2001, 4, 6), null));
+
+			foreach(var driver in drivers)
+			{
+				dbContext.Driver.Add(driver);
+			}
+		}
    }
 }

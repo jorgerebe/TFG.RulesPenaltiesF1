@@ -72,7 +72,13 @@ public class CompetitorRepository : EfRepository<Competitor>, ICompetitorReposit
       return usuarios;
    }
 
-   public async Task<bool> ExistsCompetitorByName(string name)
+	public async Task<List<Competitor>> GetAllCompetitorsWithTeamPrincipals()
+	{
+		return await _dbContext.Set<Competitor>()
+			.Where(c => c.TeamPrincipalID != null).ToListAsync();
+	}
+
+	public async Task<bool> ExistsCompetitorByName(string name)
    {
       return await _dbContext.Set<Competitor>().AnyAsync(r => r.Name.ToLower() == name.ToLower());
    }

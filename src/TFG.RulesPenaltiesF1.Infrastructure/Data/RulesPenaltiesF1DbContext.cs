@@ -38,6 +38,7 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<ApplicationUser> User => Set<ApplicationUser>();
 
    public DbSet<Season> Season => Set<Season>();
+   public DbSet<Driver> Driver => Set<Driver>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {

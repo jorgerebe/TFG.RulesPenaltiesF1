@@ -98,6 +98,11 @@ public class DefaultInfrastructureModule : Module
          .As<ISeasonRepository>()
          .InstancePerLifetimeScope();
 
+      builder
+         .RegisterType<DriverRepository>()
+         .As<IDriverRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();
