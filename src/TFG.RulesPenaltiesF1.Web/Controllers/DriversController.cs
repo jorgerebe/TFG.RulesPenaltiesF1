@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
@@ -16,127 +18,138 @@ public class DriversController : Controller
    public DriversController(IDriverViewModelService driverViewModelService, IDriverService driverService,
 	ICompetitorViewModelService competitorService)
    {
-	_driverViewModelService = driverViewModelService;
-	_driverService = driverService;
-	_competitorService = competitorService;
+		_driverViewModelService = driverViewModelService;
+		_driverService = driverService;
+		_competitorService = competitorService;
    }
 
-      // GET: Drivers
-      public async Task<IActionResult> Index()
+   // GET: Drivers
+   public async Task<IActionResult> Index()
+   {
+	var drivers = await _driverViewModelService.GetAllDrivers();
+      return View(drivers);
+   }
+
+   // GET: Drivers/Details/5
+   public async Task<IActionResult> Details(int? id)
+   {
+      if (id == null)
       {
-		var drivers = await _driverViewModelService.GetAllDrivers();
-         return View(drivers);
+            return NotFound();
       }
 
-      // GET: Drivers/Details/5
-      public async Task<IActionResult> Details(int? id)
-      {
-         if (id == null)
-         {
-               return NotFound();
-         }
-
-			var driver = await _driverViewModelService.GetDriverById((int)id);
+		var driver = await _driverViewModelService.GetDriverById((int)id);
             
-         if (driver == null)
-         {
-               return NotFound();
-         }
-
-         return View(driver);
-      }
-
-      // GET: Drivers/Create
-      public async Task<IActionResult> Create()
+      if (driver == null)
       {
-			await PopulateCompetitors();
-         return View();
+            return NotFound();
       }
+		return View(driver);
+   }
 
-      // POST: Drivers/Create
-      // To protect from overposting attacks, enable the specific properties you want to bind to.
-      // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public async Task<IActionResult> Create([Bind("Name,DateBirth,LicensePoints,CompetitorId")] DriverViewModel driver)
+	// GET: Drivers/Create
+	[Authorize(Roles = "Steward")]
+	public async Task<IActionResult> Create()
+   {
+		await PopulateCompetitors(-1);
+      return View();
+   }
+
+   // POST: Drivers/Create
+   // To protect from overposting attacks, enable the specific properties you want to bind to.
+   // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+   [HttpPost]
+   [ValidateAntiForgeryToken]
+	[Authorize(Roles = "Steward")]
+	public async Task<IActionResult> Create([Bind("Name,DateBirth,LicensePoints,CompetitorId")] DriverViewModel driver)
+   {
+      if (ModelState.IsValid)
       {
-         if (ModelState.IsValid)
-         {
-				if(driver.DateBirth.CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-18))) > 0)
-				{
-					ModelState.AddModelError("DateBirth", "A driver must be over 18.");
-					await PopulateCompetitors();
-					return View(driver);
-				}
-				if(await _driverViewModelService.ExistsDriverByName(driver.Name))
-				{
-					ModelState.AddModelError("Name", "There is already a driver with that name.");
-					await PopulateCompetitors();
-					return View(driver);
-				}
+			if(driver.Name.Replace("\t", " ").Replace(" ", "").Length < 5)
+			{
+				ModelState.AddModelError("Name", "The driver's name must have at least 5 chars length");
+				await PopulateCompetitors(driver.CompetitorId);
+				return View(driver);
+			}
+			if(driver.DateBirth.CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-18))) > 0)
+			{
+				ModelState.AddModelError("DateBirth", "A driver must be over 18.");
+				await PopulateCompetitors(driver.CompetitorId);
+				return View(driver);
+			}
+			if(await _driverViewModelService.ExistsDriverByName(driver.Name))
+			{
+				ModelState.AddModelError("Name", "There is already a driver with that name.");
+				await PopulateCompetitors(driver.CompetitorId);
+				return View(driver);
+			}
 
-				await _driverService.CreateDriverAsync(_driverViewModelService.MapViewModelToEntity(driver)!);
-				return RedirectToAction(nameof(Index));
-         }
-			await PopulateCompetitors();
-         return View(driver);
+			await _driverService.CreateDriverAsync(_driverViewModelService.MapViewModelToEntity(driver)!);
+			return RedirectToAction(nameof(Index));
       }
+		await PopulateCompetitors(driver.CompetitorId);
+      return View(driver);
+   }
 
 	// GET: Drivers/Edit/5
-	/*public async Task<IActionResult> Edit(int? id)
+	[Authorize(Roles = "Steward")]
+	public async Task<IActionResult> Edit(int? id)
 	{
-		 if (id == null || _context.Driver == null)
+		 if (id is null)
 		 {
 			  return NotFound();
 		 }
 
-		 var driver = await _context.Driver.FindAsync(id);
+		 var driver = await _driverViewModelService.GetDriverById((int)id);
+
 		 if (driver == null)
 		 {
 			  return NotFound();
 		 }
-		 ViewData["CompetitorId"] = new SelectList(_context.Competitor, "Id", "Name", driver.CompetitorId);
+
+		 await PopulateCompetitors(driver.CompetitorId);
 		 return View(driver);
-	}*/
+	}
 
 	// POST: Drivers/Edit/5
 	// To protect from overposting attacks, enable the specific properties you want to bind to.
 	// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-	/*[HttpPost]
+	[HttpPost]
 	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Edit(int id, [Bind("CompetitorId")] Driver driver)
+	[Authorize(Roles = "Steward")]
+	public async Task<IActionResult> Edit(int id, DriverViewModel driver)
 	{
 		 if (id != driver.Id)
 		 {
 			  return NotFound();
 		 }
 
-		 if (ModelState.IsValid)
-		 {
-			  try
-			  {
-					_context.Update(driver);
-					await _context.SaveChangesAsync();
-			  }
-			  catch (DbUpdateConcurrencyException)
-			  {
-					if (!DriverExists(driver.Id))
-					{
-						 return NotFound();
-					}
-					else
-					{
-						 throw;
-					}
-			  }
-			  return RedirectToAction(nameof(Index));
-		 }
-		 ViewData["CompetitorId"] = new SelectList(_context.Competitor, "Id", "Name", driver.CompetitorId);
-		 return View(driver);
-	}*/
+		 var driverViewModel = await _driverViewModelService.GetDriverById(id);
 
-	private async Task PopulateCompetitors()
+		 if(driverViewModel is null)
+		 {
+				return NotFound();
+		 }
+
+		if (driver.CompetitorId == -1)
+		{
+			driverViewModel.Competitor = null;
+		}
+		else if (await _competitorService.GetByIdAsync(driver.CompetitorId) is not null)
+		{
+			driverViewModel.CompetitorId = driver.CompetitorId;
+		}
+		else
+		{
+			return NotFound();
+		}
+		await _driverService.UpdateDriverAsync(_driverViewModelService.MapViewModelToEntity(driverViewModel)!);
+
+		return RedirectToAction(nameof(Index));
+	}
+
+	private async Task PopulateCompetitors(int competitorId)
 	{
-		ViewData["CompetitorId"] = new SelectList(await _competitorService.GetAllCompetitorsWithTeamPrincipals(), "Id", "Name");
+		ViewData["CompetitorId"] = new SelectList(await _competitorService.GetAllCompetitorsWithTeamPrincipals(), "Id", "Name", competitorId);
 	}
 }

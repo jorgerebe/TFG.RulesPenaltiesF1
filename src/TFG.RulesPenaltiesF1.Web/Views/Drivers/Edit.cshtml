@@ -13,28 +13,30 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" readonly/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="DateBirth" class="control-label"></label>
-                <input asp-for="DateBirth" class="form-control" />
+                <input asp-for="DateBirth" class="form-control" readonly/>
                 <span asp-validation-for="DateBirth" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="LicensePoints" class="control-label"></label>
-                <input asp-for="LicensePoints" class="form-control" />
+                <input asp-for="LicensePoints" class="form-control" readonly/>
                 <span asp-validation-for="LicensePoints" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="CompetitorId" class="control-label"></label>
-                <select asp-for="CompetitorId" class="form-control" asp-items="ViewBag.CompetitorId"></select>
+                <select asp-for="CompetitorId" class="form-control" asp-items="ViewBag.CompetitorId">
+                    <option value="-1">&lt;&lt;&lt;No Team&gt;&gt;&gt;</option>
+                </select>
                 <span asp-validation-for="CompetitorId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -42,6 +44,7 @@
 </div>
 
 <div>
+    <br/>
     <a asp-action="Index">Back to List</a>
 </div>
 

@@ -7,4 +7,5 @@ public interface IDriverRepository : IRepository<Driver>
 	Task<List<Driver>> GetAllDrivers();
 	Task<Driver?> GetDriverById(int id);
 	Task<Driver?> GetDriverByName(string name);
+	Task UpdateTeam(Driver driver);
 }

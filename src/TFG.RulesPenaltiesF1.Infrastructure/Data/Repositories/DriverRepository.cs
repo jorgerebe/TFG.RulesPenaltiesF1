@@ -23,12 +23,20 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 	{
 		return await _dbContext.Set<Driver>()
 			.Where(d => d.Id == id)
-			.Include(d => d.Competitor).FirstOrDefaultAsync();
+			.Include(d => d.Competitor).AsNoTracking().FirstOrDefaultAsync();
 	}
 
 	public async Task<Driver?> GetDriverByName(string name)
 	{
+		var pepe = name.ToLower().Replace("\t", " ").Replace(" ", "");
 		return await _dbContext.Set<Driver>()
-			.Where(d => d.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+			.Where(d => d.Name.ToLower().Replace("\t", " ").Replace(" ", "") == name.ToLower().Replace("\t", " ").Replace(" ", "")).FirstOrDefaultAsync();
+	}
+
+	public async Task UpdateTeam(Driver driver)
+	{
+		_dbContext.Driver.Attach(driver);
+		_dbContext.Entry(driver).Property(d => d.CompetitorId).IsModified = true;
+		await _dbContext.SaveChangesAsync();
 	}
 }

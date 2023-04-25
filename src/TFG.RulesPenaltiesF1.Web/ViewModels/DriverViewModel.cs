@@ -8,7 +8,7 @@ public class DriverViewModel
 	public int Id { get; set; }
 
 	[Required]
-	[MinLength(5)]
+	[MinLength(5, ErrorMessage ="The driver's name must have at least 5 chars length")]
 	public string Name { get; set; } = string.Empty;
 
 	[Required]

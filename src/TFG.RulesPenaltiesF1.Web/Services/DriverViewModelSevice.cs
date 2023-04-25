@@ -58,7 +58,8 @@ public class DriverViewModelSevice : IDriverViewModelService
 			Name = driver.Name,
 			DateBirth = driver.DateBirth,
 			LicensePoints = driver.LicensePoints,
-			Competitor = driver.Competitor is not null ? new CompetitorViewModel() { Id = driver.Competitor!.Id, Name = driver.Competitor.Name} : null
+			Competitor = driver.Competitor is not null ? new CompetitorViewModel() { Id = driver.Competitor!.Id, Name = driver.Competitor.Name} : null,
+			CompetitorId = driver.CompetitorId is null ? -1 : (int)driver.CompetitorId
 		};
 
 		return driverViewModel;
@@ -71,13 +72,18 @@ public class DriverViewModelSevice : IDriverViewModelService
 			return null;
 		}
 
-		if(driver.CompetitorId == -1)
+		Driver driverEntity;
+
+		if(driver.CompetitorId == -1 || driver.Competitor is null)
 		{
-			return new Driver(driver.Name, driver.DateBirth, null);
+			driverEntity = new Driver(driver.Name, driver.DateBirth, null);
 		}
 		else
 		{
-			return new Driver(driver.Name, driver.DateBirth, driver.CompetitorId);
+			driverEntity = new Driver(driver.Name, driver.DateBirth, driver.CompetitorId);
 		}
+
+		driverEntity.Id = driver.Id;
+		return driverEntity;
 	}
 }

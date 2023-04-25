@@ -22,6 +22,7 @@ public class Driver : EntityBase, IAggregateRoot
 		DateBirth = dateBirth;
 		LicensePoints = 0;
 		AddTeam(competitor);
+		CompetitorId = competitor is null ? null : competitor.Id;
 	}
 
 	public Driver(string name, DateOnly dateBirth, int competitorId)
