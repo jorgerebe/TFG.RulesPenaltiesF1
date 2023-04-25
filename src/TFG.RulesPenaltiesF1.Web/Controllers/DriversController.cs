@@ -65,6 +65,12 @@ public class DriversController : Controller
    {
       if (ModelState.IsValid)
       {
+			if(driver.Name.Replace("\t", " ").Replace(" ", "").Length < 5)
+			{
+				ModelState.AddModelError("Name", "The driver's name must have at least 5 chars length");
+				await PopulateCompetitors(driver.CompetitorId);
+				return View(driver);
+			}
 			if(driver.DateBirth.CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-18))) > 0)
 			{
 				ModelState.AddModelError("DateBirth", "A driver must be over 18.");

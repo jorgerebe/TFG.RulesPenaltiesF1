@@ -28,8 +28,9 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 
 	public async Task<Driver?> GetDriverByName(string name)
 	{
+		var pepe = name.ToLower().Replace("\t", " ").Replace(" ", "");
 		return await _dbContext.Set<Driver>()
-			.Where(d => d.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+			.Where(d => d.Name.ToLower().Replace("\t", " ").Replace(" ", "") == name.ToLower().Replace("\t", " ").Replace(" ", "")).FirstOrDefaultAsync();
 	}
 
 	public async Task UpdateTeam(Driver driver)
