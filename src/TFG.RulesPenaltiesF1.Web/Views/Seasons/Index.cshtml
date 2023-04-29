@@ -1,15 +1,25 @@
-﻿@model IEnumerable<SeasonViewModel>
+﻿@using TFG.RulesPenaltiesF1.Web.Interfaces;
+@model IEnumerable<SeasonViewModel>
+@inject ISeasonViewModelService SeasonViewModelService
 
 @{
     ViewData["Title"] = "Seasons";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool canCreate = await SeasonViewModelService.CanCreateAnotherSeason();
 }
 
 <h1>Seasons - Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@{
+    if (canCreate)
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+}
+
 <table class="table">
     <thead>
         <tr>
