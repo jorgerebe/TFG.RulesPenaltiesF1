@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Config;
 
@@ -15,6 +15,7 @@ internal class CompetitionConfiguration : IEntityTypeConfiguration<Competition>
       builder.Property(c => c.Week).IsRequired();
       builder.Property(c => c.IsSprint).IsRequired();
       builder.Property(c => c.Name).IsRequired();
+      builder.Property(c => c.CompetitionState).IsRequired();
 
       builder.HasIndex(c => new { c.Week, c.SeasonId }).IsUnique();
    }

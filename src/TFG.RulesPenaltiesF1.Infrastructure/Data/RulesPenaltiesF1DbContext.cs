@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities.Users;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using SmartEnum.EFCore;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -44,6 +45,7 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    {
       base.OnModelCreating(modelBuilder);
 
+		modelBuilder.ConfigureSmartEnum();
       modelBuilder.Ignore<User>();
 
       modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
