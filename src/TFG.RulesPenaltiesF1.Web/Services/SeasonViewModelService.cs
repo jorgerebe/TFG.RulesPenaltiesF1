@@ -122,4 +122,9 @@ public class SeasonViewModelService : ISeasonViewModelService
 
 		return seasonViewModel;
 	}
+
+	public async Task<bool> CanCreateAnotherSeason()
+	{
+		return await _repository.GetCurrentSeason() is null;
+	}
 }

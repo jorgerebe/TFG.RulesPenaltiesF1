@@ -38,7 +38,6 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 		// GET: Seasons/Details/5
 		public async Task<IActionResult> Details(int id)
 		{
-
 			var season = await _seasonViewModelService.GetByIdAsync(id);
 
 			if (season == null)
@@ -53,11 +52,16 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 		[Authorize(Roles ="Steward")]
 		public async Task<IActionResult> Create()
 		{
+			if(await _seasonViewModelService.CanCreateAnotherSeason() is false)
+			{
+				return NotFound();
+			}
+
 			SeasonViewModel season = new SeasonViewModel();
 			List<CompetitionViewModel> competitions = new()
 			{
-					new CompetitionViewModel(),
-					new CompetitionViewModel()
+				new CompetitionViewModel(),
+				new CompetitionViewModel()
 			};
 
 			season.Competitions = competitions;
@@ -76,6 +80,11 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 		[Authorize(Roles ="Steward")]
 		public async Task<IActionResult> Create([Bind("Year,Competitors,Competitions,RegulationId")] SeasonViewModel season)
 		{
+			if (await _seasonViewModelService.CanCreateAnotherSeason() is false)
+			{
+				return NotFound();
+			}
+
 			if (ModelState.IsValid)
 			{
 				if (await _seasonViewModelService.ExistsSeasonInYear(season.Year))

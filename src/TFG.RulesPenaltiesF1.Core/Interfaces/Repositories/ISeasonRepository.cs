@@ -6,5 +6,6 @@ public interface ISeasonRepository : IRepository<Season>
 {
 	public Task<Season?> GetSeasonByYear(int year);
 	public Task<Season?> GetSeasonById(int id);
+	public Task<Season?> GetCurrentSeason();
 	public Task<Season> AddSeason(Season season);
 }
