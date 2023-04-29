@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -23,4 +24,6 @@ public class CompetitionViewModel
    [Required]
 	[Range(1, 53, ErrorMessage ="A year can't have less than 1 week or more than 53")]
    public int Week { get; set; }
+
+	public CompetitionStateEnum CompetitionState { get; set; } = CompetitionStateEnum.NotStarted;
 }

@@ -1,4 +1,5 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -108,16 +109,22 @@ public class SeasonViewModelService : ISeasonViewModelService
 			foreach(var competition in season.Competitions)
 			{
 				seasonViewModel.Competitions.Add(new()
-					{
+				{
 					Name = competition.Name,
 					CircuitId = competition.CircuitId,
 					Circuit = new() {Name = competition.Circuit!.Name },
 					IsSprint = competition.IsSprint,
-					Week = competition.Week
-					}) ;
+					Week = competition.Week,
+					CompetitionState = competition.CompetitionState
+				}) ;
 			}
 		}
 
 		return seasonViewModel;
+	}
+
+	public async Task<bool> CanCreateAnotherSeason()
+	{
+		return await _repository.GetCurrentSeason() is null;
 	}
 }

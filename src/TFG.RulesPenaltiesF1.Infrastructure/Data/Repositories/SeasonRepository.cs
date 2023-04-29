@@ -35,6 +35,14 @@ public class SeasonRepository : EfRepository<Season>, ISeasonRepository
 		return season;
 	}
 
+	public async Task<Season?> GetCurrentSeason()
+	{
+		return await _dbContext.Set<Season>()
+			.Include(s => s.Competitions)
+			.Where(s => s.Competitions.All(c => c.CompetitionState != 3))
+			.FirstOrDefaultAsync();
+	}
+
 	public async Task<Season> AddSeason(Season season)
 	{
 		_dbContext.Add(season);

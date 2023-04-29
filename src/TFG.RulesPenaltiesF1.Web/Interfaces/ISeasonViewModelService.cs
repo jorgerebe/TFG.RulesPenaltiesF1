@@ -10,4 +10,6 @@ public interface ISeasonViewModelService
 	Task<bool> ExistsSeasonInYear(int year);
 	Season? MapViewModelToEntity(SeasonViewModel season);
 	SeasonViewModel? MapEntityToViewModel(Season season);
+
+	Task<bool> CanCreateAnotherSeason();
 }

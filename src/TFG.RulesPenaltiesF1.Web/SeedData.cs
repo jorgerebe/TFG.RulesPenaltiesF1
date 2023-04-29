@@ -6,6 +6,7 @@ using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Autofac.Core;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 namespace TFG.RulesPenaltiesF1.Web
 	{
@@ -19,30 +20,30 @@ namespace TFG.RulesPenaltiesF1.Web
       public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
 
       /*PENALTIES*/
-      public static readonly PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race");
-      public static readonly PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty");
-      public static readonly PenaltyType GP = new PenaltyType("Drop Grid Positions", "Drop Grid Position");
-      public static readonly PenaltyType DT = new PenaltyType("Drive-Through", "Drive-Through");
-      public static readonly PenaltyType StopAndGo = new PenaltyType("Stop And Go", "Stop And Go");
-      public static readonly PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand");
-      public static readonly PenaltyType Fine = new PenaltyType("Fine", "The competitor must pay a fine");
+      public static readonly PenaltyType DQ = new ("Disqualification", "Driver disqualified of the race");
+      public static readonly PenaltyType TP = new ("Time Penalty", "Time Penalty");
+      public static readonly PenaltyType GP = new ("Drop Grid Positions", "Drop Grid Position");
+      public static readonly PenaltyType DT = new ("Drive-Through", "Drive-Through");
+      public static readonly PenaltyType StopAndGo = new ("Stop And Go", "Stop And Go");
+      public static readonly PenaltyType Reprimand = new ("Reprimand", "Reprimand");
+      public static readonly PenaltyType Fine = new ("Fine", "The competitor must pay a fine");
 
-      public static readonly TimePenalty tp_5 = new TimePenalty(TP, 5);
-      public static readonly TimePenalty tp_10 = new TimePenalty(TP, 10);
-      public static readonly DriveThrough dt = new DriveThrough(DT, 20);
-      public static readonly StopAndGo sag = new StopAndGo(StopAndGo, 10, 20);
-      public static readonly Reprimand nodrivingReprimand = new Reprimand(Reprimand, false);
-      public static readonly Reprimand drivingReprimand = new Reprimand(Reprimand, true);
-      public static readonly DropGridPositions dropGridPositions3 = new DropGridPositions(GP, 3);
-      public static readonly DropGridPositions dropGridPositions5 = new DropGridPositions(GP, 5);
-      public static readonly DropGridPositions dropGridPositions10 = new DropGridPositions(GP, 10);
-      public static readonly Disqualification dq = new Disqualification(DQ, false);
-      public static readonly Disqualification suspensionNextCompetition = new Disqualification(DQ, true);
-      public static readonly Fine fine = new Fine(Fine);
+      public static readonly TimePenalty tp_5 = new (TP, 5);
+      public static readonly TimePenalty tp_10 = new (TP, 10);
+      public static readonly DriveThrough dt = new (DT, 20);
+      public static readonly StopAndGo sag = new (StopAndGo, 10, 20);
+      public static readonly Reprimand nodrivingReprimand = new (Reprimand, false);
+      public static readonly Reprimand drivingReprimand = new (Reprimand, true);
+      public static readonly DropGridPositions dropGridPositions3 = new (GP, 3);
+      public static readonly DropGridPositions dropGridPositions5 = new (GP, 5);
+      public static readonly DropGridPositions dropGridPositions10 = new (GP, 10);
+      public static readonly Disqualification dq = new (DQ, false);
+      public static readonly Disqualification suspensionNextCompetition = new (DQ, true);
+      public static readonly Fine fine = new (Fine);
 
       /*REGULATIONS*/
 
-      public static readonly Regulation regulation = new Regulation("testing");
+      public static readonly Regulation regulation = new ("testing");
 
       /*COUNTRIES*/
       public static readonly List<Country> countries = new()
@@ -222,7 +223,7 @@ namespace TFG.RulesPenaltiesF1.Web
 
       /*Competitors in its method*/
 
-      public static List<Competitor> competitors = new();
+      static List<Competitor> competitors = new();
 
       /*Competitions*/
       public static List<Competition> competitions = new()
@@ -237,7 +238,7 @@ namespace TFG.RulesPenaltiesF1.Web
 		public static List<Driver> drivers = new();
 
 
-		public async static Task Initialize(IServiceProvider serviceProvider)
+		public static async Task Initialize(IServiceProvider serviceProvider)
       {
          using var dbContext = new RulesPenaltiesF1DbContext(
              serviceProvider.GetRequiredService<DbContextOptions<RulesPenaltiesF1DbContext>>(), null);
@@ -251,7 +252,7 @@ namespace TFG.RulesPenaltiesF1.Web
 
          await PopulateTestData(dbContext, userManager);
       }
-      public async static Task PopulateTestData(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
+      public static async Task PopulateTestData(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
       {
 
          /*Remove every item from then DB*/
