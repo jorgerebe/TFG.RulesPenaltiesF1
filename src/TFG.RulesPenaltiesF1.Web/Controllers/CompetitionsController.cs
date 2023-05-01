@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 
@@ -36,6 +37,7 @@ public class CompetitionsController : Controller
 
 	// POST: Competitions/StartCompetition/5
 	[HttpPost]
+	[Authorize(Roles ="Steward")]
 	public async Task<IActionResult> StartCompetition(int? id)
    {
       if (id == null)

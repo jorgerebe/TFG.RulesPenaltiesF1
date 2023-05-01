@@ -40,6 +40,7 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<ApplicationUser> User => Set<ApplicationUser>();
 
    public DbSet<Season> Season => Set<Season>();
+   public DbSet<Session> Session => Set<Session>();
    public DbSet<Competition> Competition => Set<Competition>();
    public DbSet<Driver> Driver => Set<Driver>();
 

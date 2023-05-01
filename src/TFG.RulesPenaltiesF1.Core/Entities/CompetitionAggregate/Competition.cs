@@ -16,6 +16,9 @@ public class Competition : EntityBase, IAggregateRoot
 	public bool IsSprint { get; set; }
 	public int Week { get; set; }
 
+	private List<Session> _sessions = new();
+	public IReadOnlyCollection<Session> Sessions => _sessions.AsReadOnly();
+
 	public Competition(Circuit circuit, string name, bool isSprint, int week)
 	{
 		ArgumentNullException.ThrowIfNull(circuit, nameof(circuit));
@@ -50,5 +53,19 @@ public class Competition : EntityBase, IAggregateRoot
 		}
 
 		CompetitionState = CompetitionStateEnum.Started;
+
+		List<Session> sessions = new();
+		sessions.Add(new (this.Id, SessionTypeEnum.Practice));
+		sessions.Add(new (this.Id, SessionTypeEnum.Qualifying));
+
+		if (IsSprint)
+		{
+			sessions.Add(new Session(this.Id, SessionTypeEnum.SprintShootout));
+			sessions.Add(new Session(this.Id, SessionTypeEnum.Sprint));
+		}
+
+		sessions.Add(new Session(this.Id, SessionTypeEnum.Race));
+
+		_sessions = sessions;
 	}
 }
