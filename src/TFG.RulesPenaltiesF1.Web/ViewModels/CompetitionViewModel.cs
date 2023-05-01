@@ -8,6 +8,8 @@ public class CompetitionViewModel
 {
    public int Id { get; set; }
 
+	public int Year { get; set; }
+
    [Required]
    public string Name { get; set; } = string.Empty;
 

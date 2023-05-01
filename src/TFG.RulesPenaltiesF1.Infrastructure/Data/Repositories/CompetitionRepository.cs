@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
@@ -18,6 +19,21 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 		return await _dbContext.Set<Competition>()
 			.Where(c => c.Id == id)
 			.Include(c => c.Circuit)
+			.Include(c => c.Season)
+			.AsNoTracking()
+			.FirstOrDefaultAsync();
+	}
+
+	public async Task<Competition?> GetNextCompetitionThatCanBeStarted()
+	{
+		return await _dbContext.Set<Competition>()
+			.Where(c => c.CompetitionState == 1 && c.Week <= _dbContext.Competition.
+																			 Where(y => y.SeasonId == c.SeasonId).Min(y => y.Week)
+															&& _dbContext.Competition
+																	.Where(y => y.SeasonId == c.SeasonId)
+																	.All(y => y.CompetitionState != 2))
+			.Include(c => c.Circuit)
+			.Include(c => c.Season)
 			.AsNoTracking()
 			.FirstOrDefaultAsync();
 	}

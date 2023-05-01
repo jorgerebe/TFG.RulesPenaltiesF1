@@ -41,4 +41,14 @@ public class Competition : EntityBase, IAggregateRoot
 		Week = week;
 		CompetitionState = CompetitionStateEnum.NotStarted;
 	}
+
+	public void StartCompetition()
+	{
+		if (!CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		{
+			throw new InvalidOperationException();
+		}
+
+		CompetitionState = CompetitionStateEnum.Started;
+	}
 }

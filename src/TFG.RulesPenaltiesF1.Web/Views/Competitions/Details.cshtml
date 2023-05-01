@@ -4,7 +4,7 @@
 @inject ICompetitionViewModelService Service
 
 @{
-    ViewData["Title"] = $"{Model.Name} - 2023";
+    ViewData["Title"] = $"{Model.Name} - {Model.Year}";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -38,6 +38,8 @@
     </dl>
     @if(await Service.CanStartCompetition(Model.Id))
     {
-        <a href="" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">Start Competition</a>
+        <form action="/Competitions/StartCompetition/@Model.Id/" method="post">
+            <button type="submit" class="btn btn-success">Start Competition</button>
+        </form>
     }
 </div>

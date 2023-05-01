@@ -28,14 +28,14 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 
 	public async Task<bool> CanStartCompetition(int id)
 	{
-		Competition? competition = await _repository.GetCompetitionById(id)!;
+		Competition? competition = await _repository.GetNextCompetitionThatCanBeStarted();
 
 		if(competition == null)
 		{
 			return false;
 		}
 
-		if (competition.CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		if (competition.Id == id)
 		{
 			return true;
 		}
@@ -51,6 +51,7 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 
 		return new CompetitionViewModel()
 		{
+			Year = competition.Season!.Year,
 			Id = competition.Id,
 			Name = competition.Name,
 			CircuitId = competition.CircuitId,

@@ -2,7 +2,8 @@
 
 namespace TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
-public interface ICompetitionRepository
+public interface ICompetitionRepository : IRepository<Competition>
 {
 	Task<Competition?> GetCompetitionById(int id);
+	Task<Competition?> GetNextCompetitionThatCanBeStarted();
 }
