@@ -10,12 +10,15 @@ public class SeasonViewModelService : ISeasonViewModelService
 {
 	private readonly ISeasonRepository _repository;
 	private readonly ICompetitorViewModelService _competitorViewModelService;
+	private readonly ICompetitionViewModelService _competitionViewModelService;
 
 
-	public SeasonViewModelService(ISeasonRepository repository, ICompetitorViewModelService competitorViewModelService)
+	public SeasonViewModelService(ISeasonRepository repository, ICompetitorViewModelService competitorViewModelService,
+		ICompetitionViewModelService competitionViewModelService)
    {
 		_repository = repository;
 		_competitorViewModelService = competitorViewModelService;
+		_competitionViewModelService = competitionViewModelService;
 	}
 
 
@@ -108,15 +111,7 @@ public class SeasonViewModelService : ISeasonViewModelService
 		{
 			foreach(var competition in season.Competitions)
 			{
-				seasonViewModel.Competitions.Add(new()
-				{
-					Name = competition.Name,
-					CircuitId = competition.CircuitId,
-					Circuit = new() {Name = competition.Circuit!.Name },
-					IsSprint = competition.IsSprint,
-					Week = competition.Week,
-					CompetitionState = competition.CompetitionState
-				}) ;
+				seasonViewModel.Competitions.Add(_competitionViewModelService.MapEntityToViewModel(competition)!);
 			}
 		}
 

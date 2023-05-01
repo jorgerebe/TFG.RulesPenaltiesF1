@@ -25,5 +25,6 @@ public class CompetitionViewModel
 	[Range(1, 53, ErrorMessage ="A year can't have less than 1 week or more than 53")]
    public int Week { get; set; }
 
+	[DisplayName("State")]
 	public CompetitionStateEnum CompetitionState { get; set; } = CompetitionStateEnum.NotStarted;
 }

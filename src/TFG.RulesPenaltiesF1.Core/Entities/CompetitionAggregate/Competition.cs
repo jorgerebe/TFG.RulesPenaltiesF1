@@ -1,7 +1,9 @@
-﻿namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+﻿using TFG.RulesPenaltiesF1.Core.Interfaces;
 
-public class Competition : EntityBase
-	{
+namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+
+public class Competition : EntityBase, IAggregateRoot
+{
 	public Season? Season { get; set; }
 	public int SeasonId { get; set; }
 

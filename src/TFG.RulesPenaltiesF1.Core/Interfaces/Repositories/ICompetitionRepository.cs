@@ -1,0 +1,8 @@
+﻿using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+
+namespace TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
+
+public interface ICompetitionRepository
+{
+	Task<Competition?> GetCompetitionById(int id);
+}
