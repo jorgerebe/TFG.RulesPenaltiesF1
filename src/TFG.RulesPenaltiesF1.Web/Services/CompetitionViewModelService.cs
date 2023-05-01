@@ -51,6 +51,7 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 
 		return new CompetitionViewModel()
 		{
+			SeasonId = competition.Season!.Id,
 			Year = competition.Season!.Year,
 			Id = competition.Id,
 			Name = competition.Name,

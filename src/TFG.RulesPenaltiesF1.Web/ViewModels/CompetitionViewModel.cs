@@ -10,7 +10,9 @@ public class CompetitionViewModel
 
 	public int Year { get; set; }
 
-   [Required]
+	public int SeasonId { get; set; }
+
+	[Required]
    public string Name { get; set; } = string.Empty;
 
    [Required]
