@@ -20,6 +20,7 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 			.Where(c => c.Id == id)
 			.Include(c => c.Circuit)
 			.Include(c => c.Season)
+			.Include(c => c.Sessions)
 			.AsNoTracking()
 			.FirstOrDefaultAsync();
 	}

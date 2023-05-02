@@ -5,29 +5,35 @@ public class Session : EntityBase
 	public Competition? Competition { get; set; }
 	public int CompetitionId { get; set; }
 
-	public bool Finished { get; set; }
+	public SessionStateEnum State { get; set; }
 	public SessionTypeEnum? SessionType { get; set; }
 
 	private Session(int competitionId)
 	{
 		CompetitionId = competitionId;
-		Finished = false;
+		State = SessionStateEnum.NotStarted;
 	}
 
 	public Session(int competitionId, SessionTypeEnum type)
 	{
 		CompetitionId = competitionId;
-		Finished = false;
+		State = SessionStateEnum.NotStarted;
 		SessionType = type;
 	}
 
-	public void Finish()
+	public void Advance()
 	{
-		if (Finished)
+		if (State.Equals(SessionStateEnum.Finished))
 		{
 			throw new InvalidOperationException("The session is already finished");
 		}
-
-		Finished = true;
+		else if (State.Equals(SessionStateEnum.NotStarted))
+		{
+			State = SessionStateEnum.Started;
+		}
+		else if (State.Equals(SessionStateEnum.Started))
+		{
+			State = SessionStateEnum.Finished;
+		}
 	}
 }

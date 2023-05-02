@@ -49,7 +49,7 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 	{
 		ArgumentNullException.ThrowIfNull(competition);
 
-		return new CompetitionViewModel()
+		CompetitionViewModel competitionViewModel = new()
 		{
 			SeasonId = competition.Season!.Id,
 			Year = competition.Season!.Year,
@@ -61,6 +61,20 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 			Week = competition.Week,
 			CompetitionState = competition.CompetitionState
 		};
+
+		foreach(var session in competition.Sessions)
+		{
+			competitionViewModel.Sessions.Add(
+				new SessionViewModel()
+					{
+						SessionId = session.Id,
+						State = session.State,
+						Type = session.SessionType
+					}
+				);
+		}
+
+		return competitionViewModel;
 	}
 
 	public Competition? MapViewModelToEntity(CompetitionViewModel competition)

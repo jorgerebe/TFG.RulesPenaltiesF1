@@ -8,7 +8,8 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
 {
 	public void Configure(EntityTypeBuilder<Session> builder)
 	{
-		builder.Property(c => c.Finished).IsRequired();
+		builder.HasKey(s => s.Id);
+		builder.Property(c => c.State).IsRequired();
 		builder.Property(c => c.SessionType).IsRequired();
 	}
 }

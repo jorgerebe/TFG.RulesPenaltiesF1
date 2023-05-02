@@ -31,4 +31,6 @@ public class CompetitionViewModel
 
 	[DisplayName("State")]
 	public CompetitionStateEnum CompetitionState { get; set; } = CompetitionStateEnum.NotStarted;
+
+	public List<SessionViewModel> Sessions { get; set; } = new();
 }

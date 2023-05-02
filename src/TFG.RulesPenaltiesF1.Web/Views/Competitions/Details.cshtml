@@ -42,7 +42,46 @@
             <button type="submit" class="btn btn-success">Start Competition</button>
         </form>
     }
+<hr/>
+    @if(Model.Sessions.Count > 0)
+    {
+        <h4>Sessions</h4>
+
+        <table class="table mt-1">
+            <thead>
+                <tr>
+                    <th>
+                        Session Type
+                    </th>
+                    <th>
+                        State
+                    </th>
+                    <th>
+                        Manage
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var session in Model.Sessions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(s => session.Type!.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(s => session.State!.Name)
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
+
 <div>
+    <br />
     <a asp-controller="Seasons" asp-action="Details" asp-route-id="@Model.SeasonId">Back to Season @Model.Year</a>
 </div>
