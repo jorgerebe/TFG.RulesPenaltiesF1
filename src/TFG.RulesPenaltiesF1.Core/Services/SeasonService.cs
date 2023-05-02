@@ -1,4 +1,5 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 
@@ -17,6 +18,10 @@ public class SeasonService : ISeasonService
 	{
 		ArgumentNullException.ThrowIfNull(season);
 
-		await _repository.AddSeason(season);
+		List<Competition> competitionsOrdered = season.Competitions.OrderBy(c => c.Week).ToList();
+
+		Season seasonOrdered = new(season.Year, season.Competitors.ToList(), competitionsOrdered, season.RegulationId);
+
+		await _repository.AddSeason(seasonOrdered);
 	}
 }

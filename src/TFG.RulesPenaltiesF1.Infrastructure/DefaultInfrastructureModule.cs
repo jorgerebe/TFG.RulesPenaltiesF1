@@ -103,6 +103,11 @@ public class DefaultInfrastructureModule : Module
          .As<IDriverRepository>()
          .InstancePerLifetimeScope();
 
+      builder
+         .RegisterType<CompetitionRepository>()
+         .As<ICompetitionRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();

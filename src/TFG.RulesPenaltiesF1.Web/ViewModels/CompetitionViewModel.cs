@@ -8,7 +8,11 @@ public class CompetitionViewModel
 {
    public int Id { get; set; }
 
-   [Required]
+	public int Year { get; set; }
+
+	public int SeasonId { get; set; }
+
+	[Required]
    public string Name { get; set; } = string.Empty;
 
    [Required]
@@ -25,5 +29,8 @@ public class CompetitionViewModel
 	[Range(1, 53, ErrorMessage ="A year can't have less than 1 week or more than 53")]
    public int Week { get; set; }
 
+	[DisplayName("State")]
 	public CompetitionStateEnum CompetitionState { get; set; } = CompetitionStateEnum.NotStarted;
+
+	public List<SessionViewModel> Sessions { get; set; } = new();
 }

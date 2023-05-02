@@ -1,24 +1,14 @@
 ﻿@model SeasonViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = $"Season {Model.Year}";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Season</h4>
+    <h2>Season @Model.Year</h2>
     <hr/>
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Year)
-        </dd>
-    </dl>
-    <dl class="row mt-4">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Competitors)
         </dt>
@@ -58,7 +48,7 @@
             @foreach (var competition in Model.Competitions) {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => competition.Name)
+                    <a href="/Competitions/Details/@competition.Id" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">@Html.DisplayFor(modelItem => competition.Name)</a>
                 </td>
                 <td>
                     @competition.Week
