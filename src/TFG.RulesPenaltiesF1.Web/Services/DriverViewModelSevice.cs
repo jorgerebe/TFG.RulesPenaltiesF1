@@ -22,7 +22,7 @@ public class DriverViewModelSevice : IDriverViewModelService
 
 		foreach(var driver in drivers)
 		{
-			driversViewModels.Add(MapEntityToViewModel(driver)!);
+			driversViewModels.Add(DriverViewModel.MapEntityToViewModel(driver)!);
 		}
 
 		return driversViewModels;
@@ -37,53 +37,11 @@ public class DriverViewModelSevice : IDriverViewModelService
 			return null;
 		}
 
-		return MapEntityToViewModel(driver!);
+		return DriverViewModel.MapEntityToViewModel(driver!);
 	}
 
 	public async Task<bool> ExistsDriverByName(string name)
 	{
 		return await _repository.GetDriverByName(name) is not null;
-	}
-
-	public DriverViewModel? MapEntityToViewModel(Driver driver)
-	{
-		if (driver is null)
-		{
-			return null;
-		}
-
-		DriverViewModel driverViewModel = new()
-		{
-			Id = driver.Id,
-			Name = driver.Name,
-			DateBirth = driver.DateBirth,
-			LicensePoints = driver.LicensePoints,
-			Competitor = driver.Competitor is not null ? new CompetitorViewModel() { Id = driver.Competitor!.Id, Name = driver.Competitor.Name} : null,
-			CompetitorId = driver.CompetitorId is null ? -1 : (int)driver.CompetitorId
-		};
-
-		return driverViewModel;
-	}
-
-	public Driver? MapViewModelToEntity(DriverViewModel driver)
-	{
-		if(driver is null)
-		{
-			return null;
-		}
-
-		Driver driverEntity;
-
-		if(driver.CompetitorId == -1 || driver.Competitor is null)
-		{
-			driverEntity = new Driver(driver.Name, driver.DateBirth, null);
-		}
-		else
-		{
-			driverEntity = new Driver(driver.Name, driver.DateBirth, driver.CompetitorId);
-		}
-
-		driverEntity.Id = driver.Id;
-		return driverEntity;
 	}
 }

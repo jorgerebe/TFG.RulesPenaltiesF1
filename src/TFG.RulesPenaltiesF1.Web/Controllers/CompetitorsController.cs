@@ -70,7 +70,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
                   return View(competitor);
             }
 
-               var competitorEntity = _viewModelService.MapViewModelToEntity(competitor);
+               var competitorEntity = CompetitorViewModel.MapViewModelToEntity(competitor);
                if(competitorEntity is not null)
                {
                   await _service.CreateCompetitorAsync(competitorEntity);
@@ -80,101 +80,5 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
          ViewData["TeamPrincipalID"] = new SelectList(await _viewModelService.GetAllTeamPrincipals(), "Id", "FullName");
          return View(competitor);
       }
-
-      /*// GET: Competitors/Edit/5
-      public async Task<IActionResult> Edit(int? id)
-      {
-         if (id == null || _context.Competitor == null)
-         {
-               return NotFound();
-         }
-
-         var competitor = await _context.Competitor.FindAsync(id);
-         if (competitor == null)
-         {
-               return NotFound();
-         }
-         ViewData["TeamPrincipalID"] = new SelectList(_context.Users, "Id", "Id", competitor.TeamPrincipalID);
-         return View(competitor);
-      }
-
-      // POST: Competitors/Edit/5
-      // To protect from overposting attacks, enable the specific properties you want to bind to.
-      // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public async Task<IActionResult> Edit(int id, [Bind("Name,Location,TeamPrincipalID,PowerUnit,Id")] Competitor competitor)
-      {
-         if (id != competitor.Id)
-         {
-               return NotFound();
-         }
-
-         if (ModelState.IsValid)
-         {
-               try
-               {
-                  _context.Update(competitor);
-                  await _context.SaveChangesAsync();
-               }
-               catch (DbUpdateConcurrencyException)
-               {
-                  if (!CompetitorExists(competitor.Id))
-                  {
-                     return NotFound();
-                  }
-                  else
-                  {
-                     throw;
-                  }
-               }
-               return RedirectToAction(nameof(Index));
-         }
-         ViewData["TeamPrincipalID"] = new SelectList(_context.Users, "Id", "Id", competitor.TeamPrincipalID);
-         return View(competitor);
-      }
-
-      // GET: Competitors/Delete/5
-      public async Task<IActionResult> Delete(int? id)
-      {
-         if (id == null || _context.Competitor == null)
-         {
-               return NotFound();
-         }
-
-         var competitor = await _context.Competitor
-               .Include(c => c.TeamPrincipal)
-               .FirstOrDefaultAsync(m => m.Id == id);
-         if (competitor == null)
-         {
-               return NotFound();
-         }
-
-         return View(competitor);
-      }
-
-      // POST: Competitors/Delete/5
-      [HttpPost, ActionName("Delete")]
-      [ValidateAntiForgeryToken]
-      public async Task<IActionResult> DeleteConfirmed(int id)
-      {
-         if (_context.Competitor == null)
-         {
-               return Problem("Entity set 'RulesPenaltiesF1DbContext.Competitor'  is null.");
-         }
-         var competitor = await _context.Competitor.FindAsync(id);
-         if (competitor != null)
-         {
-               _context.Competitor.Remove(competitor);
-         }
-            
-         await _context.SaveChangesAsync();
-         return RedirectToAction(nameof(Index));
-      }
-
-      private bool CompetitorExists(int id)
-      {
-         return (_context.Competitor?.Any(e => e.Id == id)).GetValueOrDefault();
-      }*/
    }
 }

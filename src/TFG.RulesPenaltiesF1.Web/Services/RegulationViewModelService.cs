@@ -9,12 +9,10 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 public class RegulationViewModelService : IRegulationViewModelService
 {
    private readonly IRegulationRepository _repository;
-   private readonly IArticleViewModelService _articleViewModelService;
 
-   public RegulationViewModelService(IRegulationRepository repository, IArticleViewModelService articleViewModelService)
+   public RegulationViewModelService(IRegulationRepository repository)
    {
       _repository = repository;
-      _articleViewModelService = articleViewModelService;
    }
 
    public async Task<RegulationViewModel?> GetRegulationByIdAsync(int id)
@@ -30,7 +28,7 @@ public class RegulationViewModelService : IRegulationViewModelService
       
       foreach(var article in regulation.Articles)
       {
-         articles.Add(_articleViewModelService.MapEntityToViewModel(article.Article!)!);
+         articles.Add(ArticleViewModel.MapEntityToViewModel(article.Article!)!);
       }
 
       List<PenaltyViewModel> penalties = new();
@@ -70,31 +68,5 @@ public class RegulationViewModelService : IRegulationViewModelService
    public async Task<bool> ExistsRegulationWithName(string name)
    {
       return await _repository.ExistsRegulationByName(name);
-   }
-
-   public Regulation? MapViewModelToEntity(RegulationViewModel regulation)
-   {
-      if(regulation is null)
-      {
-         return null;
-      }
-
-      List<RegulationArticle> regulationArticles = new();
-
-      foreach(int id in regulation.Articles)
-      {
-         regulationArticles.Add(new RegulationArticle(0, id));
-      }
-      
-      List<RegulationPenalty> regulationPenalties = new();
-
-      foreach(int id in regulation.Penalties)
-      {
-         regulationPenalties.Add(new RegulationPenalty(0, id));
-      }
-
-      var regulationEntity = new Regulation(regulation.Name, regulationArticles, regulationPenalties);
-
-      return regulationEntity;
    }
 }

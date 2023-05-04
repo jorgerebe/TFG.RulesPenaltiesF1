@@ -23,11 +23,6 @@
 
 <h1>@Model.Name - 2023</h1>
 
-@if (canAddParticipation)
-{
-    <h4>Add Participation</h4>
-}
-
 <div>
     <hr/>
     <dl class="row">
@@ -61,6 +56,12 @@
         </form>
     }
 <hr/>
+
+    @if (canAddParticipation)
+    {
+        <a href="/Participations/Create/@Model.Id" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">Add Participation</a>
+    }
+
     @if(Model.Sessions.Count > 0)
     {
         <h4>Sessions</h4>

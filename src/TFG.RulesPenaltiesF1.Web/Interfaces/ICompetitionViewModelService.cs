@@ -7,7 +7,5 @@ public interface ICompetitionViewModelService
 {
 	Task<CompetitionViewModel?> GetByIdAsync(int id);
 	Task<bool> CanStartCompetition(int id);
-	Competition? MapViewModelToEntity(CompetitionViewModel competition);
-	CompetitionViewModel? MapEntityToViewModel(Competition competition);
 	Task<bool> CanAddParticipation(int idCompetition, string idTeamPrincipal);
 }

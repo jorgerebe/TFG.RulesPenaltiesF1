@@ -28,7 +28,7 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 			return null;
 		}
 
-		return MapEntityToViewModel(competition);
+		return CompetitionViewModel.MapEntityToViewModel(competition);
 	}
 
 	public async Task<bool> CanStartCompetition(int id)
@@ -74,7 +74,7 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 			return false;
 		}
 
-		var competitor = _competitorViewModelService.GetCompetitorByTeamPrincipal(idTeamPrincipal);
+		var competitor = await _competitorViewModelService.GetCompetitorByTeamPrincipal(idTeamPrincipal);
 
 		if(competitor is null)
 		{
@@ -82,42 +82,5 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 		}
 
 		return await _seasonViewModelService.CompetitorPresentInSeasonOfCompetition(idCompetition, competitor.Id);
-	}
-
-	public CompetitionViewModel MapEntityToViewModel(Competition competition)
-	{
-		ArgumentNullException.ThrowIfNull(competition);
-
-		CompetitionViewModel competitionViewModel = new()
-		{
-			SeasonId = competition.Season!.Id,
-			Year = competition.Season!.Year,
-			Id = competition.Id,
-			Name = competition.Name,
-			CircuitId = competition.CircuitId,
-			Circuit = new() { Name = competition.Circuit!.Name },
-			IsSprint = competition.IsSprint,
-			Week = competition.Week,
-			CompetitionState = competition.CompetitionState
-		};
-
-		foreach(var session in competition.Sessions)
-		{
-			competitionViewModel.Sessions.Add(
-				new SessionViewModel()
-					{
-						SessionId = session.Id,
-						State = session.State,
-						Type = session.SessionType
-					}
-				);
-		}
-
-		return competitionViewModel;
-	}
-
-	public Competition? MapViewModelToEntity(CompetitionViewModel competition)
-	{
-		throw new NotImplementedException();
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using TFG.RulesPenaltiesF1.Core.Entities;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -23,4 +24,46 @@ public class DriverViewModel
 	public int CompetitorId { get; set; }
 
 	public CompetitorViewModel? Competitor { get; set; }
+
+	public static DriverViewModel? MapEntityToViewModel(Driver driver)
+	{
+		if (driver is null)
+		{
+			return null;
+		}
+
+		DriverViewModel driverViewModel = new()
+		{
+			Id = driver.Id,
+			Name = driver.Name,
+			DateBirth = driver.DateBirth,
+			LicensePoints = driver.LicensePoints,
+			Competitor = driver.Competitor is not null ? new CompetitorViewModel() { Id = driver.Competitor!.Id, Name = driver.Competitor.Name } : null,
+			CompetitorId = driver.CompetitorId is null ? -1 : (int)driver.CompetitorId
+		};
+
+		return driverViewModel;
+	}
+
+	public static Driver? MapViewModelToEntity(DriverViewModel driver)
+	{
+		if (driver is null)
+		{
+			return null;
+		}
+
+		Driver driverEntity;
+
+		if (driver.CompetitorId == -1 || driver.Competitor is null)
+		{
+			driverEntity = new Driver(driver.Name, driver.DateBirth, null);
+		}
+		else
+		{
+			driverEntity = new Driver(driver.Name, driver.DateBirth, driver.CompetitorId);
+		}
+
+		driverEntity.Id = driver.Id;
+		return driverEntity;
+	}
 }
