@@ -83,7 +83,18 @@ public class CompetitorViewModelService : ICompetitorViewModelService
       return competitorViewModel;
    }
 
-   public Competitor? MapViewModelToEntity(CompetitorViewModel competitor)
+	public async Task<CompetitorViewModel?> GetCompetitorByTeamPrincipal(string teamPrincipalId)
+	{
+		var competitor = await _repository.GetCompetitorByTeamPrincipalId(teamPrincipalId);
+		if(competitor is null)
+		{
+			return null;
+		}
+
+		return MapEntityToViewModel(competitor);
+	}
+
+	public Competitor? MapViewModelToEntity(CompetitorViewModel competitor)
    {
       ArgumentNullException.ThrowIfNull(competitor);
 

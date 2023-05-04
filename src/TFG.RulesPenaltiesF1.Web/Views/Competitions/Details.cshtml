@@ -1,14 +1,32 @@
-﻿@using TFG.RulesPenaltiesF1.Web.Interfaces;
+﻿@using Microsoft.AspNetCore.Identity;
+@using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+@using TFG.RulesPenaltiesF1.Web.Interfaces;
 @model CompetitionViewModel
+@inject ICompetitionViewModelService _viewModelService
+@inject UserManager<ApplicationUser> _userManager
 
 @inject ICompetitionViewModelService Service
 
 @{
     ViewData["Title"] = $"{Model.Name} - {Model.Year}";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var currentUser = await _userManager.GetUserAsync(User);
+
+    bool canAddParticipation = false;
+
+    if (currentUser is not null)
+    {
+        canAddParticipation = await _viewModelService.CanAddParticipation(Model.Id, currentUser.Id);
+    }
 }
 
 <h1>@Model.Name - 2023</h1>
+
+@if (canAddParticipation)
+{
+    <h4>Add Participation</h4>
+}
 
 <div>
     <hr/>

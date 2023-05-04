@@ -8,10 +8,15 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 public class CompetitionViewModelService : ICompetitionViewModelService
 {
 	private readonly ICompetitionRepository _repository;
+	private readonly ICompetitorViewModelService _competitorViewModelService;
+	private readonly ISeasonViewModelService _seasonViewModelService;
 
-	public CompetitionViewModelService(ICompetitionRepository repository)
+	public CompetitionViewModelService(ICompetitionRepository repository, ICompetitorViewModelService competitorViewModelService,
+		ISeasonViewModelService seasonViewModelService)
 	{
 		_repository = repository;
+		_competitorViewModelService = competitorViewModelService;
+		_seasonViewModelService = seasonViewModelService;
 	}
 
 	public async Task<CompetitionViewModel?> GetByIdAsync(int id)
@@ -43,6 +48,40 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 		{
 			return false;
 		}
+	}
+
+	public async Task<bool> CanAddParticipation(int idCompetition, string idTeamPrincipal)
+	{
+		var competition = await GetByIdAsync(idCompetition);
+
+		if(competition is null)
+		{
+			return false;
+		}
+
+		bool anySessionStarted = false;
+
+		foreach (var session in competition.Sessions)
+		{
+			if (!session.State.Equals(SessionStateEnum.NotStarted))
+			{
+				anySessionStarted = true;
+			}
+		}
+
+		if (anySessionStarted)
+		{
+			return false;
+		}
+
+		var competitor = _competitorViewModelService.GetCompetitorByTeamPrincipal(idTeamPrincipal);
+
+		if(competitor is null)
+		{
+			return false;
+		}
+
+		return await _seasonViewModelService.CompetitorPresentInSeasonOfCompetition(idCompetition, competitor.Id);
 	}
 
 	public CompetitionViewModel MapEntityToViewModel(Competition competition)

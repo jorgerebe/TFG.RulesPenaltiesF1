@@ -58,6 +58,13 @@ public class SeasonViewModelService : ISeasonViewModelService
 		return season != null;
 	}
 
+	public async Task<bool> CompetitorPresentInSeasonOfCompetition(int competitionId, int competitorId)
+	{
+		var season = await _repository.GetSeasonByCompetitonAndCompetitor(competitionId, competitorId);
+
+		return season is not null;
+	}
+
 	public Season? MapViewModelToEntity(SeasonViewModel season)
 	{
 		if(season is null)

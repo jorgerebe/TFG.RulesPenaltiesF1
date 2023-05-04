@@ -55,4 +55,12 @@ public class SeasonRepository : EfRepository<Season>, ISeasonRepository
 		await _dbContext.SaveChangesAsync();
 		return season;
 	}
+
+	public async Task<Season?> GetSeasonByCompetitonAndCompetitor(int competitionId, int competitorId)
+	{
+		return await _dbContext.Set<Season>()
+			.Where(s => s.Competitions.Any(c => c.Id == competitionId))
+			.Where(s => s.Competitors.Any(c => c.Id == competitorId))
+			.FirstOrDefaultAsync();
+	}
 }

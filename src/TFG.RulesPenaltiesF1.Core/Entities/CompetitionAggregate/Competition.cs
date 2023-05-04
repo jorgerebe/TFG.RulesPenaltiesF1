@@ -19,6 +19,9 @@ public class Competition : EntityBase, IAggregateRoot
 	private List<Session> _sessions = new();
 	public IReadOnlyCollection<Session> Sessions => _sessions.AsReadOnly();
 
+	public List<Participation> _participations = new();
+	public IReadOnlyCollection<Participation> Participations => _participations.AsReadOnly();
+
 	public Competition(Circuit circuit, string name, bool isSprint, int week)
 	{
 		ArgumentNullException.ThrowIfNull(circuit, nameof(circuit));
@@ -67,5 +70,12 @@ public class Competition : EntityBase, IAggregateRoot
 		sessions.Add(new Session(this.Id, SessionTypeEnum.Race));
 
 		_sessions = sessions;
+	}
+
+	public void AddParticipation(Participation participation)
+	{
+		ArgumentNullException.ThrowIfNull(participation);
+
+		_participations.Add(participation);
 	}
 }

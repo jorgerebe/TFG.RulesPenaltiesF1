@@ -11,5 +11,6 @@ public interface ISeasonViewModelService
 	Season? MapViewModelToEntity(SeasonViewModel season);
 	SeasonViewModel? MapEntityToViewModel(Season season);
 
+	Task<bool> CompetitorPresentInSeasonOfCompetition(int competitionId, int competitorId);
 	Task<bool> CanCreateAnotherSeason();
 }
