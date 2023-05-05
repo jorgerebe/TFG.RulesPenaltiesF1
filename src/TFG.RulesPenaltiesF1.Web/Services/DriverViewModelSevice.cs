@@ -44,4 +44,18 @@ public class DriverViewModelSevice : IDriverViewModelService
 	{
 		return await _repository.GetDriverByName(name) is not null;
 	}
+
+	public async Task<List<DriverViewModel>> GetDriversInCompetitor(int competitorId)
+	{
+		List<DriverViewModel> driversViewModels = new();
+
+		List<Driver> drivers = await _repository.GetDriversInCompetitor(competitorId);
+
+		foreach (var driver in drivers)
+		{
+			driversViewModels.Add(DriverViewModel.MapEntityToViewModel(driver)!);
+		}
+
+		return driversViewModels;
+	}
 }

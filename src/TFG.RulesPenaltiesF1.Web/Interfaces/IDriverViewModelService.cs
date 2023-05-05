@@ -8,4 +8,5 @@ public interface IDriverViewModelService
 	Task<List<DriverViewModel>> GetAllDrivers();
 	Task<DriverViewModel?> GetDriverById(int id);
 	Task<bool> ExistsDriverByName(string name);
+	Task<List<DriverViewModel>> GetDriversInCompetitor(int competitorId);
 }
