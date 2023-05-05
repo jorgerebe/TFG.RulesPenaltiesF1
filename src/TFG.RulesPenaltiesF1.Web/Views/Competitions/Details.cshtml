@@ -1,11 +1,24 @@
-﻿@using TFG.RulesPenaltiesF1.Web.Interfaces;
+﻿@using Microsoft.AspNetCore.Identity;
+@using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+@using TFG.RulesPenaltiesF1.Web.Interfaces;
 @model CompetitionViewModel
+@inject ICompetitionViewModelService _viewModelService
+@inject UserManager<ApplicationUser> _userManager
 
 @inject ICompetitionViewModelService Service
 
 @{
     ViewData["Title"] = $"{Model.Name} - {Model.Year}";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var currentUser = await _userManager.GetUserAsync(User);
+
+    bool canAddParticipation = false;
+
+    if (currentUser is not null)
+    {
+        canAddParticipation = await _viewModelService.CanAddParticipation(Model.Id, currentUser.Id);
+    }
 }
 
 <h1>@Model.Name - 2023</h1>
@@ -43,6 +56,43 @@
         </form>
     }
 <hr/>
+
+    @if(Model.Participations.Count > 0)
+    {
+        <h4>Participations</h4>
+
+         <table class="table mt-1">
+            <thead>
+                <tr>
+                    <th>
+                        Driver
+                    </th>
+                    <th>
+                        Team
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var participation in Model.Participations)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(s => participation.Driver!.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(s => participation.Competitor!.Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (canAddParticipation)
+    {
+        <a href="/Participations/Create/@Model.Id" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">Add Participation</a>
+    }
+
     @if(Model.Sessions.Count > 0)
     {
         <h4>Sessions</h4>

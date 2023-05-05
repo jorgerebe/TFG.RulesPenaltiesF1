@@ -23,7 +23,7 @@ public class CircuitViewModelService : ICircuitViewModelService
 
       foreach(var circuit in circuits)
       {
-         circuitsViewModel.Add(MapEntityToViewModel(circuit)!);
+         circuitsViewModel.Add(CircuitViewModel.MapEntityToViewModel(circuit)!);
       }
 
       return circuitsViewModel;
@@ -57,49 +57,9 @@ public class CircuitViewModelService : ICircuitViewModelService
          return null;
       }
 
-      var circuitViewModel = MapEntityToViewModel(circuit);
+      var circuitViewModel = CircuitViewModel.MapEntityToViewModel(circuit);
 
       return circuitViewModel;
-   }
-
-   public CircuitViewModel? MapEntityToViewModel(Circuit circuit)
-   {
-      if(circuit == null)
-      {
-         return null;
-      }
-
-
-
-      return new CircuitViewModel()
-      {
-         Id = circuit.Id,
-         Country = new CountryViewModel() { Id = circuit.Country!.Id, Name = circuit.Country.Name },
-         Name = circuit.Name,
-         Length = circuit.Length,
-         Laps = circuit.Laps,
-         RaceDistance = circuit.Length * circuit.Laps,
-         YearFirstGP = circuit.YearFirstGP,
-         MillisecondsLapRecord = circuit.MillisecondsLapRecord,
-         DriverLapRecord = circuit.DriverLapRecord,
-         YearLapRecord = circuit.YearLapRecord,
-         InfoLapRecord = circuit.FormatFastLap() + " - " + circuit.DriverLapRecord + " (" + circuit.YearLapRecord + ")"
-      };
-   }
-
-   public Circuit? MapViewModelToEntity(CircuitViewModel circuit)
-   {
-      if(circuit is null)
-      {
-         return null;
-      }
-
-      var milliseconds = circuit.MinutesLapRecord * 60000 + (int)(circuit.SecondsLapRecord * 1000);
-
-     Circuit circuitEntity = new Circuit(circuit.CountryId, circuit.Name, circuit.Length,
-         circuit.Laps, circuit.YearFirstGP, milliseconds, circuit.DriverLapRecord, circuit.YearFirstGP);
-
-      return circuitEntity;
    }
 
 }

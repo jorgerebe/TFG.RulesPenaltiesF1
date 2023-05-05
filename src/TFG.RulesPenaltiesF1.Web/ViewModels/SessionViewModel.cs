@@ -6,7 +6,7 @@ public class SessionViewModel
 {
 	public int SessionId { get; set; }
 
-	public SessionStateEnum? State { get; set; }
+	public SessionStateEnum State { get; set; } = new("-",-1);
 
 	public SessionTypeEnum? Type { get; set; }
 }

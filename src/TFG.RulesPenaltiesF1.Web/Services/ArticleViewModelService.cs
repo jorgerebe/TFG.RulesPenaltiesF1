@@ -51,52 +51,7 @@ public class ArticleViewModelService : IArticleViewModelService
          return null;
       }
 
-      ArticleViewModel? result = MapEntityToViewModel(article);
-
-      return result;
-   }
-
-   public ArticleViewModel? MapEntityToViewModel(Article article)
-   {
-      if(article == null)
-      {
-         return null;
-      }
-
-      ArticleViewModel viewmodel = new ArticleViewModel(article.Content)
-      {
-         Id = article.Id
-      };
-
-      foreach (var subarticle in article.SubArticles)
-      {
-         if(subarticle.Content != null)
-         {
-            ArticleViewModel subarticleViewModel = new ArticleViewModel(subarticle.Content);
-            viewmodel.SubArticles.Add(subarticleViewModel);
-         }
-      }
-
-      return viewmodel;
-   }
-
-
-   public Article? MapViewModelToEntity(ArticleViewModel article)
-   {
-      if(article.Content == null)
-      {
-         return null;
-      }
-
-      Article result = new Article(article.Content!);
-
-      foreach(var subarticle in article.SubArticles)
-      {
-         if(subarticle.Content != null)
-         {
-            result.AddSubArticle(new Article(subarticle.Content));
-         }
-      }
+      ArticleViewModel? result = ArticleViewModel.MapEntityToViewModel(article);
 
       return result;
    }

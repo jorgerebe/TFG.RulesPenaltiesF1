@@ -75,7 +75,7 @@ public class RegulationsController : Controller
                return View(regulation);
             }
 
-            var regulationEntity = _regulationServiceViewModel.MapViewModelToEntity(regulation);
+            var regulationEntity = RegulationViewModel.MapViewModelToEntity(regulation);
 
             if (regulationEntity != null)
             {

@@ -8,4 +8,5 @@ public interface ISeasonRepository : IRepository<Season>
 	public Task<Season?> GetSeasonById(int id);
 	public Task<Season?> GetCurrentSeason();
 	public Task<Season> AddSeason(Season season);
+	public Task<Season?> GetSeasonByCompetitonAndCompetitor(int competitionId, int competitorId);
 }

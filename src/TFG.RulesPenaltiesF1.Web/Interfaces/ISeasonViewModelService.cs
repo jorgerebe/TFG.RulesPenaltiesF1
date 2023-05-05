@@ -8,8 +8,7 @@ public interface ISeasonViewModelService
 	Task<List<SeasonViewModel>> GetSeasonsAsync();
    Task<SeasonViewModel?> GetByIdAsync(int id);
 	Task<bool> ExistsSeasonInYear(int year);
-	Season? MapViewModelToEntity(SeasonViewModel season);
-	SeasonViewModel? MapEntityToViewModel(Season season);
 
+	Task<bool> CompetitorPresentInSeasonOfCompetition(int competitionId, int competitorId);
 	Task<bool> CanCreateAnotherSeason();
 }

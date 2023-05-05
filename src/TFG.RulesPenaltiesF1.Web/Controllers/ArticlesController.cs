@@ -62,7 +62,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
             if(ModelState.IsValid)
             {
 
-               var articleEntity = _serviceViewModel.MapViewModelToEntity(article);
+               var articleEntity = ArticleViewModel.MapViewModelToEntity(article);
 
                if(articleEntity != null)
                {

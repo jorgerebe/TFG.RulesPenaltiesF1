@@ -10,7 +10,6 @@ public interface ICompetitorViewModelService
    Task<List<CompetitorViewModel>> GetAllCompetitors();
 	Task<List<CompetitorViewModel>> GetAllCompetitorsWithTeamPrincipals();
    Task<CompetitorViewModel?> GetByIdAsync(int id);
-   Competitor? MapViewModelToEntity(CompetitorViewModel competitor);
-   CompetitorViewModel? MapEntityToViewModel(Competitor competitor);
+	Task<CompetitorViewModel?> GetCompetitorByTeamPrincipal(string teamPrincipalId);
    Task<bool> ExistsCompetitorWithName(string name);
 }

@@ -39,10 +39,12 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<Competitor> Competitor => Set<Competitor>();
    public DbSet<ApplicationUser> User => Set<ApplicationUser>();
 
-   public DbSet<Season> Season => Set<Season>();
+	public DbSet<Driver> Driver => Set<Driver>();
+
+	public DbSet<Season> Season => Set<Season>();
    public DbSet<Session> Session => Set<Session>();
    public DbSet<Competition> Competition => Set<Competition>();
-   public DbSet<Driver> Driver => Set<Driver>();
+   public DbSet<Participation> Participation => Set<Participation>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {

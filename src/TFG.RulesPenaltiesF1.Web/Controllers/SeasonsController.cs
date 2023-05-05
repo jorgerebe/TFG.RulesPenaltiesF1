@@ -120,7 +120,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 					n++;
 				}
 
-				Season seasonEntity = _seasonViewModelService.MapViewModelToEntity(season)!;
+				Season seasonEntity = SeasonViewModel.MapViewModelToEntity(season)!;
 				await _seasonService.CreateSeasonAsync(seasonEntity);
 				return RedirectToAction(nameof(Index));
 			}
