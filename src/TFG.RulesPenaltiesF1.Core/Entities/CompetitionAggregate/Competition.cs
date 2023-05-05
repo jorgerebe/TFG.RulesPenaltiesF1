@@ -58,24 +58,52 @@ public class Competition : EntityBase, IAggregateRoot
 		CompetitionState = CompetitionStateEnum.Started;
 
 		List<Session> sessions = new();
-		sessions.Add(new (this.Id, SessionTypeEnum.Practice));
-		sessions.Add(new (this.Id, SessionTypeEnum.Qualifying));
+		_sessions.Add(new (this.Id, SessionTypeEnum.Practice));
+		_sessions.Add(new (this.Id, SessionTypeEnum.Qualifying));
 
 		if (IsSprint)
 		{
-			sessions.Add(new Session(this.Id, SessionTypeEnum.SprintShootout));
-			sessions.Add(new Session(this.Id, SessionTypeEnum.Sprint));
+			_sessions.Add(new Session(this.Id, SessionTypeEnum.SprintShootout));
+			_sessions.Add(new Session(this.Id, SessionTypeEnum.Sprint));
 		}
 
-		sessions.Add(new Session(this.Id, SessionTypeEnum.Race));
+		_sessions.Add(new Session(this.Id, SessionTypeEnum.Race));
 
 		_sessions = sessions;
 	}
 
-	public void AddParticipation(Participation participation)
+	public void AddParticipations(List<Participation> participations)
 	{
-		ArgumentNullException.ThrowIfNull(participation);
+		ArgumentNullException.ThrowIfNull(participations);
 
-		_participations.Add(participation);
+		if (participations.Count == 0)
+		{
+			throw new ArgumentException("Can not add 0 participations");
+		}
+
+		if (participations.DistinctBy(p => p.DriverId).Count() < participations.Count)
+		{
+			throw new ArgumentException("The same driver can not participate twice in the same competition");
+		}
+
+		if (participations.DistinctBy(p => p.CompetitionId).Count() != 1)
+		{
+			throw new ArgumentException("A participation from other competitions can not be added to this competition");
+		}
+
+		if (participations.DistinctBy(p => p.CompetitorId).Count() != 1)
+		{
+			throw new ArgumentException("A participation with more than one competitor can not be added");
+		}
+
+		if (Participations.Any(p => p.CompetitorId == participations[0].CompetitorId))
+		{
+			throw new ArgumentException("The competitor already have its participations established for this competition");
+		}
+
+		foreach(var participation in participations)
+		{
+			_participations.Add(participation);
+		}
 	}
 }

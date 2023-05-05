@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
@@ -21,6 +20,10 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 			.Include(c => c.Circuit)
 			.Include(c => c.Season)
 			.Include(c => c.Sessions)
+			.Include(c => c.Participations.OrderBy(p => p.Competitor!.Name))
+			.ThenInclude(p => p.Competitor)
+			.Include(c => c.Participations.OrderBy(p => p.Competitor!.Name))
+			.ThenInclude(p => p.Driver)
 			.AsNoTracking()
 			.FirstOrDefaultAsync();
 	}
@@ -36,6 +39,14 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 			.Include(c => c.Circuit)
 			.Include(c => c.Season)
 			.AsNoTracking()
+			.FirstOrDefaultAsync();
+	}
+
+	public async Task<Competition?> GetCompetitionByIdWithParticipationsAsync(int id)
+	{
+		return await _dbContext.Set<Competition>()
+			.Where(c => c.Id == id)
+			.Include(c => c.Participations)
 			.FirstOrDefaultAsync();
 	}
 }

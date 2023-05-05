@@ -7,8 +7,8 @@
 
 <h1>Add Participations</h1>
 
-<h4>@Model.Competition.Name - @Model.Competition.Year</h4>
-<h5>@Model.Competitor.Name</h5>
+<h4>@Model.Competition!.Name - @Model.Competition.Year</h4>
+<h5>@Model.Competitor!.Name</h5>
 <hr />
 
 <div class="row">
@@ -16,6 +16,8 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-4">
+                <input type="hidden" asp-for="CompetitionId" value="@Model.CompetitionId"/>
+                <input type="hidden" asp-for="CompetitorId" value="@Model.CompetitorId"/>
 			    @Html.LabelFor(m => m.DriverIds, new { })
 			    @{
 

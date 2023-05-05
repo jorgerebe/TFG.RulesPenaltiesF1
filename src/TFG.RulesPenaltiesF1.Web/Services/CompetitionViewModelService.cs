@@ -44,10 +44,8 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	public async Task<bool> CanAddParticipation(int idCompetition, string idTeamPrincipal)
@@ -55,6 +53,11 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 		var competition = await GetByIdAsync(idCompetition);
 
 		if(competition is null)
+		{
+			return false;
+		}
+
+		if(competition.CompetitionState != CompetitionStateEnum.Started)
 		{
 			return false;
 		}
@@ -77,6 +80,11 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 		var competitor = await _competitorViewModelService.GetCompetitorByTeamPrincipal(idTeamPrincipal);
 
 		if(competitor is null)
+		{
+			return false;
+		}
+
+		if(competition.Participations.Any(p => p.CompetitorId == competitor.Id))
 		{
 			return false;
 		}

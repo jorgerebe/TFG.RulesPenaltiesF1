@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -14,13 +15,17 @@ public class ParticipationsController : Controller
 	private readonly IDriverViewModelService _driverViewModelService;
 	private readonly ICompetitorViewModelService _competitorViewModelService;
 
+	private readonly ICompetitionService _competitionService;
+
 	public ParticipationsController(UserManager<ApplicationUser> userManager, ICompetitionViewModelService competitionViewModelService,
-		IDriverViewModelService driverViewModelService, ICompetitorViewModelService competitorViewModelService)
+		IDriverViewModelService driverViewModelService, ICompetitorViewModelService competitorViewModelService,
+		ICompetitionService competitionService)
 	{
 		_userManager = userManager;
 		_competitionViewModelService = competitionViewModelService;
 		_driverViewModelService = driverViewModelService;
 		_competitorViewModelService = competitorViewModelService;
+		_competitionService = competitionService;
 	}
 
 	[HttpGet]
@@ -65,5 +70,32 @@ public class ParticipationsController : Controller
 		ViewBag.Drivers = drivers.AsEnumerable();
 
 		return View(participationInput);
+	}
+
+	[HttpPost]
+	[Authorize(Roles = "TeamPrincipal")]
+	public async Task<IActionResult> Create([Bind("DriverIds,CompetitorId,CompetitionId")] ParticipationInputViewModel participation)
+	{
+		if (ModelState.IsValid)
+		{
+			var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (currentUser is null)
+			{
+				return NotFound();
+			}
+
+			if (!await _competitionViewModelService.CanAddParticipation(participation.CompetitionId, currentUser.Id))
+			{
+				return NotFound();
+			}
+
+			var participations = ParticipationInputViewModel.MapViewModelToEntity(participation);
+			await _competitionService.AddParticipations(participations);
+
+			return RedirectToAction("Details", "Competitions", new { id = participation.CompetitionId });
+		}
+
+		return await Create(participation.CompetitionId);
 	}
 }
