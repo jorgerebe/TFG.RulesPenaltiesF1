@@ -1,5 +1,4 @@
-﻿using System;
-using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -107,17 +106,6 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 			return false;
 		}
 
-		bool canAdvance = false;
-
-		foreach(var session in competition.Sessions)
-		{
-			if(!session.State.Equals(SessionStateEnum.Finished))
-			{
-				canAdvance = true;
-				break;
-			}
-		}
-
-		return canAdvance;
+		return competition.CanAdvance();
 	}
 }

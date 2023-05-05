@@ -129,4 +129,27 @@ public class Competition : EntityBase, IAggregateRoot
 			}
 		}
 	}
+
+	public bool CanAdvance()
+	{
+		if (_sessions.Count == 0 || CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		{
+			return false;
+		}
+
+		if (_sessions.All(s => s.State.Equals(SessionStateEnum.Finished)) || CompetitionState.Equals(CompetitionStateEnum.Finished))
+		{
+			return false;
+		}
+
+		var total = Participations.DistinctBy(p => p.CompetitorId).Count();
+
+		if (Participations.DistinctBy(p => p.CompetitorId).Count() < Season!.Competitors.Count)
+		{
+			return false;
+		}
+
+		return true;
+
+	}
 }
