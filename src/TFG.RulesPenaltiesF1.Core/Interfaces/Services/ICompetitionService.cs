@@ -6,4 +6,5 @@ public interface ICompetitionService
 {
 	Task<Competition> StartCompetition(int id);
 	Task AddParticipations(List<Participation> participations);
+	Task AdvanceSession(int id);
 }

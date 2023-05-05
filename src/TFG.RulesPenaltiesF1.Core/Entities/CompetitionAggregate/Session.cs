@@ -36,4 +36,9 @@ public class Session : EntityBase
 			State = SessionStateEnum.Finished;
 		}
 	}
+
+	public bool HasFinished()
+	{
+		return State.Equals(SessionStateEnum.Finished);
+	}
 }

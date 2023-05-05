@@ -54,8 +54,8 @@ public class CompetitionsController : Controller
 
 		await _service.StartCompetition((int)id);
 
-		return View("Details", await _viewModelService.GetByIdAsync((int)id));
-   }
+		return RedirectToAction("Details", "Competitions", new { id = (int)id });
+	}
 
 	// POST: Competitions/AddParticipations/5
 	[HttpPost]
@@ -113,6 +113,8 @@ public class CompetitionsController : Controller
 		{
 			return NotFound();
 		}
+
+		await _service.AdvanceSession((int)id);
 
 		return RedirectToAction("Details", "Competitions", new { id = (int)id });
 	}

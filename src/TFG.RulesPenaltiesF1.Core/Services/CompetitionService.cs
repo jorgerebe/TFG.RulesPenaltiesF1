@@ -15,7 +15,7 @@ public class CompetitionService : ICompetitionService
 
 	public async Task<Competition> StartCompetition(int id)
 	{
-		Competition? competition = await _repository.GetCompetitionById(id) ?? throw new ArgumentException($"Competition with id {id} could not be found");
+		Competition? competition = await _repository.GetByIdAsync(id) ?? throw new ArgumentException($"Competition with id {id} could not be found");
 
 		competition.StartCompetition();
 
@@ -52,6 +52,15 @@ public class CompetitionService : ICompetitionService
 		Competition? competition = await _repository.GetCompetitionByIdWithParticipationsAsync(competitionId) ?? throw new ArgumentException("The participations are from a competition that does not exist.");
 
 		competition.AddParticipations(participations);
+
+		await _repository.Update(competition);
+	}
+
+	public async Task AdvanceSession(int id)
+	{
+		Competition? competition = await _repository.GetCompetitionByIdWithSessionsAsync(id) ?? throw new ArgumentException($"The competition with id {id} does not exist.");
+
+		competition.Advance();
 
 		await _repository.Update(competition);
 	}

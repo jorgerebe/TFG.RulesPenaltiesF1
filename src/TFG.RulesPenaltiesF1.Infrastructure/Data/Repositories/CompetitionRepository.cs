@@ -49,4 +49,12 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 			.Include(c => c.Participations)
 			.FirstOrDefaultAsync();
 	}
+
+	public async Task<Competition?> GetCompetitionByIdWithSessionsAsync(int id)
+	{
+		return await _dbContext.Set<Competition>()
+			.Where(c => c.Id == id)
+			.Include(c => c.Sessions)
+			.FirstOrDefaultAsync();
+	}
 }
