@@ -1,4 +1,5 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+﻿using System;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -90,5 +91,33 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 		}
 
 		return await _seasonViewModelService.CompetitorPresentInSeasonOfCompetition(idCompetition, competitor.Id);
+	}
+
+	public async Task<bool> CanAdvanceSession(int id)
+	{
+		var competition = await _repository.GetCompetitionById(id);
+
+		if(competition is null)
+		{
+			return false;
+		}
+
+		if(competition.Sessions is null)
+		{
+			return false;
+		}
+
+		bool canAdvance = false;
+
+		foreach(var session in competition.Sessions)
+		{
+			if(!session.State.Equals(SessionStateEnum.Finished))
+			{
+				canAdvance = true;
+				break;
+			}
+		}
+
+		return canAdvance;
 	}
 }
