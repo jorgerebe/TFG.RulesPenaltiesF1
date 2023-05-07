@@ -416,7 +416,13 @@ namespace TFG.RulesPenaltiesF1.Web
 
       public static void PopulateSeasons(RulesPenaltiesF1DbContext dbContext)
       {
-         Season season1 = new Season(2023, competitors, competitions, regulation);
+			List<Competitor> seasonCompetitors = new()
+			{
+				competitors[1],
+				competitors[3]
+			};
+
+         Season season1 = new Season(2023, seasonCompetitors, competitions, regulation);
 
          dbContext.Season.Add(season1);
       }
@@ -424,11 +430,19 @@ namespace TFG.RulesPenaltiesF1.Web
 
 		public static void PopulateDrivers(RulesPenaltiesF1DbContext dbContext)
 		{
+			//MCLAREN
+			drivers.Add(new Driver("Lando Norris", new DateOnly(1999, 11, 13), competitors[0]));
+			drivers.Add(new Driver("Oscar Piastri", new DateOnly(2001, 4, 6), competitors[0]));
+			//RED BULL
+			drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1]));
+			drivers.Add(new Driver("Sergio Pérez", new DateOnly(1990, 1, 26), competitors[1]));
+			drivers.Add(new Driver("Daniel Ricciardo", new DateOnly(1989, 7, 1), competitors[1]));
+			//FERRARI
+			drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2]));
+			drivers.Add(new Driver("Charles Leclerc", new DateOnly(1997, 10, 16), competitors[2]));
+			//MERCEDES
 			drivers.Add(new Driver("Lewis Hamilton", new DateOnly(1985, 1, 7), competitors[3]));
 			drivers.Add(new Driver("George Russell", new DateOnly(1998, 2, 15), competitors[3]));
-			drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2]));
-			drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1]));
-			drivers.Add(new Driver("Oscar Piastri", new DateOnly(2001, 4, 6), null));
 
 			foreach(var driver in drivers)
 			{

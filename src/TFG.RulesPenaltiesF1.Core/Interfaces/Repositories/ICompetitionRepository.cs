@@ -7,4 +7,5 @@ public interface ICompetitionRepository : IRepository<Competition>
 	Task<Competition?> GetCompetitionById(int id);
 	Task<Competition?> GetNextCompetitionThatCanBeStarted();
 	Task<Competition?> GetCompetitionByIdWithParticipationsAsync(int id);
+	Task<Competition?> GetCompetitionByIdWithSessionsAsync(int id);
 }

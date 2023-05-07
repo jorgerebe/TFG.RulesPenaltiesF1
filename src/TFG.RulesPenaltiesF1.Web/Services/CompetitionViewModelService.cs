@@ -91,4 +91,21 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 
 		return await _seasonViewModelService.CompetitorPresentInSeasonOfCompetition(idCompetition, competitor.Id);
 	}
+
+	public async Task<bool> CanAdvanceSession(int id)
+	{
+		var competition = await _repository.GetCompetitionById(id);
+
+		if(competition is null)
+		{
+			return false;
+		}
+
+		if(competition.Sessions is null)
+		{
+			return false;
+		}
+
+		return competition.CanAdvance();
+	}
 }

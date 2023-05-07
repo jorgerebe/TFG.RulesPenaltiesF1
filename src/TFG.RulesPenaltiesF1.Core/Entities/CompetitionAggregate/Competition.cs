@@ -57,7 +57,6 @@ public class Competition : EntityBase, IAggregateRoot
 
 		CompetitionState = CompetitionStateEnum.Started;
 
-		List<Session> sessions = new();
 		_sessions.Add(new (this.Id, SessionTypeEnum.Practice));
 		_sessions.Add(new (this.Id, SessionTypeEnum.Qualifying));
 
@@ -68,8 +67,6 @@ public class Competition : EntityBase, IAggregateRoot
 		}
 
 		_sessions.Add(new Session(this.Id, SessionTypeEnum.Race));
-
-		_sessions = sessions;
 	}
 
 	public void AddParticipations(List<Participation> participations)
@@ -105,5 +102,54 @@ public class Competition : EntityBase, IAggregateRoot
 		{
 			_participations.Add(participation);
 		}
+	}
+
+	public void Advance()
+	{
+		if(_sessions.Count == 0 || CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		{
+			throw new InvalidOperationException("Cannot advance a competition that has not started");
+		}
+
+		if(_sessions.All(s => s.State.Equals(SessionStateEnum.Finished)) || CompetitionState.Equals(CompetitionStateEnum.Finished))
+		{
+			throw new InvalidOperationException("Cannot advance a competition that has already finished");
+		}
+
+		foreach(var session in _sessions)
+		{
+			if(!session.HasFinished())
+			{
+				session.Advance();
+				if(_sessions.All(s => s.State == SessionStateEnum.Finished))
+				{
+					CompetitionState = CompetitionStateEnum.Finished;
+				}
+				break;
+			}
+		}
+	}
+
+	public bool CanAdvance()
+	{
+		if (_sessions.Count == 0 || CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		{
+			return false;
+		}
+
+		if (_sessions.All(s => s.State.Equals(SessionStateEnum.Finished)) || CompetitionState.Equals(CompetitionStateEnum.Finished))
+		{
+			return false;
+		}
+
+		var total = Participations.DistinctBy(p => p.CompetitorId).Count();
+
+		if (Participations.DistinctBy(p => p.CompetitorId).Count() < Season!.Competitors.Count)
+		{
+			return false;
+		}
+
+		return true;
+
 	}
 }

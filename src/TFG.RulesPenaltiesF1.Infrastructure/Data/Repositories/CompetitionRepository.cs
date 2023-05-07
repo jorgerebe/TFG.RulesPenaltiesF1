@@ -19,9 +19,10 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 			.Where(c => c.Id == id)
 			.Include(c => c.Circuit)
 			.Include(c => c.Season)
+				.ThenInclude(s => s!.Competitors)
 			.Include(c => c.Sessions)
 			.Include(c => c.Participations.OrderBy(p => p.Competitor!.Name))
-			.ThenInclude(p => p.Competitor)
+				.ThenInclude(p => p.Competitor)
 			.Include(c => c.Participations.OrderBy(p => p.Competitor!.Name))
 			.ThenInclude(p => p.Driver)
 			.AsNoTracking()
@@ -32,10 +33,7 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 	{
 		return await _dbContext.Set<Competition>()
 			.Where(c => c.CompetitionState == 1 && c.Week <= _dbContext.Competition.
-																			 Where(y => y.SeasonId == c.SeasonId).Min(y => y.Week)
-															&& _dbContext.Competition
-																	.Where(y => y.SeasonId == c.SeasonId)
-																	.All(y => y.CompetitionState != 2))
+																			 Where(y => y.CompetitionState == 1 && y.SeasonId == c.SeasonId).Min(y => y.Week))
 			.Include(c => c.Circuit)
 			.Include(c => c.Season)
 			.AsNoTracking()
@@ -47,6 +45,14 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 		return await _dbContext.Set<Competition>()
 			.Where(c => c.Id == id)
 			.Include(c => c.Participations)
+			.FirstOrDefaultAsync();
+	}
+
+	public async Task<Competition?> GetCompetitionByIdWithSessionsAsync(int id)
+	{
+		return await _dbContext.Set<Competition>()
+			.Where(c => c.Id == id)
+			.Include(c => c.Sessions)
 			.FirstOrDefaultAsync();
 	}
 }
