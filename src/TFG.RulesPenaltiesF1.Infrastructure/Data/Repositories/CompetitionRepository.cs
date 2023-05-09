@@ -32,8 +32,8 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 	public async Task<Competition?> GetNextCompetitionThatCanBeStarted()
 	{
 		return await _dbContext.Set<Competition>()
-			.Where(c => c.CompetitionState == 1 && c.Week <= _dbContext.Competition.
-																			 Where(y => y.CompetitionState == 1 && y.SeasonId == c.SeasonId).Min(y => y.Week))
+			.Where(c => c.State == 1 && c.Week <= _dbContext.Competition.
+																			 Where(y => y.State != CompetitionStateEnum.Finished.Value && y.SeasonId == c.SeasonId).Min(y => y.Week))
 			.Include(c => c.Circuit)
 			.Include(c => c.Season)
 			.AsNoTracking()

@@ -50,7 +50,7 @@ public class CompetitionViewModel
 			Circuit = new() { Name = competition.Circuit!.Name },
 			IsSprint = competition.IsSprint,
 			Week = competition.Week,
-			CompetitionState = competition.CompetitionState
+			CompetitionState = competition.State
 			};
 
 		foreach (var session in competition.Sessions)

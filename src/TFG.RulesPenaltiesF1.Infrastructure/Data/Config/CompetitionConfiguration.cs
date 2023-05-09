@@ -16,7 +16,7 @@ internal class CompetitionConfiguration : IEntityTypeConfiguration<Competition>
       builder.Property(c => c.Week).IsRequired();
       builder.Property(c => c.IsSprint).IsRequired();
       builder.Property(c => c.Name).IsRequired();
-      builder.Property(c => c.CompetitionState).IsRequired();
+      builder.Property(c => c.State).IsRequired();
 
       builder.HasIndex(c => new { c.Week, c.SeasonId }).IsUnique();
 

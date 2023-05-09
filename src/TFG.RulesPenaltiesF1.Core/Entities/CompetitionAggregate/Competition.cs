@@ -10,7 +10,7 @@ public class Competition : EntityBase, IAggregateRoot
 	public Circuit? Circuit { get; set; }
 	public int CircuitId { get; set; }
 
-	public CompetitionStateEnum CompetitionState { get; set; }
+	public CompetitionStateEnum State { get; set; }
 
 	public string Name { get; set; } = string.Empty;
 	public bool IsSprint { get; set; }
@@ -33,7 +33,7 @@ public class Competition : EntityBase, IAggregateRoot
 		Name = name;
 		IsSprint = isSprint;
 		Week = week;
-		CompetitionState = CompetitionStateEnum.NotStarted;
+		State = CompetitionStateEnum.NotStarted;
 	}
 
 	public Competition(int circuitId, string name, bool isSprint, int week)
@@ -45,17 +45,17 @@ public class Competition : EntityBase, IAggregateRoot
 		Name = name;
 		IsSprint = isSprint;
 		Week = week;
-		CompetitionState = CompetitionStateEnum.NotStarted;
+		State = CompetitionStateEnum.NotStarted;
 	}
 
 	public void StartCompetition()
 	{
-		if (!CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		if (!State.Equals(CompetitionStateEnum.NotStarted))
 		{
 			throw new InvalidOperationException();
 		}
 
-		CompetitionState = CompetitionStateEnum.Started;
+		State = CompetitionStateEnum.Started;
 
 		_sessions.Add(new (this.Id, SessionTypeEnum.Practice));
 		_sessions.Add(new (this.Id, SessionTypeEnum.Qualifying));
@@ -106,12 +106,12 @@ public class Competition : EntityBase, IAggregateRoot
 
 	public void Advance()
 	{
-		if(_sessions.Count == 0 || CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		if(_sessions.Count == 0 || State.Equals(CompetitionStateEnum.NotStarted))
 		{
 			throw new InvalidOperationException("Cannot advance a competition that has not started");
 		}
 
-		if(_sessions.All(s => s.State.Equals(SessionStateEnum.Finished)) || CompetitionState.Equals(CompetitionStateEnum.Finished))
+		if(_sessions.All(s => s.State.Equals(SessionStateEnum.Finished)) || State.Equals(CompetitionStateEnum.Finished))
 		{
 			throw new InvalidOperationException("Cannot advance a competition that has already finished");
 		}
@@ -123,7 +123,7 @@ public class Competition : EntityBase, IAggregateRoot
 				session.Advance();
 				if(_sessions.All(s => s.State == SessionStateEnum.Finished))
 				{
-					CompetitionState = CompetitionStateEnum.Finished;
+					State = CompetitionStateEnum.Finished;
 				}
 				break;
 			}
@@ -132,12 +132,12 @@ public class Competition : EntityBase, IAggregateRoot
 
 	public bool CanAdvance()
 	{
-		if (_sessions.Count == 0 || CompetitionState.Equals(CompetitionStateEnum.NotStarted))
+		if (_sessions.Count == 0 || State.Equals(CompetitionStateEnum.NotStarted))
 		{
 			return false;
 		}
 
-		if (_sessions.All(s => s.State.Equals(SessionStateEnum.Finished)) || CompetitionState.Equals(CompetitionStateEnum.Finished))
+		if (_sessions.All(s => s.State.Equals(SessionStateEnum.Finished)) || State.Equals(CompetitionStateEnum.Finished))
 		{
 			return false;
 		}

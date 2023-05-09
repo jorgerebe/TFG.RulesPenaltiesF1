@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
@@ -39,7 +40,7 @@ public class SeasonRepository : EfRepository<Season>, ISeasonRepository
 	{
 		return await _dbContext.Set<Season>()
 			.Include(s => s.Competitions)
-			.Where(s => s.Competitions.All(c => c.CompetitionState != 3))
+			.Where(s => s.Competitions.Any(c => c.State != CompetitionStateEnum.Finished.Value))
 			.FirstOrDefaultAsync();
 	}
 
