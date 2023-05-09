@@ -1,4 +1,5 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities;

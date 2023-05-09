@@ -82,4 +82,10 @@ public class CompetitorRepository : EfRepository<Competitor>, ICompetitorReposit
    {
       return await _dbContext.Set<Competitor>().AnyAsync(r => r.Name.ToLower() == name.ToLower());
    }
+
+	public async Task<Competitor?> GetCompetitorByTeamPrincipalId(string teamPrincipalId)
+	{
+		return await _dbContext.Set<Competitor>()
+			.Where(c => c.TeamPrincipalID == teamPrincipalId).FirstOrDefaultAsync();
+	}
 }

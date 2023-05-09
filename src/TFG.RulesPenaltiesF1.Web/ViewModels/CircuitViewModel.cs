@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using TFG.RulesPenaltiesF1.Core.Entities;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -54,4 +55,43 @@ public class CircuitViewModel
 
    [DisplayName("Lap Record")]
    public string InfoLapRecord { get; set; } = string.Empty;
+
+	public static CircuitViewModel? MapEntityToViewModel(Circuit circuit)
+	{
+		if (circuit == null)
+		{
+			return null;
+		}
+
+
+		return new CircuitViewModel()
+		{
+			Id = circuit.Id,
+			Country = new CountryViewModel() { Id = circuit.Country!.Id, Name = circuit.Country.Name },
+			Name = circuit.Name,
+			Length = circuit.Length,
+			Laps = circuit.Laps,
+			RaceDistance = circuit.Length * circuit.Laps,
+			YearFirstGP = circuit.YearFirstGP,
+			MillisecondsLapRecord = circuit.MillisecondsLapRecord,
+			DriverLapRecord = circuit.DriverLapRecord,
+			YearLapRecord = circuit.YearLapRecord,
+			InfoLapRecord = circuit.FormatFastLap() + " - " + circuit.DriverLapRecord + " (" + circuit.YearLapRecord + ")"
+		};
+	}
+
+	public static Circuit? MapViewModelToEntity(CircuitViewModel circuit)
+	{
+		if (circuit is null)
+		{
+			return null;
+		}
+
+		var milliseconds = circuit.MinutesLapRecord * 60000 + (int)(circuit.SecondsLapRecord * 1000);
+
+		Circuit circuitEntity = new Circuit(circuit.CountryId, circuit.Name, circuit.Length,
+			 circuit.Laps, circuit.YearFirstGP, milliseconds, circuit.DriverLapRecord, circuit.YearFirstGP);
+
+		return circuitEntity;
+	}
 }

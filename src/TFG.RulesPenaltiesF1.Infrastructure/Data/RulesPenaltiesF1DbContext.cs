@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities.Users;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using SmartEnum.EFCore;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -37,13 +39,18 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<Competitor> Competitor => Set<Competitor>();
    public DbSet<ApplicationUser> User => Set<ApplicationUser>();
 
-   public DbSet<Season> Season => Set<Season>();
-   public DbSet<Driver> Driver => Set<Driver>();
+	public DbSet<Driver> Driver => Set<Driver>();
+
+	public DbSet<Season> Season => Set<Season>();
+   public DbSet<Session> Session => Set<Session>();
+   public DbSet<Competition> Competition => Set<Competition>();
+   public DbSet<Participation> Participation => Set<Participation>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
       base.OnModelCreating(modelBuilder);
 
+		modelBuilder.ConfigureSmartEnum();
       modelBuilder.Ignore<User>();
 
       modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

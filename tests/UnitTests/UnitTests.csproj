@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\TFG.RulesPenaltiesF1.Core\TFG.RulesPenaltiesF1.Core.csproj" />
+    <ProjectReference Include="..\..\src\TFG.RulesPenaltiesF1.Core\TFG.RulesPenaltiesF1.Core.csproj" />
   </ItemGroup>
 
 </Project>

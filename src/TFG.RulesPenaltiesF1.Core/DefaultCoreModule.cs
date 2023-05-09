@@ -25,6 +25,9 @@ namespace TFG.RulesPenaltiesF1.Core
 
          builder.RegisterType<DriverService>()
             .As<IDriverService>().InstancePerLifetimeScope();
+
+         builder.RegisterType<CompetitionService>()
+            .As<ICompetitionService>().InstancePerLifetimeScope();
       }
    }
 }

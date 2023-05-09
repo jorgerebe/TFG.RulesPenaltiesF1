@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -19,4 +20,30 @@ public class RegulationViewModel
 
    public List<ArticleViewModel> ArticlesContent { get; set; } = new();
    public List<PenaltyViewModel> PenaltiesContent { get; set; } = new();
+
+	public static Regulation? MapViewModelToEntity(RegulationViewModel regulation)
+	{
+		if (regulation is null)
+		{
+			return null;
+		}
+
+		List<RegulationArticle> regulationArticles = new();
+
+		foreach (int id in regulation.Articles)
+		{
+			regulationArticles.Add(new RegulationArticle(0, id));
+		}
+
+		List<RegulationPenalty> regulationPenalties = new();
+
+		foreach (int id in regulation.Penalties)
+		{
+			regulationPenalties.Add(new RegulationPenalty(0, id));
+		}
+
+		var regulationEntity = new Regulation(regulation.Name, regulationArticles, regulationPenalties);
+
+		return regulationEntity;
+	}
 }

@@ -33,6 +33,14 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 			.Where(d => d.Name.ToLower().Replace("\t", " ").Replace(" ", "") == name.ToLower().Replace("\t", " ").Replace(" ", "")).FirstOrDefaultAsync();
 	}
 
+	public async Task<List<Driver>> GetDriversInCompetitor(int competitorId)
+	{
+		return await _dbContext.Set<Driver>()
+			.Where(d => d.CompetitorId == competitorId)
+			.AsNoTracking()
+			.ToListAsync();
+	}
+
 	public async Task UpdateTeam(Driver driver)
 	{
 		_dbContext.Driver.Attach(driver);

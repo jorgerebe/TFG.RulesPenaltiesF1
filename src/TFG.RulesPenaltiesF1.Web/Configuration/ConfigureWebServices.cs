@@ -15,6 +15,7 @@ public static class ConfigureWebServices
       services.AddScoped<ICompetitorViewModelService, CompetitorViewModelService>();
       services.AddScoped<ISeasonViewModelService, SeasonViewModelService>();
 		services.AddScoped<IDriverViewModelService, DriverViewModelSevice>();
+		services.AddScoped<ICompetitionViewModelService, CompetitionViewModelService>();
 
       return services;
    }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
@@ -84,7 +83,7 @@ public class DriversController : Controller
 				return View(driver);
 			}
 
-			await _driverService.CreateDriverAsync(_driverViewModelService.MapViewModelToEntity(driver)!);
+			await _driverService.CreateDriverAsync(DriverViewModel.MapViewModelToEntity(driver)!);
 			return RedirectToAction(nameof(Index));
       }
 		await PopulateCompetitors(driver.CompetitorId);
@@ -143,7 +142,7 @@ public class DriversController : Controller
 		{
 			return NotFound();
 		}
-		await _driverService.UpdateDriverAsync(_driverViewModelService.MapViewModelToEntity(driverViewModel)!);
+		await _driverService.UpdateDriverAsync(DriverViewModel.MapViewModelToEntity(driverViewModel)!);
 
 		return RedirectToAction(nameof(Index));
 	}

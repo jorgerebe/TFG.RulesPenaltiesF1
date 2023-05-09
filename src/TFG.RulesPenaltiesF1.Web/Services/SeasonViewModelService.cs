@@ -8,13 +8,11 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 public class SeasonViewModelService : ISeasonViewModelService
 {
 	private readonly ISeasonRepository _repository;
-	private readonly ICompetitorViewModelService _competitorViewModelService;
 
 
-	public SeasonViewModelService(ISeasonRepository repository, ICompetitorViewModelService competitorViewModelService)
+	public SeasonViewModelService(ISeasonRepository repository)
    {
 		_repository = repository;
-		_competitorViewModelService = competitorViewModelService;
 	}
 
 
@@ -26,7 +24,7 @@ public class SeasonViewModelService : ISeasonViewModelService
 
 		foreach(var season in seasons)
 		{
-			seasonsViewModel.Add(MapEntityToViewModel(season)!);
+			seasonsViewModel.Add(SeasonViewModel.MapEntityToViewModel(season)!);
 		}
 
 		return seasonsViewModel;
@@ -42,7 +40,7 @@ public class SeasonViewModelService : ISeasonViewModelService
 			return null;
 		}
 
-		SeasonViewModel seasonViewModel = MapEntityToViewModel(season)!;
+		SeasonViewModel seasonViewModel = SeasonViewModel.MapEntityToViewModel(season)!;
 
 		return seasonViewModel;
    }
@@ -54,70 +52,15 @@ public class SeasonViewModelService : ISeasonViewModelService
 		return season != null;
 	}
 
-	public Season? MapViewModelToEntity(SeasonViewModel season)
+	public async Task<bool> CompetitorPresentInSeasonOfCompetition(int competitionId, int competitorId)
 	{
-		if(season is null)
-		{
-			return null;
-		}
+		var season = await _repository.GetSeasonByCompetitonAndCompetitor(competitionId, competitorId);
 
-		List<Competitor> competitors = new();
-
-		foreach(var competitor in season.Competitors)
-		{
-			competitors.Add(new Competitor(competitor));
-		}
-
-		List<Competition> competitions = new();
-
-		foreach(var competition in season.Competitions)
-		{
-			competitions.Add(new Competition(competition.CircuitId, competition.Name, competition.IsSprint, competition.Week));
-		}
-
-		Season seasonEntity = new(season.Year, competitors, competitions, season.RegulationId);
-
-		return seasonEntity;
+		return season is not null;
 	}
 
-	public SeasonViewModel? MapEntityToViewModel(Season season)
+	public async Task<bool> CanCreateAnotherSeason()
 	{
-		if(season is null)
-		{
-			return null;
-		}
-
-		SeasonViewModel seasonViewModel = new()
-		{
-			Id = season.Id,
-			Year = season.Year,
-			Regulation = new RegulationViewModel() { Id = season.RegulationId, Name = season.Regulation == null ? "" : season.Regulation.Name  },
-			RegulationId = season.RegulationId
-		};
-
-		if(season.Competitors != null)
-		{
-			foreach(var competitor in season.Competitors)
-			{
-				seasonViewModel.CompetitorsContent.Add(_competitorViewModelService.MapEntityToViewModel(competitor)!);
-			}
-		}
-
-		if(season.Competitions != null)
-		{
-			foreach(var competition in season.Competitions)
-			{
-				seasonViewModel.Competitions.Add(new()
-					{
-					Name = competition.Name,
-					CircuitId = competition.CircuitId,
-					Circuit = new() {Name = competition.Circuit!.Name },
-					IsSprint = competition.IsSprint,
-					Week = competition.Week
-					}) ;
-			}
-		}
-
-		return seasonViewModel;
+		return await _repository.GetCurrentSeason() is null;
 	}
 }

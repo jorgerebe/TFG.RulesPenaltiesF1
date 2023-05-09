@@ -1,5 +1,4 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Core.Entities.Users;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.Users;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -24,7 +23,7 @@ public class CompetitorViewModelService : ICompetitorViewModelService
 
       foreach(var competitor in competitors)
       {
-         competitorViewModels.Add(MapEntityToViewModel(competitor)!);
+         competitorViewModels.Add(CompetitorViewModel.MapEntityToViewModel(competitor)!);
       }
 
       return competitorViewModels;
@@ -38,7 +37,7 @@ public class CompetitorViewModelService : ICompetitorViewModelService
 
 		foreach (var competitor in competitors)
 		{
-			competitorViewModels.Add(MapEntityToViewModel(competitor)!);
+			competitorViewModels.Add(CompetitorViewModel.MapEntityToViewModel(competitor)!);
 		}
 
 		return competitorViewModels;
@@ -61,36 +60,21 @@ public class CompetitorViewModelService : ICompetitorViewModelService
          return null;
       }
 
-      CompetitorViewModel competitorViewModel = MapEntityToViewModel(competitor)!;
+      CompetitorViewModel competitorViewModel = CompetitorViewModel.MapEntityToViewModel(competitor)!;
 
       return competitorViewModel;
    }
 
+	public async Task<CompetitorViewModel?> GetCompetitorByTeamPrincipal(string teamPrincipalId)
+	{
+		var competitor = await _repository.GetCompetitorByTeamPrincipalId(teamPrincipalId);
+		if(competitor is null)
+		{
+			return null;
+		}
 
-   public CompetitorViewModel? MapEntityToViewModel(Competitor competitor)
-   {
-      ArgumentNullException.ThrowIfNull(competitor);
-
-      CompetitorViewModel competitorViewModel = new()
-      {
-         Id = competitor.Id,
-         Name = competitor.Name,
-         Location = competitor.Location,
-         TeamPrincipalName = (competitor.TeamPrincipal != null) ? competitor.TeamPrincipal.FullName : "",
-         PowerUnit = competitor.PowerUnit
-      };
-
-      return competitorViewModel;
-   }
-
-   public Competitor? MapViewModelToEntity(CompetitorViewModel competitor)
-   {
-      ArgumentNullException.ThrowIfNull(competitor);
-
-      Competitor competitorEntity = new Competitor(competitor.Name, competitor.Location, competitor.TeamPrincipalId!, competitor.PowerUnit);
-
-      return competitorEntity;
-   }
+		return CompetitorViewModel.MapEntityToViewModel(competitor);
+	}
 
    public async Task<bool> ExistsCompetitorWithName(string name)
    {

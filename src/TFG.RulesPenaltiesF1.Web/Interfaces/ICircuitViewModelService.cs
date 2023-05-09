@@ -8,7 +8,4 @@ public interface ICircuitViewModelService
    Task<List<CountryViewModel>> GetAllCountries();
    Task<List<CircuitViewModel>> GetAllCircuits();
    Task<CircuitViewModel?> GetByIdAsync(int id);
-
-   Circuit? MapViewModelToEntity(CircuitViewModel circuit);
-   CircuitViewModel? MapEntityToViewModel(Circuit circuit);
 }

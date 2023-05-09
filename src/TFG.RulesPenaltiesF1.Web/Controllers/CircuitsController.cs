@@ -61,7 +61,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var circuitEntity = _viewModelService.MapViewModelToEntity(circuit!);
+                var circuitEntity = CircuitViewModel.MapViewModelToEntity(circuit!);
                 if(circuitEntity is not null)
                 {
                      await _service.CreateCircuitAsync(circuitEntity!);
