@@ -12,8 +12,8 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 {
     [DbContext(typeof(RulesPenaltiesF1DbContext))]
-    [Migration("20230504170400_HU19_01_Participations")]
-    partial class HU19_01_Participations
+    [Migration("20230509190139_HU19_Participations")]
+    partial class HU19_Participations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -325,9 +325,6 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Property<int>("CircuitId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompetitionState")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsSprint")
                         .HasColumnType("bit");
 
@@ -336,6 +333,9 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SeasonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.Property<int>("Week")

@@ -5,7 +5,7 @@
 namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class HU19_01_Participations : Migration
+    public partial class HU19_Participations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -13,6 +13,11 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "Finished",
                 table: "Session");
+
+            migrationBuilder.RenameColumn(
+                name: "CompetitionState",
+                table: "Competition",
+                newName: "State");
 
             migrationBuilder.AddColumn<int>(
                 name: "State",
@@ -72,6 +77,11 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "State",
                 table: "Session");
+
+            migrationBuilder.RenameColumn(
+                name: "State",
+                table: "Competition",
+                newName: "CompetitionState");
 
             migrationBuilder.AddColumn<bool>(
                 name: "Finished",

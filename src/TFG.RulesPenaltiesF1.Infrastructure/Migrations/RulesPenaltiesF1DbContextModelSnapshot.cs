@@ -322,9 +322,6 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Property<int>("CircuitId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompetitionState")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsSprint")
                         .HasColumnType("bit");
 
@@ -333,6 +330,9 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SeasonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
                         .HasColumnType("int");
 
                     b.Property<int>("Week")
