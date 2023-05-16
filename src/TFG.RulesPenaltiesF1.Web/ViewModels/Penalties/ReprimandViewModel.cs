@@ -6,16 +6,18 @@ public class ReprimandViewModel : PenaltyViewModel
 
    public override string ToString()
    {
-      string output = base.ToString() +" - ";
+      string output = base.ToString();
 
       if(IsDriving)
       {
-         output += "Driving";
+         output += "Driving ";
       }
       else
       {
-         output += "No Driving";
+         output += "No Driving ";
       }
+
+		output += Name;
 
       return output;
    }

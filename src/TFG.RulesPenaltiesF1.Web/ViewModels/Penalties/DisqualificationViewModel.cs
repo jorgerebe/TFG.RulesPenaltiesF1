@@ -8,11 +8,11 @@ public class DisqualificationViewModel : PenaltyViewModel
    {
       if (NextCompetition)
       {
-         return "The driver is suspended from the next Competition";
+         return "Suspension: The driver is suspended from the next Competition";
       }
       else
       {
-         return "The driver is disqualified from the results";
+         return "Disqualification: The driver is disqualified from the results";
       }
    }
 }
