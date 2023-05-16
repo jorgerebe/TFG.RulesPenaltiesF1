@@ -133,6 +133,7 @@ public class DriversController : Controller
 		if (driver.CompetitorId == -1)
 		{
 			driverViewModel.Competitor = null;
+			driverViewModel.CompetitorId = -1;
 		}
 		else if (await _competitorService.GetByIdAsync(driver.CompetitorId) is not null)
 		{

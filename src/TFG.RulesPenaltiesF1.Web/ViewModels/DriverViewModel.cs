@@ -54,7 +54,7 @@ public class DriverViewModel
 
 		Driver driverEntity;
 
-		if (driver.CompetitorId == -1 && driver.Competitor is null)
+		if (driver.CompetitorId == -1)
 		{
 			driverEntity = new Driver(driver.Name, driver.DateBirth, null);
 		}
