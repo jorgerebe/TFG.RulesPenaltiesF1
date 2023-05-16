@@ -24,13 +24,13 @@ public class SeedTestData
 
    public static void PopulatePenalties(RulesPenaltiesF1DbContext dbContext)
    {
-       PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race");
-       PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty");
-       PenaltyType GP = new PenaltyType("Drop Grid Positions", "Drop Grid Position");
-       PenaltyType DT = new PenaltyType("Drive-Through", "Drive-Through");
-       PenaltyType StopAndGo = new PenaltyType("Stop And Go", "Stop And Go");
-       PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand");
-       PenaltyType Fine = new PenaltyType("Fine", "The competitor must pay a fine");
+       PenaltyType DQ = new PenaltyType("Disqualification", "Driver disqualified of the race", true);
+       PenaltyType TP = new PenaltyType("Time Penalty", "Time Penalty", true);
+       PenaltyType GP = new PenaltyType("Drop Grid Positions", "Drop Grid Position", true);
+       PenaltyType DT = new PenaltyType("Drive-Through", "Drive-Through", true);
+       PenaltyType StopAndGo = new PenaltyType("Stop And Go", "Stop And Go", true);
+       PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand", false);
+       PenaltyType Fine = new PenaltyType("Fine", "The competitor must pay a fine", false);
 
        TimePenalty tp_5 = new TimePenalty(TP, 5);
        TimePenalty tp_10 = new TimePenalty(TP, 10);
