@@ -16,7 +16,7 @@ public class IncidentConfiguration : IEntityTypeConfiguration<Incident>
 
 		builder.HasOne(i => i.Session)
 			.WithMany()
-			.HasForeignKey(d => d.SessionId);
+			.HasForeignKey(d => d.SessionId).OnDelete(DeleteBehavior.NoAction);
 
 		builder.HasOne(i => i.Article)
 			.WithMany()

@@ -73,8 +73,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         name: "FK_Incident_Session_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Session",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

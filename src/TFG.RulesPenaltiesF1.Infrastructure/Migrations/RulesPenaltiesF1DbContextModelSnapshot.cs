@@ -909,7 +909,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Session", "Session")
                         .WithMany()
                         .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Article");
