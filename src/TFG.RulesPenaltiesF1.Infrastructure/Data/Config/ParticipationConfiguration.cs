@@ -8,7 +8,7 @@ public class ParticipationConfiguration : IEntityTypeConfiguration<Participation
 {
 	public void Configure(EntityTypeBuilder<Participation> builder)
 	{
-		builder.HasKey(p => new { p.DriverId, p.CompetitionId });
-		builder.HasKey(p => new { p.DriverId, p.CompetitionId, p.CompetitorId });
+		builder.HasKey(p => p.Id);
+		builder.HasIndex(p => new { p.DriverId, p.CompetitionId, p.CompetitorId }).IsUnique();
 	}
 }

@@ -22,5 +22,8 @@ internal class CompetitionConfiguration : IEntityTypeConfiguration<Competition>
 
 		var navigationSessions = builder.Metadata.FindNavigation(nameof(Competition.Sessions));
 		navigationSessions?.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+		var navigationIncidents = builder.Metadata.FindNavigation(nameof(Competition.Incidents));
+		navigationIncidents?.SetPropertyAccessMode(PropertyAccessMode.Field);
 	}
 }
