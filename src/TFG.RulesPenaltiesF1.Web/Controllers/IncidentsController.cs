@@ -43,12 +43,14 @@ public class IncidentsController : Controller
 			return NotFound();
 		}
 
-		if (!await _competitionViewModelService.CanAddIncident((int)id))
+		int sessionId = (int)id;
+
+		if (!await _competitionViewModelService.CanAddIncident(sessionId))
 		{
 			return NotFound();
 		}
 
-		var competition = await _competitionViewModelService.GetByIdAsync((int)id);
+		var competition = await _competitionViewModelService.GetBySessionId(sessionId);
 
 		if (competition is null)
 		{
@@ -58,12 +60,22 @@ public class IncidentsController : Controller
 		IncidentViewModel incident = new()
 		{
 			CompetitionId = competition.Id,
-
+			SessionId = (int)id,
+			Session = competition.Sessions.Where(s => s.SessionId == sessionId).FirstOrDefault()
 		};
 
 		ViewBag.Competition = competition;
-
 		ViewBag.Participations = competition.Participations.AsEnumerable();
+
+		RegulationViewModel? regulation = await _regulationViewModelService.GetRegulationByCompetitionId(competition.Id);
+
+		if(regulation is null)
+		{
+			return NotFound();
+		}
+
+		ViewBag.Articles = regulation.ArticlesContent;
+		ViewBag.Penalties = regulation.PenaltiesContent;
 
 		return View(incident);
 	}
@@ -81,7 +93,7 @@ public class IncidentsController : Controller
 				return NotFound();
 			}
 
-			if (!await _competitionViewModelService.CanAddIncident(incident.CompetitionId))
+			if (!await _competitionViewModelService.CanAddIncident(incident.SessionId))
 			{
 				return NotFound();
 			}

@@ -41,7 +41,7 @@ public class CompetitionViewModel
 		ArgumentNullException.ThrowIfNull(competition);
 
 		CompetitionViewModel competitionViewModel = new()
-			{
+		{
 			SeasonId = competition.Season!.Id,
 			Year = competition.Season!.Year,
 			Id = competition.Id,
@@ -51,7 +51,7 @@ public class CompetitionViewModel
 			IsSprint = competition.IsSprint,
 			Week = competition.Week,
 			CompetitionState = competition.State
-			};
+		};
 
 		foreach (var session in competition.Sessions)
 		{

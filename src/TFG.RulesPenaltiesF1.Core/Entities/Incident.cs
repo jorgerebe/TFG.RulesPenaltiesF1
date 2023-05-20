@@ -1,8 +1,10 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+using TFG.RulesPenaltiesF1.Core.Interfaces;
 
-namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+namespace TFG.RulesPenaltiesF1.Core.Entities;
 
-public class Incident : EntityBase
+public class Incident : EntityBase, IAggregateRoot
 {
 	public DateTime Created { get; set; }
 

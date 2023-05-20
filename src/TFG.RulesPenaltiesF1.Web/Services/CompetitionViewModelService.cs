@@ -133,4 +133,16 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 
 		return false;
 	}
+
+	public async Task<CompetitionViewModel?> GetBySessionId(int sessionId)
+	{
+		var competition = await _repository.GetCompetitionBySessionId(sessionId);
+
+		if(competition is null)
+		{
+			return null;
+		}
+
+		return await GetByIdAsync(competition.Id);
+	}
 }

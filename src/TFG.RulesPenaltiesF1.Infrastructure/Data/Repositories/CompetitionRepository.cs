@@ -21,10 +21,11 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 			.Include(c => c.Season)
 				.ThenInclude(s => s!.Competitors)
 			.Include(c => c.Sessions)
+				.ThenInclude(s => s.Incidents)
 			.Include(c => c.Participations.OrderBy(p => p.Competitor!.Name))
 				.ThenInclude(p => p.Competitor)
 			.Include(c => c.Participations.OrderBy(p => p.Competitor!.Name))
-			.ThenInclude(p => p.Driver)
+				.ThenInclude(p => p.Driver)
 			.AsNoTracking()
 			.FirstOrDefaultAsync();
 	}

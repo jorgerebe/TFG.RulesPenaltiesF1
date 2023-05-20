@@ -11,8 +11,5 @@ public class SessionConfiguration : IEntityTypeConfiguration<Session>
 		builder.HasKey(s => s.Id);
 		builder.Property(c => c.State).IsRequired();
 		builder.Property(c => c.SessionType).IsRequired();
-
-		var navigationIncidents = builder.Metadata.FindNavigation(nameof(Session.Incidents));
-		navigationIncidents?.SetPropertyAccessMode(PropertyAccessMode.Field);
 	}
 }

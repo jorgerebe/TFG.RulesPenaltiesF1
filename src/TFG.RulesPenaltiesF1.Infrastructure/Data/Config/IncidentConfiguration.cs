@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Config;
 
@@ -15,7 +15,7 @@ public class IncidentConfiguration : IEntityTypeConfiguration<Incident>
 			.HasForeignKey(d => d.ParticipationId);
 
 		builder.HasOne(i => i.Session)
-			.WithMany()
+			.WithMany(s => s.Incidents)
 			.HasForeignKey(d => d.SessionId).OnDelete(DeleteBehavior.NoAction);
 
 		builder.HasOne(i => i.Article)

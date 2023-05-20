@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -13,6 +14,7 @@ public class IncidentViewModel
 	public DateTime Created { get; set; }
 
 	[Required]
+	[DisplayName("Driver")]
 	public int ParticipationId { get; set; }
 
 	public ParticipationViewModel? Participation { get; set; }
@@ -25,11 +27,13 @@ public class IncidentViewModel
 	public string Fact { get; set; } = string.Empty;
 
 	[Required]
+	[DisplayName("Infringment")]
 	public int ArticleId { get; set; }
 
 	public ArticleViewModel? Article { get; set; }
 
 	[Required]
+	[DisplayName("Decission")]
 	public int PenaltyId { get; set; }
 
 	public Penalty? Penalty { get; set; }

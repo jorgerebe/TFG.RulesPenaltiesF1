@@ -17,7 +17,7 @@ public class RegulationRepository : EfRepository<Regulation>, IRegulationReposit
       return await _dbContext.Set<Regulation>().AnyAsync(r => r.Name.ToLower() == name.ToLower());
    }
 
-   public async Task<Regulation?> GetRegulationByIdAsync(int id)
+	public async Task<Regulation?> GetRegulationByIdAsync(int id)
    {
       return await _dbContext.Set<Regulation>()
          .Include(r => r.Articles)
@@ -28,4 +28,16 @@ public class RegulationRepository : EfRepository<Regulation>, IRegulationReposit
                .ThenInclude(p => p!.PenaltyType)
          .FirstAsync(r => r.Id == id);
    }
+
+	public async Task<Regulation?> GetRegulationByCompetitionId(int competitionId)
+	{
+		return await _dbContext.Set<Regulation>()
+			.Where(r => r.Id == _dbContext.Season.Where(s => s.Competitions.Any(c => c.Id == competitionId)).First().Id)
+			.Include(r => r.Articles)
+				.ThenInclude(a => a.Article)
+			.Include(r => r.Penalties)
+				.ThenInclude(p => p.Penalty)
+					.ThenInclude(p => p!.PenaltyType)
+			.FirstOrDefaultAsync();
+	}
 }

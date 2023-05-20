@@ -9,4 +9,18 @@ public class SessionViewModel
 	public SessionStateEnum State { get; set; } = new("-",-1);
 
 	public SessionTypeEnum? Type { get; set; }
+
+	public List<IncidentViewModel> Incidents { get; set; } = new();
+
+	public static SessionViewModel MapEntityToViewModel(Session session)
+	{
+		SessionViewModel sessionViewModel =  new()
+		{
+			SessionId = session.Id,
+			State = session.State,
+			Type = session.SessionType
+		};
+
+		return sessionViewModel;
+	}
 }
