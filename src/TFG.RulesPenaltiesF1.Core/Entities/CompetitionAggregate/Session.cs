@@ -8,6 +8,9 @@ public class Session : EntityBase
 	public SessionStateEnum State { get; set; }
 	public SessionTypeEnum? SessionType { get; set; }
 
+	private List<Incident> _incidents = new();
+	public IReadOnlyCollection<Incident> Incidents => _incidents.AsReadOnly();
+
 	private Session(int competitionId)
 	{
 		CompetitionId = competitionId;
@@ -40,5 +43,22 @@ public class Session : EntityBase
 	public bool HasFinished()
 	{
 		return State.Equals(SessionStateEnum.Finished);
+	}
+
+	public bool CanAddIncident()
+	{
+		return State.Equals(SessionStateEnum.Started);
+	}
+
+	public void AddIncident(Incident incident)
+	{
+		ArgumentNullException.ThrowIfNull(incident);
+
+		if(!CanAddIncident())
+		{
+			throw new InvalidOperationException();
+		}
+
+		_incidents.Add(incident);
 	}
 }

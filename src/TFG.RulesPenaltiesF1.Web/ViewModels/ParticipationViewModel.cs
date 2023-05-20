@@ -2,6 +2,8 @@
 
 public class ParticipationViewModel
 {
+	public int Id { get; set; }
+
 	public int CompetitionId { get; set; }
 	public CompetitionViewModel? Competition { get; set; }
 

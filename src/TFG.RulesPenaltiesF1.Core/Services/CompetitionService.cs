@@ -64,4 +64,9 @@ public class CompetitionService : ICompetitionService
 
 		await _repository.Update(competition);
 	}
+
+	public Task AddIncident(Incident incident)
+	{
+		throw new NotImplementedException();
+	}
 }

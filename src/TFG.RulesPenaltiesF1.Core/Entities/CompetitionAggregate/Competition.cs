@@ -19,11 +19,8 @@ public class Competition : EntityBase, IAggregateRoot
 	private List<Session> _sessions = new();
 	public IReadOnlyCollection<Session> Sessions => _sessions.AsReadOnly();
 
-	public List<Participation> _participations = new();
+	private List<Participation> _participations = new();
 	public IReadOnlyCollection<Participation> Participations => _participations.AsReadOnly();
-	
-	public List<Incident> _incidents = new();
-	public IReadOnlyCollection<Incident> Incidents => _incidents.AsReadOnly();
 
 	public Competition(Circuit circuit, string name, bool isSprint, int week)
 	{

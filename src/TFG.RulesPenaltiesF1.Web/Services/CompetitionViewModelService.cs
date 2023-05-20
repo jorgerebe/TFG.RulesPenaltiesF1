@@ -108,4 +108,29 @@ public class CompetitionViewModelService : ICompetitionViewModelService
 
 		return competition.CanAdvance();
 	}
+
+	public async Task<bool> CanAddIncident(int sessionId)
+	{
+		var competition = await _repository.GetCompetitionBySessionId(sessionId);
+
+		if (competition is null)
+		{
+			return false;
+		}
+
+		if (competition.Sessions is null)
+		{
+			return false;
+		}
+
+		foreach(var session in competition.Sessions)
+		{
+			if(session.Id == sessionId && session.CanAddIncident())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

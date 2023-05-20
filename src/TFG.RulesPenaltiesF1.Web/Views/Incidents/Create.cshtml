@@ -1,0 +1,79 @@
+﻿@using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
+@model IncidentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var competition = ViewBag.Competition;
+}
+
+<h1>Add Incident</h1>
+
+<h4>GP Bahrein - 2023</h4>
+<h5>Race</h5>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-4">
+                <input type="hidden" asp-for="CompetitionId" value="@Model.CompetitionId" />
+                @Html.LabelFor(m => m.ParticipationId, new { })
+                @{
+
+                    var driversList = ((List<ParticipationViewModel>)ViewBag.Participations).Select(a => new SelectListItem
+            {
+                Value = a.Id.ToString(),
+                Text = a.Driver!.Name + " - " + a.Competitor!.Name
+            });
+                }
+                @Html.DropDownListFor(m => m.ParticipationId, driversList, new { @class = "form-control"})
+
+                @Html.ValidationMessageFor(m => m.ParticipationId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label asp-for="Fact" class="control-label"></label>
+                <textarea asp-for="Fact" class="form-control"></textarea>
+                <span asp-validation-for="Fact" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                @Html.LabelFor(m => m.ArticleId, new { })
+                @{
+
+                    var articlesList = ((List<ArticleViewModel>)ViewBag.Articles).Select(a => new SelectListItem
+                    {
+                        Value = a.Id.ToString(),
+                        Text = a.Content
+                    });
+                }
+                @Html.DropDownListFor(m => m.ArticleId, articlesList, new { @class = "form-control"})
+
+                @Html.ValidationMessageFor(m => m.ArticleId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group mt-4">
+                @Html.LabelFor(m => m.PenaltyId, new { })
+                @{
+
+                    var penaltiesList = ((List<PenaltyViewModel>)ViewBag.Penalties).Select(a => new SelectListItem
+                    {
+                        Value = a.Id.ToString(),
+                        Text = a.ToString()
+                    });
+                }
+                @Html.DropDownListFor(m => m.PenaltyId, penaltiesList, new { @class = "form-control"})
+
+                @Html.ValidationMessageFor(m => m.PenaltyId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label asp-for="Reason" class="control-label"></label>
+                <textarea asp-for="Reason" class="form-control"></textarea>
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

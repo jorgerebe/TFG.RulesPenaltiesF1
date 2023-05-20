@@ -9,6 +9,8 @@ internal class CompetitionConfiguration : IEntityTypeConfiguration<Competition>
 {
    public void Configure(EntityTypeBuilder<Competition> builder)
    {
+		builder.HasKey(c => c.Id);
+
       builder.HasOne(c => c.Circuit)
          .WithMany()
          .HasForeignKey(c => c.CircuitId);
@@ -22,8 +24,5 @@ internal class CompetitionConfiguration : IEntityTypeConfiguration<Competition>
 
 		var navigationSessions = builder.Metadata.FindNavigation(nameof(Competition.Sessions));
 		navigationSessions?.SetPropertyAccessMode(PropertyAccessMode.Field);
-
-		var navigationIncidents = builder.Metadata.FindNavigation(nameof(Competition.Incidents));
-		navigationIncidents?.SetPropertyAccessMode(PropertyAccessMode.Field);
 	}
 }

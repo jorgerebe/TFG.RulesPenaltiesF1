@@ -9,4 +9,5 @@ public interface ICompetitionViewModelService
 	Task<bool> CanStartCompetition(int id);
 	Task<bool> CanAddParticipation(int idCompetition, string idTeamPrincipal);
 	Task<bool> CanAdvanceSession(int id);
+	Task<bool> CanAddIncident(int id);
 }

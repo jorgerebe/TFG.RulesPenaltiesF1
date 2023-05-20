@@ -1,27 +1,26 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
-using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 public class Incident : EntityBase
 {
-	public DateTime? Created { get; set; }
+	public DateTime Created { get; set; }
 
-	public int ParticipationId { get; set; }
 	public Participation? Participation { get; set; }
+	public int ParticipationId { get; set; }
 
-	public int SessionId { get; set; }
 	public Session? Session { get; set; }
+	public int SessionId { get; set; }
 
 	public string Fact { get; set; } = string.Empty;
 
-	public int ArticleId { get; set; }
 	public Article? Article { get; set; }
+	public int ArticleId { get; set; }
 
-	public int PenaltyId { get; set; }
 	public Penalty? Penalty { get; set; }
+	public int PenaltyId { get; set; }
 
-	public string? Reason = string.Empty;
+	public string Reason = string.Empty;
 
 	private Incident()
 	{

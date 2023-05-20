@@ -45,6 +45,7 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<Session> Session => Set<Session>();
    public DbSet<Competition> Competition => Set<Competition>();
    public DbSet<Participation> Participation => Set<Participation>();
+   public DbSet<Incident> Incident => Set<Incident>();
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
