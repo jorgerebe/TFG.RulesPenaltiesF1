@@ -70,6 +70,7 @@ public class CompetitionViewModel
 			competitionViewModel.Participations.Add(
 				new ParticipationViewModel()
 				{
+					Id = participation.Id,
 					CompetitionId = competition.Id,
 					DriverId = participation.DriverId,
 					Driver = DriverViewModel.MapEntityToViewModel(participation.Driver!),

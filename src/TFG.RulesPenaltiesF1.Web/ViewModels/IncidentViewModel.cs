@@ -39,7 +39,7 @@ public class IncidentViewModel
 	public Penalty? Penalty { get; set; }
 
 	[Required]
-	public string Reason = string.Empty;
+	public string Reason { get; set; } = string.Empty;
 
 	[Required]
 	[Range(0, 6, ErrorMessage = "A maximum of 6 license points can be added to a driver")]
@@ -51,8 +51,25 @@ public class IncidentViewModel
 
 	public static Incident MapViewModelToEntity(IncidentViewModel viewModel)
 	{
+		int? licensePoints = null;
+		float? fine = null;
+		int? penaltyId = null;
+
+		if(viewModel.LicensePoints != 0)
+		{
+			licensePoints = viewModel.LicensePoints;
+		}
+		if(viewModel.Fine != 0)
+		{
+			fine = viewModel.Fine;
+		}
+		if(viewModel.PenaltyId != -1)
+		{
+			penaltyId = viewModel.PenaltyId;
+		}
+
 		Incident incident = new(viewModel.Created, viewModel.ParticipationId, viewModel.SessionId, viewModel.Fact,
-			viewModel.ArticleId, viewModel.PenaltyId, viewModel.Reason);
+			viewModel.ArticleId, penaltyId, viewModel.Reason, licensePoints, fine);
 
 		return incident;
 	}

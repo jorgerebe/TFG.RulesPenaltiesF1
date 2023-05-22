@@ -12,7 +12,7 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 {
     [DbContext(typeof(RulesPenaltiesF1DbContext))]
-    [Migration("20230522145033_HU21_03_Incidents")]
+    [Migration("20230522185854_HU21_03_Incidents")]
     partial class HU21_03_Incidents
     {
         /// <inheritdoc />
@@ -523,7 +523,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Property<int>("ParticipationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PenaltyId")
+                    b.Property<int?>("PenaltyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
@@ -956,9 +956,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", "Penalty")
                         .WithMany()
-                        .HasForeignKey("PenaltyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PenaltyId");
 
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Session", "Session")
                         .WithMany("Incidents")

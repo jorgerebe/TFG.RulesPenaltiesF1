@@ -152,4 +152,16 @@ public class Competition : EntityBase, IAggregateRoot
 		return true;
 
 	}
+
+	public void AddIncident(Incident incident, Session session)
+	{
+		if (_sessions.Any(s => s.Id == session.Id) && session.CanAddIncident())
+		{
+			session.AddIncident(incident);
+		}
+		else
+		{
+			throw new InvalidOperationException("It is not possible to add an incident to the session specified");
+		}
+	}
 }

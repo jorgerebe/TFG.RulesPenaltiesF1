@@ -20,7 +20,7 @@ public class Incident : EntityBase, IAggregateRoot
 	public int ArticleId { get; set; }
 
 	public Penalty? Penalty { get; set; }
-	public int PenaltyId { get; set; }
+	public int? PenaltyId { get; set; }
 
 	public string Reason = string.Empty;
 
@@ -39,7 +39,6 @@ public class Incident : EntityBase, IAggregateRoot
 		ArgumentNullException.ThrowIfNull(participation);
 		ArgumentNullException.ThrowIfNull(session);
 		ArgumentNullException.ThrowIfNull(article);
-		ArgumentNullException.ThrowIfNull(penalty);
 
 		ArgumentException.ThrowIfNullOrEmpty(fact);
 		ArgumentException.ThrowIfNullOrEmpty(reason);
@@ -52,12 +51,17 @@ public class Incident : EntityBase, IAggregateRoot
 		Fact = fact;
 		Article = article;
 		ArticleId = article.Id;
+
 		Penalty = penalty;
-		PenaltyId = penalty.Id;
+
+		if (penalty is not null)
+		{
+			PenaltyId = penalty.Id;
+		}
 
 		if(licensePoints is not null)
 		{
-			if(licensePoints <= 0 || licensePoints > 6)
+			if(licensePoints < 0 || licensePoints > 6)
 			{
 				throw new ArgumentException("Negative points can not be added and no more than 6 license points can be added");
 			}
@@ -65,15 +69,15 @@ public class Incident : EntityBase, IAggregateRoot
 
 		if(fine is not null)
 		{
-			if(fine <= 0)
+			if(fine < 0)
 			{
 				throw new ArgumentException("Fine must be a positive number");
 			}
 		}
 	}
 
-	public Incident(DateTime created, int participationId, int sessionId, string fact, int articleId, int penaltyId,
-		string reason)
+	public Incident(DateTime created, int participationId, int sessionId, string fact, int articleId, int? penaltyId,
+		string reason, int? licensePoints, float? fine)
 	{
 		ArgumentNullException.ThrowIfNull(created);
 
@@ -87,5 +91,26 @@ public class Incident : EntityBase, IAggregateRoot
 		ArticleId = articleId;
 		PenaltyId = penaltyId;
 		Reason = reason;
+
+		if (licensePoints is not null)
+		{
+
+			if (licensePoints <= 0 || licensePoints > 6)
+			{
+				throw new ArgumentException("Negative points can not be added and no more than 6 license points can be added");
+			}
+
+			LicensePoints = licensePoints;
+		}
+
+		if (fine is not null)
+		{
+			if (fine <= 0)
+			{
+				throw new ArgumentException("Fine must be a positive number");
+			}
+
+			Fine = fine;
+		}
 	}
 }

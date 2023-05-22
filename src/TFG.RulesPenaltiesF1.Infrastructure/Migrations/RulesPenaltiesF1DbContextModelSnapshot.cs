@@ -520,7 +520,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Property<int>("ParticipationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PenaltyId")
+                    b.Property<int?>("PenaltyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
@@ -953,9 +953,7 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", "Penalty")
                         .WithMany()
-                        .HasForeignKey("PenaltyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PenaltyId");
 
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Session", "Session")
                         .WithMany("Incidents")

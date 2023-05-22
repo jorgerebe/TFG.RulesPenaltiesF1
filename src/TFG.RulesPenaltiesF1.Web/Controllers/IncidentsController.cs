@@ -60,7 +60,7 @@ public class IncidentsController : Controller
 		IncidentViewModel incident = new()
 		{
 			CompetitionId = competition.Id,
-			SessionId = (int)id,
+			SessionId = sessionId,
 			Session = competition.Sessions.Where(s => s.SessionId == sessionId).FirstOrDefault()
 		};
 
