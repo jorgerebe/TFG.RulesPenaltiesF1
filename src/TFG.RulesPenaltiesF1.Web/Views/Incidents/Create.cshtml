@@ -6,16 +6,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var competition = ViewBag.Competition;
+    var penalties = (List<PenaltyViewModel>)ViewBag.Penalties;
 }
 
 <h1>Add Incident</h1>
 
 <h4>@competition.Name - @competition.Year</h4>
 <h5>@Model.Session!.Type</h5>
-<hr />
+<hr/>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mt-4">
@@ -33,7 +34,7 @@
 
                 @Html.ValidationMessageFor(m => m.ParticipationId, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group">
+            <div class="form-group mt-4">
                 <label asp-for="Fact" class="control-label"></label>
                 <textarea asp-for="Fact" class="form-control"></textarea>
                 <span asp-validation-for="Fact" class="text-danger"></span>
@@ -56,20 +57,33 @@
                 @Html.LabelFor(m => m.PenaltyId, new { })
                 @{
 
-                    var penaltiesList = ((List<PenaltyViewModel>)ViewBag.Penalties).Select(a => new SelectListItem
+                    var penaltiesList = penalties.Select(a => new SelectListItem
                     {
                         Value = a.Id.ToString(),
                         Text = a.ToString()
                     });
                 }
-                @Html.DropDownListFor(m => m.PenaltyId, penaltiesList, new { @class = "form-control"})
+
+                <select asp-for="PenaltyId" class="form-control" asp-items="penaltiesList">
+                    <option value="-1">&lt;&lt;&lt;No further action&gt;&gt;&gt;</option>
+                </select>
 
                 @Html.ValidationMessageFor(m => m.PenaltyId, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group">
+            <div class="form-group mt-4">
                 <label asp-for="Reason" class="control-label"></label>
                 <textarea asp-for="Reason" class="form-control"></textarea>
                 <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <label asp-for="Fine" class="control-label"></label>
+                <input asp-for="Fine" class="form-control" />
+                <span asp-validation-for="Fine" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <label asp-for="LicensePoints" class="control-label"></label>
+                <input asp-for="LicensePoints" class="form-control" />
+                <span asp-validation-for="LicensePoints" class="text-danger"></span>
             </div>
             <div class="form-group mt-4">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -77,3 +91,54 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        $("#PenaltyId").on("change", function (event) {
+            onChangePenalty();
+        });
+
+        var map = new Map();
+
+        @foreach(var penalty in penalties)
+        {
+            <text>
+                map.set(@penalty.Id, @(penalty.PenaltyPoints ? "true" : "false"));
+            </text>
+        }
+
+        console.log(map);
+
+        onChangePenalty();
+
+        function onChangePenalty(){
+
+            console.log("Has changed");
+
+            let penaltyId = $("#PenaltyId").val();
+
+            var penaltyPoints = map.get(parseInt(penaltyId));
+
+            console.log("Penalty Points: " + penaltyPoints);
+
+            var fine = $("label[for=Fine], #Fine");
+            var licensePoints = $("label[for=LicensePoints], #LicensePoints");
+
+            if(penaltyPoints === true){
+                fine.show();
+                licensePoints.show();
+            }
+            else{
+                fine.hide();
+                licensePoints.hide();
+            }
+
+        }
+
+    </script>
+}

@@ -24,13 +24,16 @@ public class Incident : EntityBase, IAggregateRoot
 
 	public string Reason = string.Empty;
 
+	public int? LicensePoints { get; set; }
+	public float? Fine { get; set; }
+
 	private Incident()
 	{
 
 	}
 
 	public Incident(DateTime created, Participation participation, Session session, string fact, Article article, Penalty penalty,
-		string reason)
+		string reason, int? licensePoints, float? fine)
 	{
 		ArgumentNullException.ThrowIfNull(created);
 		ArgumentNullException.ThrowIfNull(participation);
@@ -51,6 +54,22 @@ public class Incident : EntityBase, IAggregateRoot
 		ArticleId = article.Id;
 		Penalty = penalty;
 		PenaltyId = penalty.Id;
+
+		if(licensePoints is not null)
+		{
+			if(licensePoints <= 0 || licensePoints > 6)
+			{
+				throw new ArgumentException("Negative points can not be added and no more than 6 license points can be added");
+			}
+		}
+
+		if(fine is not null)
+		{
+			if(fine <= 0)
+			{
+				throw new ArgumentException("Fine must be a positive number");
+			}
+		}
 	}
 
 	public Incident(DateTime created, int participationId, int sessionId, string fact, int articleId, int penaltyId,

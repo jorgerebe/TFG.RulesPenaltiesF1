@@ -20,9 +20,12 @@
     {
         canAddParticipation = await _viewModelService.CanAddParticipation(Model.Id, currentUser.Id);
 
-        if(await _userManager.IsInRoleAsync(currentUser, UserRole.Steward.ToString()) && await _viewModelService.CanAdvanceSession(Model.Id))
+        if(await _userManager.IsInRoleAsync(currentUser, UserRole.Steward.ToString()))
         {
-            canAdvance = true;
+            if(await _viewModelService.CanAdvanceSession(Model.Id))
+            {
+                canAdvance = true;
+            }
         }
     }
 }
@@ -115,6 +118,9 @@
                     <th>
 
                     </th>
+                    <th>
+
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -134,6 +140,16 @@
                                 <form asp-action="Advance" asp-route-id="@Model.Id">
                                     <div class="form-group">
                                         <input type="submit" value="Advance" class="btn btn-info" id="submit" />
+                                    </div>
+                                </form>
+                            }
+                        </td>
+                        <td>
+                            @if (await _viewModelService.CanAddIncident(session.SessionId))
+                            {
+                                <form asp-controller="Incidents" asp-action="Create" asp-route-id="@session.SessionId" method="get">
+                                    <div class="form-group">
+                                        <input type="submit" value="Add Incident" class="btn btn-warning" id="submit" />
                                     </div>
                                 </form>
                             }
