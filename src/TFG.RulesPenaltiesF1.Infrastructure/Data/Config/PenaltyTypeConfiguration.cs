@@ -16,5 +16,8 @@ internal class PenaltyTypeConfiguration : IEntityTypeConfiguration<PenaltyType>
       builder.Property(pt => pt.Description)
          .HasMaxLength(140)
          .IsRequired();
+
+		builder.Property(pt => pt.PenaltyPoints)
+			.IsRequired();
    }
 }

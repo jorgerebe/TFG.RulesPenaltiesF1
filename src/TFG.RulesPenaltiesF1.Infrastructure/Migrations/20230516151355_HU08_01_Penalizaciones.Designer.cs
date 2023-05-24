@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 {
     [DbContext(typeof(RulesPenaltiesF1DbContext))]
-    partial class RulesPenaltiesF1DbContextModelSnapshot : ModelSnapshot
+    [Migration("20230516151355_HU08_01_Penalizaciones")]
+    partial class HU08_01_Penalizaciones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,11 +355,8 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Participation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("DriverId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CompetitionId")
                         .HasColumnType("int");
@@ -364,17 +364,11 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Property<int>("CompetitorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("DriverId", "CompetitionId", "CompetitorId");
 
                     b.HasIndex("CompetitionId");
 
                     b.HasIndex("CompetitorId");
-
-                    b.HasIndex("DriverId", "CompetitionId", "CompetitorId")
-                        .IsUnique();
 
                     b.ToTable("Participation");
                 });
@@ -491,56 +485,6 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Driver");
-                });
-
-            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Incident", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Fact")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float?>("Fine")
-                        .HasColumnType("real");
-
-                    b.Property<int?>("LicensePoints")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParticipationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PenaltyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SessionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("ParticipationId");
-
-                    b.HasIndex("PenaltyId");
-
-                    b.HasIndex("SessionId");
-
-                    b.ToTable("Incident");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", b =>
@@ -937,39 +881,6 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Navigation("Competitor");
                 });
 
-            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Incident", b =>
-                {
-                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Participation", "Participation")
-                        .WithMany()
-                        .HasForeignKey("ParticipationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", "Penalty")
-                        .WithMany()
-                        .HasForeignKey("PenaltyId");
-
-                    b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Session", "Session")
-                        .WithMany("Incidents")
-                        .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("Participation");
-
-                    b.Navigation("Penalty");
-
-                    b.Navigation("Session");
-                });
-
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", b =>
                 {
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Penalties.PenaltyType", "PenaltyType")
@@ -1040,11 +951,6 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Navigation("Participations");
 
                     b.Navigation("Sessions");
-                });
-
-            modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Session", b =>
-                {
-                    b.Navigation("Incidents");
                 });
 
             modelBuilder.Entity("TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate.Regulation", b =>

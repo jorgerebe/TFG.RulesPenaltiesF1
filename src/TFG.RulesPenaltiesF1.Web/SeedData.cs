@@ -5,12 +5,11 @@ using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
-using Autofac.Core;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
-namespace TFG.RulesPenaltiesF1.Web
-	{
-	public static class SeedData
+namespace TFG.RulesPenaltiesF1.Web;
+
+public static class SeedData
    {
       /*ARTICLES*/
       public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.\nHowever, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");
@@ -20,13 +19,13 @@ namespace TFG.RulesPenaltiesF1.Web
       public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
 
       /*PENALTIES*/
-      public static readonly PenaltyType DQ = new ("Disqualification", "Driver disqualified of the race");
-      public static readonly PenaltyType TP = new ("Time Penalty", "Time Penalty");
-      public static readonly PenaltyType GP = new ("Drop Grid Positions", "Drop Grid Position");
-      public static readonly PenaltyType DT = new ("Drive-Through", "Drive-Through");
-      public static readonly PenaltyType StopAndGo = new ("Stop And Go", "Stop And Go");
-      public static readonly PenaltyType Reprimand = new ("Reprimand", "Reprimand");
-      public static readonly PenaltyType Fine = new ("Fine", "The competitor must pay a fine");
+      public static readonly PenaltyType DQ = new ("Disqualification or Suspension", "Disqualification from the results or Suspension from the driver’s next Competition", true);
+      public static readonly PenaltyType TP = new ("Time Penalty", "Applied during the pit stop or after the race", true);
+      public static readonly PenaltyType GP = new ("Drop Grid Positions", "Drop of grid positions at the driver's next race", true);
+      public static readonly PenaltyType DT = new ("Drive-Through", "The driver must enter the pit lane and re-join without stopping", true);
+      public static readonly PenaltyType StopAndGo = new ("Stop And Go", "The driver must enter the pit lane, stop in pit position for the required time and then re-join", true);
+      public static readonly PenaltyType Reprimand = new ("Reprimand", "", false);
+      public static readonly PenaltyType Fine = new ("Fine", "The competitor must pay a fine", false);
 
       public static readonly TimePenalty tp_5 = new (TP, 5);
       public static readonly TimePenalty tp_10 = new (TP, 10);
@@ -232,13 +231,13 @@ namespace TFG.RulesPenaltiesF1.Web
          new(circuits[1], "Australian Grand Prix", true, 12)
       };
 
-		/*Seasons in its method*/
+	/*Seasons in its method*/
 
-		/*Drivers in its method*/
-		public static List<Driver> drivers = new();
+	/*Drivers in its method*/
+	public static List<Driver> drivers = new();
 
 
-		public static async Task Initialize(IServiceProvider serviceProvider)
+	public static async Task Initialize(IServiceProvider serviceProvider)
       {
          using var dbContext = new RulesPenaltiesF1DbContext(
              serviceProvider.GetRequiredService<DbContextOptions<RulesPenaltiesF1DbContext>>(), null);
@@ -330,8 +329,8 @@ namespace TFG.RulesPenaltiesF1.Web
          await PopulateCompetitors(dbContext, userManager);
          /*Seasons*/
          PopulateSeasons(dbContext);
-			/*Drivers*/
-			PopulateDrivers(dbContext);
+		/*Drivers*/
+		PopulateDrivers(dbContext);
 
          // Save again
          dbContext.SaveChanges();
@@ -416,11 +415,11 @@ namespace TFG.RulesPenaltiesF1.Web
 
       public static void PopulateSeasons(RulesPenaltiesF1DbContext dbContext)
       {
-			List<Competitor> seasonCompetitors = new()
-			{
-				competitors[1],
-				competitors[3]
-			};
+		List<Competitor> seasonCompetitors = new()
+		{
+			competitors[1],
+			competitors[3]
+		};
 
          Season season1 = new Season(2023, seasonCompetitors, competitions, regulation);
 
@@ -428,26 +427,25 @@ namespace TFG.RulesPenaltiesF1.Web
       }
 
 
-		public static void PopulateDrivers(RulesPenaltiesF1DbContext dbContext)
-		{
-			//MCLAREN
-			drivers.Add(new Driver("Lando Norris", new DateOnly(1999, 11, 13), competitors[0]));
-			drivers.Add(new Driver("Oscar Piastri", new DateOnly(2001, 4, 6), competitors[0]));
-			//RED BULL
-			drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1]));
-			drivers.Add(new Driver("Sergio Pérez", new DateOnly(1990, 1, 26), competitors[1]));
-			drivers.Add(new Driver("Daniel Ricciardo", new DateOnly(1989, 7, 1), competitors[1]));
-			//FERRARI
-			drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2]));
-			drivers.Add(new Driver("Charles Leclerc", new DateOnly(1997, 10, 16), competitors[2]));
-			//MERCEDES
-			drivers.Add(new Driver("Lewis Hamilton", new DateOnly(1985, 1, 7), competitors[3]));
-			drivers.Add(new Driver("George Russell", new DateOnly(1998, 2, 15), competitors[3]));
+	public static void PopulateDrivers(RulesPenaltiesF1DbContext dbContext)
+	{
+		//MCLAREN
+		drivers.Add(new Driver("Lando Norris", new DateOnly(1999, 11, 13), competitors[0]));
+		drivers.Add(new Driver("Oscar Piastri", new DateOnly(2001, 4, 6), competitors[0]));
+		//RED BULL
+		drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1]));
+		drivers.Add(new Driver("Sergio Pérez", new DateOnly(1990, 1, 26), competitors[1]));
+		drivers.Add(new Driver("Daniel Ricciardo", new DateOnly(1989, 7, 1), competitors[1]));
+		//FERRARI
+		drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2]));
+		drivers.Add(new Driver("Charles Leclerc", new DateOnly(1997, 10, 16), competitors[2]));
+		//MERCEDES
+		drivers.Add(new Driver("Lewis Hamilton", new DateOnly(1985, 1, 7), competitors[3]));
+		drivers.Add(new Driver("George Russell", new DateOnly(1998, 2, 15), competitors[3]));
 
-			foreach(var driver in drivers)
-			{
-				dbContext.Driver.Add(driver);
-			}
+		foreach(var driver in drivers)
+		{
+			dbContext.Driver.Add(driver);
 		}
+	}
    }
-}

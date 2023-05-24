@@ -9,6 +9,8 @@ internal class CompetitionConfiguration : IEntityTypeConfiguration<Competition>
 {
    public void Configure(EntityTypeBuilder<Competition> builder)
    {
+		builder.HasKey(c => c.Id);
+
       builder.HasOne(c => c.Circuit)
          .WithMany()
          .HasForeignKey(c => c.CircuitId);

@@ -46,4 +46,34 @@ public class RegulationViewModel
 
 		return regulationEntity;
 	}
+
+	public static RegulationViewModel? MapEntityToViewModel(Regulation regulation)
+	{
+		if(regulation is null)
+		{
+			return null;
+		}
+
+		List<ArticleViewModel> articles = new();
+
+		foreach (var article in regulation.Articles)
+		{
+			articles.Add(ArticleViewModel.MapEntityToViewModel(article.Article!)!);
+		}
+
+		List<PenaltyViewModel> penalties = new();
+
+		foreach (var penalty in regulation.Penalties)
+		{
+			penalties.Add(PenaltyViewModelFactory.CreateViewModel(penalty.Penalty!));
+		}
+
+		return new RegulationViewModel()
+		{
+			Id = regulation.Id,
+			Name = regulation.Name,
+			ArticlesContent = articles,
+			PenaltiesContent = penalties
+		};
+	}
 }

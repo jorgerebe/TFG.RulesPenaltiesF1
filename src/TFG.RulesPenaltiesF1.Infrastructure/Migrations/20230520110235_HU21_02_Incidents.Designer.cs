@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 {
     [DbContext(typeof(RulesPenaltiesF1DbContext))]
-    partial class RulesPenaltiesF1DbContextModelSnapshot : ModelSnapshot
+    [Migration("20230520110235_HU21_02_Incidents")]
+    partial class HU21_02_Incidents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -511,16 +514,10 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Fine")
-                        .HasColumnType("real");
-
-                    b.Property<int?>("LicensePoints")
-                        .HasColumnType("int");
-
                     b.Property<int>("ParticipationId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PenaltyId")
+                    b.Property<int>("PenaltyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
@@ -953,7 +950,9 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
 
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty", "Penalty")
                         .WithMany()
-                        .HasForeignKey("PenaltyId");
+                        .HasForeignKey("PenaltyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Session", "Session")
                         .WithMany("Incidents")

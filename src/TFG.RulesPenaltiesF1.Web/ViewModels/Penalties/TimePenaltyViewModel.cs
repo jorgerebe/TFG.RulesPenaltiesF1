@@ -6,6 +6,6 @@ public class TimePenaltyViewModel : PenaltyViewModel
 
    public override string ToString()
    {
-      return base.ToString() + ": " + Seconds + " seconds";
+      return Name + ": " + Seconds + " seconds " + Description;
    }
 }

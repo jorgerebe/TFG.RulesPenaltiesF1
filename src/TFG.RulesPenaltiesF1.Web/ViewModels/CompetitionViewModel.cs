@@ -41,7 +41,7 @@ public class CompetitionViewModel
 		ArgumentNullException.ThrowIfNull(competition);
 
 		CompetitionViewModel competitionViewModel = new()
-			{
+		{
 			SeasonId = competition.Season!.Id,
 			Year = competition.Season!.Year,
 			Id = competition.Id,
@@ -51,18 +51,11 @@ public class CompetitionViewModel
 			IsSprint = competition.IsSprint,
 			Week = competition.Week,
 			CompetitionState = competition.State
-			};
+		};
 
 		foreach (var session in competition.Sessions)
 		{
-			competitionViewModel.Sessions.Add(
-				new SessionViewModel()
-				{
-					SessionId = session.Id,
-					State = session.State,
-					Type = session.SessionType
-				}
-			);
+			competitionViewModel.Sessions.Add(SessionViewModel.MapEntityToViewModel(session)!);
 		}
 
 		foreach (var participation in competition.Participations)
@@ -70,6 +63,7 @@ public class CompetitionViewModel
 			competitionViewModel.Participations.Add(
 				new ParticipationViewModel()
 				{
+					Id = participation.Id,
 					CompetitionId = competition.Id,
 					DriverId = participation.DriverId,
 					Driver = DriverViewModel.MapEntityToViewModel(participation.Driver!),

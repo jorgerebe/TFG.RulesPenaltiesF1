@@ -7,6 +7,7 @@ public interface IRegulationViewModelService
 {
    Task<List<RegulationViewModel>> GetRegulationsAsync();
    Task<RegulationViewModel?> GetRegulationByIdAsync(int id);
+   Task<RegulationViewModel?> GetRegulationByCompetitionId(int id);
 
    Task<bool> ExistsRegulationWithName(string name);
 }
