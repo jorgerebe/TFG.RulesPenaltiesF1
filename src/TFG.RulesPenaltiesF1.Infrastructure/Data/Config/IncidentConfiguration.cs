@@ -29,5 +29,9 @@ public class IncidentConfiguration : IEntityTypeConfiguration<Incident>
 		builder.Property(i => i.Created).IsRequired();
 		builder.Property(i => i.Fact).IsRequired();
 		builder.Property(i => i.Reason).IsRequired();
+
+		builder.Navigation(i => i.Penalty).AutoInclude();
+		builder.Navigation(i => i.Article).AutoInclude();
+		builder.Navigation(i => i.Participation).AutoInclude();
 	}
 }

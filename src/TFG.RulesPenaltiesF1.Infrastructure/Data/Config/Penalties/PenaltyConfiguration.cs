@@ -13,5 +13,7 @@ public class PenaltyConfiguration : IEntityTypeConfiguration<Penalty>
       builder.HasOne(p => p.PenaltyType)
          .WithMany()
          .HasForeignKey(p => p.PenaltyTypeId);
-   }
+
+		builder.Navigation(p => p.PenaltyType).AutoInclude();
+	}
 }

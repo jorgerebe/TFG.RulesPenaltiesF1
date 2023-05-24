@@ -10,5 +10,8 @@ public class ParticipationConfiguration : IEntityTypeConfiguration<Participation
 	{
 		builder.HasKey(p => p.Id);
 		builder.HasIndex(p => new { p.DriverId, p.CompetitionId, p.CompetitorId }).IsUnique();
+
+		builder.Navigation(p => p.Driver).AutoInclude();
+		builder.Navigation(p => p.Competitor).AutoInclude();
 	}
 }

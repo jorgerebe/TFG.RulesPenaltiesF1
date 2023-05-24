@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -16,6 +16,9 @@ public class IncidentViewModel
 	[Required]
 	[DisplayName("Driver")]
 	public int ParticipationId { get; set; }
+
+	public DriverViewModel? Driver { get; set; }
+	public CompetitorViewModel? Competitor { get; set; }
 
 	public ParticipationViewModel? Participation { get; set; }
 
@@ -36,18 +39,18 @@ public class IncidentViewModel
 	[DisplayName("Decission")]
 	public int PenaltyId { get; set; }
 
-	public Penalty? Penalty { get; set; }
+	public PenaltyViewModel? Penalty { get; set; }
 
 	[Required]
 	public string Reason { get; set; } = string.Empty;
 
 	[Required]
 	[Range(0, 6, ErrorMessage = "A maximum of 6 license points can be added to a driver")]
-	public int LicensePoints { get; set; }
+	public int? LicensePoints { get; set; }
 
 	[Required]
 	[Range(0, 100000, ErrorMessage ="The maximum value for the fine is 100 0000")]
-	public float Fine { get; set; }
+	public float? Fine { get; set; }
 
 	public static Incident MapViewModelToEntity(IncidentViewModel viewModel)
 	{
@@ -72,6 +75,31 @@ public class IncidentViewModel
 			viewModel.ArticleId, penaltyId, viewModel.Reason, licensePoints, fine);
 
 		return incident;
+	}
+
+	public static IncidentViewModel MapEntityToViewModel(Incident incident)
+	{
+
+		IncidentViewModel viewModel = new()
+		{
+			Created = incident.Created,
+			Driver = DriverViewModel.MapEntityToViewModel(incident.Participation!.Driver!),
+			Competitor = CompetitorViewModel.MapEntityToViewModel(incident.Participation!.Competitor!),
+			Session = new()
+			{
+				SessionId = incident.Session!.Id,
+				State = incident.Session!.State,
+				Type = incident.Session!.SessionType
+			},
+			Fact = incident.Fact,
+			Article = ArticleViewModel.MapEntityToViewModel(incident.Article!),
+			Penalty = incident.Penalty is null ? null : PenaltyViewModelFactory.CreateViewModel(incident.Penalty),
+			Reason = incident.Reason,
+			LicensePoints = incident.LicensePoints,
+			Fine = incident.Fine
+		};
+
+		return viewModel;
 	}
 
 }

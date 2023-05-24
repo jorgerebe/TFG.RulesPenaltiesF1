@@ -55,14 +55,7 @@ public class CompetitionViewModel
 
 		foreach (var session in competition.Sessions)
 		{
-			competitionViewModel.Sessions.Add(
-				new SessionViewModel()
-				{
-					SessionId = session.Id,
-					State = session.State,
-					Type = session.SessionType
-				}
-			);
+			competitionViewModel.Sessions.Add(SessionViewModel.MapEntityToViewModel(session)!);
 		}
 
 		foreach (var participation in competition.Participations)
