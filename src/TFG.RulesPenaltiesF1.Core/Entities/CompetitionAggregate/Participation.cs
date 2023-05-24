@@ -1,6 +1,6 @@
 ﻿namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
-public class Participation
+public class Participation : EntityBase
 {
 	public int CompetitionId { get; set; }
 	public Competition? Competition { get; set; }

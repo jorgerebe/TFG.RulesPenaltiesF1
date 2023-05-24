@@ -20,14 +20,17 @@
     {
         canAddParticipation = await _viewModelService.CanAddParticipation(Model.Id, currentUser.Id);
 
-        if(await _userManager.IsInRoleAsync(currentUser, UserRole.Steward.ToString()) && await _viewModelService.CanAdvanceSession(Model.Id))
+        if(await _userManager.IsInRoleAsync(currentUser, UserRole.Steward.ToString()))
         {
-            canAdvance = true;
+            if(await _viewModelService.CanAdvanceSession(Model.Id))
+            {
+                canAdvance = true;
+            }
         }
     }
 }
 
-<h1>@Model.Name - 2023</h1>
+<h1>@Model.Name - @Model.Year</h1>
 
 <div>
     <hr/>
@@ -115,6 +118,9 @@
                     <th>
 
                     </th>
+                    <th>
+
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -138,7 +144,68 @@
                                 </form>
                             }
                         </td>
+                        <td>
+                            @if (await _viewModelService.CanAddIncident(session.SessionId))
+                            {
+                                <form asp-controller="Incidents" asp-action="Create" asp-route-id="@session.SessionId" method="get">
+                                    <div class="form-group">
+                                        <input type="submit" value="Add Incident" class="btn btn-warning" id="submit" />
+                                    </div>
+                                </form>
+                            }
+                        </td>
                     </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if(Model.Sessions.Any(s => s.Incidents.Count > 0))
+    {
+        <h4>Incidents</h4>
+
+        <table class="table mt-1">
+            <thead>
+                <tr>
+                    <th>
+                        Session
+                    </th>
+                    <th>
+                        Driver
+                    </th>
+                    <th>
+                        Competitor
+                    </th>
+                    <th>
+                        Decission
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var session in Model.Sessions)
+                {
+                    @foreach(var incident in session.Incidents)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(s => session.Type!.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => incident.Driver!.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => incident.Competitor!.Name)
+                            </td>
+                            @if(incident.Penalty is null)
+                            {
+                                <td>No further action</td>
+                            }
+                            else
+                            {
+                                <td>@Html.DisplayFor(i => incident.Penalty.Name)</td>
+                            }
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

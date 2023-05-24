@@ -24,27 +24,7 @@ public class RegulationViewModelService : IRegulationViewModelService
          return null;
       }
 
-      List<ArticleViewModel> articles = new();
-      
-      foreach(var article in regulation.Articles)
-      {
-         articles.Add(ArticleViewModel.MapEntityToViewModel(article.Article!)!);
-      }
-
-      List<PenaltyViewModel> penalties = new();
-      
-      foreach(var penalty in regulation.Penalties)
-      {
-         penalties.Add(PenaltyViewModelFactory.CreateViewModel(penalty.Penalty!));
-      }
-
-      return new RegulationViewModel()
-      {
-         Id = regulation.Id,
-         Name = regulation.Name,
-         ArticlesContent = articles,
-         PenaltiesContent = penalties
-      };
+      return RegulationViewModel.MapEntityToViewModel(regulation);
    }
 
    public async Task<List<RegulationViewModel>> GetRegulationsAsync()
@@ -69,4 +49,16 @@ public class RegulationViewModelService : IRegulationViewModelService
    {
       return await _repository.ExistsRegulationByName(name);
    }
+
+	public async Task<RegulationViewModel?> GetRegulationByCompetitionId(int competitionId)
+	{
+		Regulation? regulation = await _repository.GetRegulationByCompetitionId(competitionId);
+
+		if(regulation is null)
+		{
+			return null;
+		}
+
+		return RegulationViewModel.MapEntityToViewModel(regulation);
+	}
 }

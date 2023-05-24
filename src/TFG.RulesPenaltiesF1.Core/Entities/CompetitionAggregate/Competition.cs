@@ -19,7 +19,7 @@ public class Competition : EntityBase, IAggregateRoot
 	private List<Session> _sessions = new();
 	public IReadOnlyCollection<Session> Sessions => _sessions.AsReadOnly();
 
-	public List<Participation> _participations = new();
+	private List<Participation> _participations = new();
 	public IReadOnlyCollection<Participation> Participations => _participations.AsReadOnly();
 
 	public Competition(Circuit circuit, string name, bool isSprint, int week)
@@ -151,5 +151,17 @@ public class Competition : EntityBase, IAggregateRoot
 
 		return true;
 
+	}
+
+	public void AddIncident(Incident incident, Session session)
+	{
+		if (_sessions.Any(s => s.Id == session.Id) && session.CanAddIncident())
+		{
+			session.AddIncident(incident);
+		}
+		else
+		{
+			throw new InvalidOperationException("It is not possible to add an incident to the session specified");
+		}
 	}
 }
