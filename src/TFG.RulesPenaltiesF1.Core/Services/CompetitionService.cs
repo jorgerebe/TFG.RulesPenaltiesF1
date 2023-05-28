@@ -1,5 +1,5 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities;
-using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;

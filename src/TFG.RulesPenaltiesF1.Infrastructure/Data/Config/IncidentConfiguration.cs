@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Config;
 

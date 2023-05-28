@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
@@ -31,6 +32,19 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 		var pepe = name.ToLower().Replace("\t", " ").Replace(" ", "");
 		return await _dbContext.Set<Driver>()
 			.Where(d => d.Name.ToLower().Replace("\t", " ").Replace(" ", "") == name.ToLower().Replace("\t", " ").Replace(" ", "")).FirstOrDefaultAsync();
+	}
+
+	public async Task<Driver?> GetDriverByParticipationId(int participationId)
+	{
+		var participation = await _dbContext.Set<Participation>()
+											.Where(p => p.Id == participationId).FirstOrDefaultAsync();
+
+		if(participation is null)
+		{
+			return null;
+		}
+
+		return participation.Driver;
 	}
 
 	public async Task<List<Driver>> GetDriversInCompetitor(int competitorId)
