@@ -4,7 +4,7 @@ namespace TFG.RulesPenaltiesF1.Core.Entities;
 
 public class Driver : EntityBase, IAggregateRoot
 {
-	const int MAX_LICENSE_POINTS = 12;
+	public const int MAX_LICENSE_POINTS = 12;
 
 	public string Name { get; set; } = string.Empty;
 	public DateOnly DateBirth { get; set; }
@@ -45,11 +45,16 @@ public class Driver : EntityBase, IAggregateRoot
 
 	public void AddLicensePoints(int points)
 	{
-		if((points + LicensePoints) > MAX_LICENSE_POINTS)
+		if(!CanAddLicensePoints(points))
 		{
 			throw new ArgumentException($"The driver can not have more than {MAX_LICENSE_POINTS} license points");
 		}
 
 		LicensePoints += points;
+	}
+
+	public bool CanAddLicensePoints(int points)
+	{
+		return !((points + LicensePoints) > MAX_LICENSE_POINTS);
 	}
 }

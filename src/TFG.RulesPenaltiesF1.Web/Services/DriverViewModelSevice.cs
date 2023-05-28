@@ -58,4 +58,16 @@ public class DriverViewModelSevice : IDriverViewModelService
 
 		return driversViewModels;
 	}
+
+	public async Task<(bool, int)> CanAddLicensePoints(int participationId, int points)
+	{
+		var driver = await _repository.GetDriverByParticipationId(participationId);
+
+		if(driver is not null)
+		{
+			return (driver.CanAddLicensePoints(points), driver.LicensePoints);
+		}
+
+		return (false, 0);
+	}
 }

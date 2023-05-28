@@ -44,13 +44,11 @@ public class IncidentViewModel
 	[Required]
 	public string Reason { get; set; } = string.Empty;
 
-	[Required]
 	[Range(0, 6, ErrorMessage = "A maximum of 6 license points can be added to a driver")]
-	public int? LicensePoints { get; set; }
+	public int? LicensePoints { get; set; } = 0;
 
-	[Required]
-	[Range(0, 100000, ErrorMessage ="The maximum value for the fine is 100 0000")]
-	public float? Fine { get; set; }
+	[Range(0, 100000, ErrorMessage = "The maximum value for the fine is 100 0000")]
+	public float? Fine { get; set; } = 0;
 
 	public static Incident MapViewModelToEntity(IncidentViewModel viewModel)
 	{
