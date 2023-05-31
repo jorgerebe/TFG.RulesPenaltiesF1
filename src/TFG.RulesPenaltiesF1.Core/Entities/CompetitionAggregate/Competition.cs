@@ -1,4 +1,7 @@
-﻿using TFG.RulesPenaltiesF1.Core.Interfaces;
+﻿using MediatR;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate.Events;
+using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
@@ -158,6 +161,10 @@ public class Competition : EntityBase, IAggregateRoot
 		if (_sessions.Any(s => s.Id == session.Id) && session.CanAddIncident())
 		{
 			session.AddIncident(incident);
+
+			var newIncidentAdded = new IncidentAddedEvent(incident);
+			base.RegisterDomainEvent(newIncidentAdded);
+
 		}
 		else
 		{

@@ -11,6 +11,7 @@ using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using SmartEnum.EFCore;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data;
 

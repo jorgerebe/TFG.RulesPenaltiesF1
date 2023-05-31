@@ -2,7 +2,7 @@
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 
-namespace TFG.RulesPenaltiesF1.Core.Entities;
+namespace TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 
 public class Incident : EntityBase, IAggregateRoot
 {
@@ -25,6 +25,7 @@ public class Incident : EntityBase, IAggregateRoot
 	public string Reason = string.Empty;
 
 	public int? LicensePoints { get; set; }
+
 	public float? Fine { get; set; }
 
 	private Incident()
@@ -59,17 +60,17 @@ public class Incident : EntityBase, IAggregateRoot
 			PenaltyId = penalty.Id;
 		}
 
-		if(licensePoints is not null)
+		if (licensePoints is not null)
 		{
-			if(licensePoints < 0 || licensePoints > 6)
+			if (licensePoints < 0 || licensePoints > 6)
 			{
 				throw new ArgumentException("Negative points can not be added and no more than 6 license points can be added");
 			}
 		}
 
-		if(fine is not null)
+		if (fine is not null)
 		{
-			if(fine < 0)
+			if (fine < 0)
 			{
 				throw new ArgumentException("Fine must be a positive number");
 			}

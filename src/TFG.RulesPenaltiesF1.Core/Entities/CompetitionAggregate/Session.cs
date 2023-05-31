@@ -1,4 +1,6 @@
-﻿namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
+
+namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 public class Session : EntityBase
 {
