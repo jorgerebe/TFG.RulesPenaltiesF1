@@ -25,6 +25,7 @@ public class Incident : EntityBase, IAggregateRoot
 	public string Reason = string.Empty;
 
 	public int? LicensePoints { get; set; }
+
 	public float? Fine { get; set; }
 
 	private Incident()

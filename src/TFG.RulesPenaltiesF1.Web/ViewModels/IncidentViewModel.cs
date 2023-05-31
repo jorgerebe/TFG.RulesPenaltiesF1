@@ -45,6 +45,7 @@ public class IncidentViewModel
 	public string Reason { get; set; } = string.Empty;
 
 	[Range(0, 6, ErrorMessage = "A maximum of 6 license points can be added to a driver")]
+	[DisplayName("License Points")]
 	public int? LicensePoints { get; set; } = 0;
 
 	[Range(0, 100000, ErrorMessage = "The maximum value for the fine is 100 0000")]
