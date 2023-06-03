@@ -19,13 +19,13 @@ public static class SeedData
       public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
 
       /*PENALTIES*/
-      public static readonly PenaltyType DQ = new ("Disqualification or Suspension", "Disqualification from the results or Suspension from the driver’s next Competition", true);
-      public static readonly PenaltyType TP = new ("Time Penalty", "Applied during the pit stop or after the race", true);
-      public static readonly PenaltyType GP = new ("Drop Grid Positions", "Drop of grid positions at the driver's next race", true);
-      public static readonly PenaltyType DT = new ("Drive-Through", "The driver must enter the pit lane and re-join without stopping", true);
-      public static readonly PenaltyType StopAndGo = new ("Stop And Go", "The driver must enter the pit lane, stop in pit position for the required time and then re-join", true);
-      public static readonly PenaltyType Reprimand = new ("Reprimand", "", false);
-      public static readonly PenaltyType Fine = new ("Fine", "The competitor must pay a fine", false);
+      public static readonly PenaltyType DQ = new ("Disqualification or Suspension", "Disqualification from the results or Suspension from the driver’s next Competition", true, false);
+      public static readonly PenaltyType TP = new ("Time Penalty", "Applied during the pit stop or after the race", true, false);
+      public static readonly PenaltyType GP = new ("Drop Grid Positions", "Drop of grid positions at the driver's next race", true, false);
+      public static readonly PenaltyType DT = new ("Drive-Through", "The driver must enter the pit lane and re-join without stopping", true, false);
+      public static readonly PenaltyType StopAndGo = new ("Stop And Go", "The driver must enter the pit lane, stop in pit position for the required time and then re-join", true, false);
+      public static readonly PenaltyType Reprimand = new ("Reprimand", "", false, false);
+      public static readonly PenaltyType Fine = new ("Fine", "The competitor must pay a fine", false, true);
 
       public static readonly TimePenalty tp_5 = new (TP, 5);
       public static readonly TimePenalty tp_10 = new (TP, 10);

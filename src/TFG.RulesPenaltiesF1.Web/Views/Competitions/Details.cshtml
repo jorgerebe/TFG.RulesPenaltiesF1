@@ -15,6 +15,7 @@
 
     bool canAddParticipation = false;
     bool canAdvance = false;
+    bool isSteward = false;
 
     if (currentUser is not null)
     {
@@ -22,6 +23,8 @@
 
         if(await _userManager.IsInRoleAsync(currentUser, UserRole.Steward.ToString()))
         {
+            isSteward = true;
+
             if(await _viewModelService.CanAdvanceSession(Model.Id))
             {
                 canAdvance = true;
@@ -145,7 +148,7 @@
                             }
                         </td>
                         <td>
-                            @if (await _viewModelService.CanAddIncident(session.SessionId))
+                            @if (isSteward && await _viewModelService.CanAddIncident(session.SessionId))
                             {
                                 <form asp-controller="Incidents" asp-action="Create" asp-route-id="@session.SessionId" method="get">
                                     <div class="form-group">

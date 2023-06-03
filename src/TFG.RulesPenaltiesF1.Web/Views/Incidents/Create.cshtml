@@ -104,16 +104,19 @@
             onChangePenalty();
         });
 
-        var map = new Map();
+        var penaltyPointsMap = new Map();
+        var fineMap = new Map();
 
         @foreach(var penalty in penalties)
         {
             <text>
-                map.set(@penalty.Id, @(penalty.PenaltyPoints ? "true" : "false"));
+                penaltyPointsMap.set(@penalty.Id, @(penalty.PenaltyPoints ? "true" : "false"));
+                fineMap.set(@penalty.Id, @(penalty.Fine ? "true" : "false"));
             </text>
         }
 
-        console.log(map);
+        console.log(penaltyPointsMap);
+        console.log(fineMap);
 
         onChangePenalty();
 
@@ -123,20 +126,26 @@
 
             let penaltyId = $("#PenaltyId").val();
 
-            var penaltyPoints = map.get(parseInt(penaltyId));
+            var penaltyPoints = penaltyPointsMap.get(parseInt(penaltyId));
+            var fine = fineMap.get(parseInt(penaltyId));
 
             console.log("Penalty Points: " + penaltyPoints);
+            console.log("Fine: " + fine);
 
             var fine = $("label[for=Fine], #Fine");
             var licensePoints = $("label[for=LicensePoints], #LicensePoints");
 
             if(penaltyPoints === true){
-                fine.show();
                 licensePoints.show();
             }
             else{
-                fine.hide();
                 licensePoints.hide();
+            }
+            if(fine === true){
+                fine.show();
+            }
+            else{
+                fine.hide();
             }
 
         }
