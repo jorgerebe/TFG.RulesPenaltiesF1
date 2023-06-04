@@ -109,6 +109,11 @@ public class DefaultInfrastructureModule : Module
          .As<ICompetitionRepository>()
          .InstancePerLifetimeScope();
 
+      builder
+         .RegisterType<IncidentRepository>()
+         .As<IIncidentRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();

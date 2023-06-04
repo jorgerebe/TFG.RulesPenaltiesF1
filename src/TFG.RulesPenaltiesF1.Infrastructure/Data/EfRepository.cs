@@ -44,4 +44,14 @@ public class EfRepository<T> : IRepository<T> where T : EntityBase, IAggregateRo
 		_dbContext.Update(entity);
 		await _dbContext.SaveChangesAsync();
 	}
+
+	public async Task UpdateAll(IEnumerable<T> entities)
+	{
+		foreach(var entity in entities)
+		{
+			_dbContext.Update(entity);
+		}
+
+		await _dbContext.SaveChangesAsync();
+	}
 }
