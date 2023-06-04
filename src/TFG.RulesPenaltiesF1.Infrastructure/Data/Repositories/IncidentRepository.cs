@@ -18,6 +18,6 @@ public class IncidentRepository : IIncidentRepository
 		var competitionsFromLastYearToCurrentWeek = await _dbContext.Competition.Where(c => c.SeasonId == seasonId || (c.SeasonId == seasonId - 1 && c.Week < week)).Include(c => c.Sessions).ThenInclude(s => s.Incidents).ToListAsync();
 
 		return await _dbContext.Set<Incident>()
-			.Where(i => i.LicensePoints != null && _dbContext.Session.Where(s => (s.Competition!.SeasonId == seasonId || (s.Competition.SeasonId == seasonId - 1 && s.Competition.Week < week)) && s.Incidents.Any(nestedIncident => nestedIncident.Id == i.Id)).ToList().Count > 0).ToListAsync();
+			.Where(i => i.LicensePoints != null && _dbContext.Session.Where(s => (s.Competition!.SeasonId == seasonId || (s.Competition.SeasonId == seasonId - 1 && week < s.Competition.Week)) && s.Incidents.Any(nestedIncident => nestedIncident.Id == i.Id)).ToList().Count > 0).ToListAsync();
 	}
 }

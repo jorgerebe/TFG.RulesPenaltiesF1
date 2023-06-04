@@ -20,20 +20,26 @@ public class CompetitionStartedHandler : INotificationHandler<CompetitionStarted
 	{
 		Competition competition = notification.Competition;
 
+		List<Driver> driversChanged = new();
+
 		List<Driver> driversWithTwelvePointsNoPenaltyLastCompetition = await _driverRepository.GetDriversWithTwelvePointsAndNoPenaltyLastCompetition(competition.Id);
 
 		foreach(var driver in driversWithTwelvePointsNoPenaltyLastCompetition)
 		{
 			driver.LicensePoints = 0;
+			driversChanged.Add(driver);
 		}
-
-		await _driverRepository.UpdateAll(driversWithTwelvePointsNoPenaltyLastCompetition);
 
 		List<Driver> driversWithPenaltyPointsLessThanTwelve = await _driverRepository.GetDriversWithPenaltyPointsLessThanTwelve();
 		List<Incident> incidentsLastTwelveMonths = await _incidentRepository.GetIncidentsWithPointsFromLastYearToCurrentWeek(competition.SeasonId, competition.Week);
 
+		foreach(var driver in driversWithPenaltyPointsLessThanTwelve)
+		{
+			int sumLicensePoints = incidentsLastTwelveMonths.Where(i => i.Participation!.DriverId == driver.Id).Sum(i => i.LicensePoints is null ? 0 : (int)i.LicensePoints);
+			driver.LicensePoints = sumLicensePoints % 12;
+			driversChanged.Add(driver);
+		}
 
-
-		Console.WriteLine("pepe");
+		await _driverRepository.UpdateAll(driversChanged);
 	}
 }

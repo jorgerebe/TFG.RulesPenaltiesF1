@@ -64,7 +64,7 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 	public async Task<List<Driver>> GetDriversWithTwelvePointsAndNoPenaltyLastCompetition(int competitionId)
 	{
 		return await _dbContext.Set<Driver>()
-			.Where(d => d.LicensePoints == 12 && _dbContext.Competition.Where(c => c.Id == competitionId - 1 && c.Sessions.Any(s => s.Incidents.Any(p => p.Participation!.DriverId == d.Id))).ToList().Count > 0).ToListAsync();
+			.Where(d => d.LicensePoints == 12 && _dbContext.Competition.Where(c => c.Id == competitionId - 1 && c.Sessions.Any(s => s.Incidents.Any(p => p.Participation!.DriverId == d.Id))).ToList().Count == 0).ToListAsync();
 	}
 
 	public async Task UpdateTeam(Driver driver)
