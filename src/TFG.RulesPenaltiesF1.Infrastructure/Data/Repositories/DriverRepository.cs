@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
@@ -47,10 +48,11 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 		return participation.Driver;
 	}
 
-	public async Task<List<Driver>> GetDriversInCompetitor(int competitorId)
+	public async Task<List<Driver>> GetDriversInCompetitorThatCanCompete(int competitorId, int competitionId)
 	{
 		return await _dbContext.Set<Driver>()
-			.Where(d => d.CompetitorId == competitorId)
+			.Where(d => d.LicensePoints < 12 && d.CompetitorId == competitorId
+			&& _dbContext.Competition.Where(c => c.Id == (competitionId-1) && c.Sessions.Any(s => s.Incidents.Any(i => i.Participation!.DriverId == d.Id && ((Disqualification)i.Penalty!).NextCompetition == true))).ToList().Count == 0)
 			.AsNoTracking()
 			.ToListAsync();
 	}
