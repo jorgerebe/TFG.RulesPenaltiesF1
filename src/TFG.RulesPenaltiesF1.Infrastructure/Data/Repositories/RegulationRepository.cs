@@ -32,7 +32,7 @@ public class RegulationRepository : EfRepository<Regulation>, IRegulationReposit
 	public async Task<Regulation?> GetRegulationByCompetitionId(int competitionId)
 	{
 		return await _dbContext.Set<Regulation>()
-			.Where(r => r.Id == _dbContext.Season.Where(s => s.Competitions.Any(c => c.Id == competitionId)).First().Id)
+			.Where(r => r.Id == _dbContext.Season.Where(s => s.Competitions.Any(c => c.Id == competitionId)).First().RegulationId)
 			.Include(r => r.Articles)
 				.ThenInclude(a => a.Article)
 			.Include(r => r.Penalties)

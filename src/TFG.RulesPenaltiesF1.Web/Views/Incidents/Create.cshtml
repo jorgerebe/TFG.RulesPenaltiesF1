@@ -127,7 +127,7 @@
             let penaltyId = $("#PenaltyId").val();
 
             var penaltyPoints = penaltyPointsMap.get(parseInt(penaltyId));
-            var fine = fineMap.get(parseInt(penaltyId));
+            var fineApplied = fineMap.get(parseInt(penaltyId));
 
             console.log("Penalty Points: " + penaltyPoints);
             console.log("Fine: " + fine);
@@ -140,12 +140,14 @@
             }
             else{
                 licensePoints.hide();
+                licensePoints.val(0);
             }
-            if(fine === true){
+            if (fineApplied === true) {
                 fine.show();
             }
             else{
                 fine.hide();
+                fine.val(0);
             }
 
         }
