@@ -18,16 +18,24 @@ public class IncidentsController : Controller
 
 	private readonly ICompetitionService _competitionService;
 	private readonly IDriverViewModelService _driverViewModelService;
+	private readonly IIncidentViewModelService _incidentViewModelService;
 
 	public IncidentsController(UserManager<ApplicationUser> userManager, ICompetitionViewModelService competitionViewModelService,
 		IRegulationViewModelService regulationViewModelService,
-		ICompetitionService competitionService, IDriverViewModelService driverViewModelService)
+		ICompetitionService competitionService, IDriverViewModelService driverViewModelService, IIncidentViewModelService incidentViewModelService)
 	{
 		_userManager = userManager;
 		_competitionViewModelService = competitionViewModelService;
 		_regulationViewModelService = regulationViewModelService;
 		_competitionService = competitionService;
 		_driverViewModelService = driverViewModelService;
+		_incidentViewModelService = incidentViewModelService;
+	}
+
+	[HttpGet]
+	public async Task<IActionResult> Index()
+	{
+		return View(await _incidentViewModelService.GetIncidents());
 	}
 
 	[HttpGet]

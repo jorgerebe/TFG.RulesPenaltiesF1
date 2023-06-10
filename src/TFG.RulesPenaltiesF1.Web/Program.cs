@@ -9,7 +9,6 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -19,7 +19,8 @@ public static class SeedData
       public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
 
       /*PENALTIES*/
-      public static readonly PenaltyType DQ = new ("Disqualification or Suspension", "Disqualification from the results or Suspension from the driver’s next Competition", true, false);
+      public static readonly PenaltyType DQ = new ("Disqualification", "Disqualification from the results", true, false);
+      public static readonly PenaltyType Suspension = new ("Suspension", "Suspension from the driver’s next Competition", true, false);
       public static readonly PenaltyType TP = new ("Time Penalty", "Applied during the pit stop or after the race", true, false);
       public static readonly PenaltyType GP = new ("Drop Grid Positions", "Drop of grid positions at the driver's next race", true, false);
       public static readonly PenaltyType DT = new ("Drive-Through", "The driver must enter the pit lane and re-join without stopping", true, false);
@@ -37,7 +38,7 @@ public static class SeedData
       public static readonly DropGridPositions dropGridPositions5 = new (GP, 5);
       public static readonly DropGridPositions dropGridPositions10 = new (GP, 10);
       public static readonly Disqualification dq = new (DQ, false);
-      public static readonly Disqualification suspensionNextCompetition = new (DQ, true);
+      public static readonly Disqualification suspensionNextCompetition = new (Suspension, true);
       public static readonly Fine fine = new (Fine);
 
       /*REGULATIONS*/
@@ -227,8 +228,8 @@ public static class SeedData
       /*Competitions*/
       public static List<Competition> competitions = new()
       {
-         new(circuits[0], "Bahrain Grand Prix", false, 10),
-         new(circuits[1], "Australian Grand Prix", true, 12)
+         new(circuits[0], "Bahrain Grand Prix", false, 1),
+         new(circuits[1], "Australian Grand Prix", true, 6)
       };
 
 	/*Seasons in its method*/

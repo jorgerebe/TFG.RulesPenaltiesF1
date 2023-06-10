@@ -25,7 +25,7 @@ public class DriversController : Controller
    // GET: Drivers
    public async Task<IActionResult> Index()
    {
-	var drivers = await _driverViewModelService.GetAllDrivers();
+		var drivers = await _driverViewModelService.GetAllDrivers();
       return View(drivers);
    }
 

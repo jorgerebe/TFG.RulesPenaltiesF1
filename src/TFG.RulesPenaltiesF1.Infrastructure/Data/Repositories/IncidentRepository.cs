@@ -4,13 +4,26 @@ using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
 
-public class IncidentRepository : IIncidentRepository
+public class IncidentRepository : EfRepository<Incident>, IIncidentRepository
 {
 	private readonly RulesPenaltiesF1DbContext _dbContext;
 
-	public IncidentRepository(RulesPenaltiesF1DbContext _dbContext)
+	public IncidentRepository(RulesPenaltiesF1DbContext dbContext) : base(dbContext)
 	{
-		this._dbContext = _dbContext;
+		this._dbContext = dbContext;
+	}
+
+	public async Task<List<Incident>> GetIncidents()
+	{
+		return await _dbContext.Set<Incident>()
+			.Include(i => i.Session)
+				.ThenInclude(s => s!.Competition)
+					.ThenInclude(c => c!.Season)
+			.Include(i => i.Session)
+				.ThenInclude(s => s!.Competition)
+					.ThenInclude(c => c!.Circuit)
+			.Include(i => i.Session)
+			.ToListAsync();
 	}
 
 	public async Task<List<Incident>> GetIncidentsWithPointsFromLastYearToCurrentWeek(int seasonId, int week)

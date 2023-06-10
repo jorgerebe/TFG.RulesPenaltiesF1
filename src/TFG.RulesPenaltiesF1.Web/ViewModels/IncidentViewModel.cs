@@ -98,6 +98,20 @@ public class IncidentViewModel
 			Fine = incident.Fine
 		};
 
+		if(incident.Session.Competition is not null)
+		{
+			viewModel.Session.Competition = new()
+			{
+				Id = incident.Session.Competition.Id,
+				Name = incident.Session.Competition.Name
+			};
+
+			if(incident.Session.Competition.Season is not null)
+			{
+				viewModel.Session.Competition.Year = incident.Session.Competition.Season.Year;
+			}
+		}
+
 		return viewModel;
 	}
 
