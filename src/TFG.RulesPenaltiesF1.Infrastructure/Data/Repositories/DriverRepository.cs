@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
@@ -33,12 +35,38 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 			.Where(d => d.Name.ToLower().Replace("\t", " ").Replace(" ", "") == name.ToLower().Replace("\t", " ").Replace(" ", "")).FirstOrDefaultAsync();
 	}
 
-	public async Task<List<Driver>> GetDriversInCompetitor(int competitorId)
+	public async Task<Driver?> GetDriverByParticipationId(int participationId)
+	{
+		var participation = await _dbContext.Set<Participation>()
+											.Where(p => p.Id == participationId).FirstOrDefaultAsync();
+
+		if(participation is null)
+		{
+			return null;
+		}
+
+		return participation.Driver;
+	}
+
+	public async Task<List<Driver>> GetDriversInCompetitorThatCanCompete(int competitorId, int competitionId)
 	{
 		return await _dbContext.Set<Driver>()
-			.Where(d => d.CompetitorId == competitorId)
+			.Where(d => d.LicensePoints < 12 && d.CompetitorId == competitorId
+			&& _dbContext.Competition.Where(c => c.Id == (competitionId-1) && c.Sessions.Any(s => s.Incidents.Any(i => i.Participation!.DriverId == d.Id && ((Disqualification)i.Penalty!).NextCompetition == true))).ToList().Count == 0)
 			.AsNoTracking()
 			.ToListAsync();
+	}
+
+	public async Task<List<Driver>> GetDriversWithPenaltyPointsLessThanTwelve()
+	{
+		return await _dbContext.Set<Driver>()
+			.Where(d => d.LicensePoints > 0 && d.LicensePoints < 12).ToListAsync();
+	}
+
+	public async Task<List<Driver>> GetDriversWithTwelvePointsAndNoPenaltyLastCompetition(int competitionId)
+	{
+		return await _dbContext.Set<Driver>()
+			.Where(d => d.LicensePoints == 12 && _dbContext.Competition.Where(c => c.Id == competitionId - 1 && c.Sessions.Any(s => s.Incidents.Any(p => p.Participation!.DriverId == d.Id))).ToList().Count == 0).ToListAsync();
 	}
 
 	public async Task UpdateTeam(Driver driver)

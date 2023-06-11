@@ -65,7 +65,7 @@ public class ParticipationsController : Controller
 			Competitor = competitor
 		};
 
-		var drivers = await _driverViewModelService.GetDriversInCompetitor(competitor.Id);
+		var drivers = await _driverViewModelService.GetDriversInCompetitorThatCanCompete(competitor.Id, competition.Id);
 
 		ViewBag.Drivers = drivers.AsEnumerable();
 

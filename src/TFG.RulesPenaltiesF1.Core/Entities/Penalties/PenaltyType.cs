@@ -7,6 +7,7 @@ public class PenaltyType : EntityBase, IAggregateRoot
 	public string Name { get; private set; }
 	public string Description { get; private set; }
 	public bool PenaltyPoints { get; private set; }
+	public bool Fine { get; private set; }
 
 	internal PenaltyType(int id)
 	{
@@ -15,10 +16,11 @@ public class PenaltyType : EntityBase, IAggregateRoot
 		Id = id;
 	}
 
-	public PenaltyType(string name, string description, bool penaltyPoints)
+	public PenaltyType(string name, string description, bool penaltyPoints, bool fine)
 	{
 		Name = name;
 		Description = description;
 		PenaltyPoints = penaltyPoints;
+		Fine = fine;
 	}
 }

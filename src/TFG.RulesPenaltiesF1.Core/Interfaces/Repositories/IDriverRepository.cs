@@ -8,5 +8,8 @@ public interface IDriverRepository : IRepository<Driver>
 	Task<Driver?> GetDriverById(int id);
 	Task<Driver?> GetDriverByName(string name);
 	Task UpdateTeam(Driver driver);
-	Task<List<Driver>> GetDriversInCompetitor(int competitorId);
+	Task<List<Driver>> GetDriversInCompetitorThatCanCompete(int competitorId, int competitionId);
+	Task<Driver?> GetDriverByParticipationId(int participationId);
+	Task<List<Driver>> GetDriversWithTwelvePointsAndNoPenaltyLastCompetition(int competitionId);
+	Task<List<Driver>> GetDriversWithPenaltyPointsLessThanTwelve();
 }

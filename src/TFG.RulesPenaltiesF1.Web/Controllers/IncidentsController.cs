@@ -6,6 +6,7 @@ using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
+using TFG.RulesPenaltiesF1.Core.Entities;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers;
 
@@ -16,15 +17,25 @@ public class IncidentsController : Controller
 	private readonly IRegulationViewModelService _regulationViewModelService;
 
 	private readonly ICompetitionService _competitionService;
+	private readonly IDriverViewModelService _driverViewModelService;
+	private readonly IIncidentViewModelService _incidentViewModelService;
 
 	public IncidentsController(UserManager<ApplicationUser> userManager, ICompetitionViewModelService competitionViewModelService,
 		IRegulationViewModelService regulationViewModelService,
-		ICompetitionService competitionService)
+		ICompetitionService competitionService, IDriverViewModelService driverViewModelService, IIncidentViewModelService incidentViewModelService)
 	{
 		_userManager = userManager;
 		_competitionViewModelService = competitionViewModelService;
 		_regulationViewModelService = regulationViewModelService;
 		_competitionService = competitionService;
+		_driverViewModelService = driverViewModelService;
+		_incidentViewModelService = incidentViewModelService;
+	}
+
+	[HttpGet]
+	public async Task<IActionResult> Index()
+	{
+		return View(await _incidentViewModelService.GetIncidents());
 	}
 
 	[HttpGet]
@@ -61,7 +72,9 @@ public class IncidentsController : Controller
 		{
 			CompetitionId = competition.Id,
 			SessionId = sessionId,
-			Session = competition.Sessions.Where(s => s.SessionId == sessionId).FirstOrDefault()
+			Session = competition.Sessions.Where(s => s.SessionId == sessionId).FirstOrDefault(),
+			Fine = 0,
+			LicensePoints = 0
 		};
 
 		ViewBag.Competition = competition;
@@ -96,6 +109,17 @@ public class IncidentsController : Controller
 			if (!await _competitionViewModelService.CanAddIncident(incident.SessionId))
 			{
 				return NotFound();
+			}
+
+			if(incident.LicensePoints is not null)
+			{
+				(bool canAdd, int points) = await _driverViewModelService.CanAddLicensePoints(incident.ParticipationId, (int)incident.LicensePoints);
+
+				if (!canAdd)
+				{
+					ModelState.AddModelError("LicensePoints", $"The driver currently has {points} license points, and can not have more than {Driver.MAX_LICENSE_POINTS}");
+					return await Create(incident.SessionId);
+				}
 			}
 
 			await _competitionService.AddIncident(IncidentViewModel.MapViewModelToEntity(incident));

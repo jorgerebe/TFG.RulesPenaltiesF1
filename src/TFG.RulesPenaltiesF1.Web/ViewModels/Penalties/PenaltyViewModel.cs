@@ -6,6 +6,7 @@ public class PenaltyViewModel
    public string Name { get; set; } = string.Empty;
    public string Description { get; set; } = string.Empty;
 	public bool PenaltyPoints { get; set; }
+	public bool Fine { get; set; }
 
    public PenaltyViewModel() { }
 

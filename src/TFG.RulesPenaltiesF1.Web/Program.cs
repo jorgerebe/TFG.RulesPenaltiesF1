@@ -9,7 +9,6 @@ using TFG.RulesPenaltiesF1.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,31 +18,11 @@ builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Con
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-string? connectionString = "";
-
-switch(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
-{
-   case "Production":
-      connectionString = "Server=tcp:tfg-jorgerebemartin.database.windows.net,1433;Initial Catalog=RulesPenaltiesF1;Persist Security Info=False;User ID=jorrebe;Password=Pepe1234.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-      /*var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri")!);
-      builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new EnvironmentCredential());
-      Console.WriteLine("\n\n\n" + builder.Configuration["DefaultConnection"] + "\n\n\n");*/
-      break;
-   case "Development":
-      connectionString = builder.Configuration["DefaultConnection"];
-      break;
-   case "Testing":
-      connectionString = "Data Source=MSI\\SQLEXPRESS;Database=RulesPenaltiesF1Testing;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";//builder.Configuration["DefaultConnectionTesting"];
-      break;
-   default:
-      connectionString = builder.Configuration["DefaultConnection"];
-      break;
-}
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddWebServices(builder.Configuration);
 
-//string? connectionString = builder.Configuration["DefaultConnection" + key];
 
 Console.WriteLine(environment);
 Console.WriteLine(connectionString!);

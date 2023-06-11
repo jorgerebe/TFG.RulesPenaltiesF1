@@ -45,11 +45,11 @@ public class DriverViewModelSevice : IDriverViewModelService
 		return await _repository.GetDriverByName(name) is not null;
 	}
 
-	public async Task<List<DriverViewModel>> GetDriversInCompetitor(int competitorId)
+	public async Task<List<DriverViewModel>> GetDriversInCompetitorThatCanCompete(int competitorId, int competitionId)
 	{
 		List<DriverViewModel> driversViewModels = new();
 
-		List<Driver> drivers = await _repository.GetDriversInCompetitor(competitorId);
+		List<Driver> drivers = await _repository.GetDriversInCompetitorThatCanCompete(competitorId, competitionId);
 
 		foreach (var driver in drivers)
 		{
@@ -57,5 +57,17 @@ public class DriverViewModelSevice : IDriverViewModelService
 		}
 
 		return driversViewModels;
+	}
+
+	public async Task<(bool, int)> CanAddLicensePoints(int participationId, int points)
+	{
+		var driver = await _repository.GetDriverByParticipationId(participationId);
+
+		if(driver is not null)
+		{
+			return (driver.CanAddLicensePoints(points), driver.LicensePoints);
+		}
+
+		return (false, 0);
 	}
 }

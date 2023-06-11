@@ -109,5 +109,6 @@ public class PenaltyViewModelFactory
       viewModel.Name = penalty.PenaltyType.Name;
       viewModel.Description = penalty.PenaltyType.Description;
 		viewModel.PenaltyPoints = penalty.PenaltyType.PenaltyPoints;
+		viewModel.Fine = penalty.PenaltyType.Fine;
    }
 }

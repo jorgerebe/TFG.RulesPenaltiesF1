@@ -8,6 +8,7 @@ using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
 using TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure;
 
@@ -20,7 +21,7 @@ public class DefaultInfrastructureModule : Module
    {
       _isDevelopment = isDevelopment;
       var coreAssembly =
-        Assembly.GetAssembly(typeof(Object)); // TODO: Replace "Object" with any type from your Core project
+        Assembly.GetAssembly(typeof(Incident)); // TODO: Replace "Object" with any type from your Core project
       var infrastructureAssembly = Assembly.GetAssembly(typeof(StartupSetup));
       if (coreAssembly != null)
       {
@@ -106,6 +107,11 @@ public class DefaultInfrastructureModule : Module
       builder
          .RegisterType<CompetitionRepository>()
          .As<ICompetitionRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<IncidentRepository>()
+         .As<IIncidentRepository>()
          .InstancePerLifetimeScope();
 
       builder.Register<ServiceFactory>(context =>
