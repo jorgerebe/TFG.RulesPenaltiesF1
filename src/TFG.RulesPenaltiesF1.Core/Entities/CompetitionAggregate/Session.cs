@@ -10,7 +10,7 @@ public class Session : EntityBase
 	public SessionStateEnum State { get; set; }
 	public SessionTypeEnum? SessionType { get; set; }
 
-	private List<Incident> _incidents = new();
+	private readonly List<Incident> _incidents = new();
 	public IReadOnlyCollection<Incident> Incidents => _incidents.AsReadOnly();
 
 	private Session(int competitionId)

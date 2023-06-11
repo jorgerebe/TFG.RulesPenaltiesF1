@@ -1,0 +1,64 @@
+﻿@using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
+@model List<IncidentViewModel>
+
+@{
+    ViewData["Title"] = "Incidents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Incidents</h1>
+
+<table class="table mt-1">
+    <thead>
+        <tr>
+            <th>
+                Year
+            </th>
+            <th>
+                Competition
+            </th>
+            <th>
+                Session
+            </th>
+            <th>
+                Driver
+            </th>
+            <th>
+                Competitor
+            </th>
+            <th>
+                Decision
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var incident in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(s => incident.Session!.Competition!.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(s => incident.Session!.Competition!.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(s => incident.Session!.Type!.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => incident.Driver!.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => incident.Competitor!.Name)
+                </td>
+                @if (incident.Penalty is null)
+                {
+                    <td>No further action</td>
+                }
+                else
+                {
+                    <td>@Html.DisplayFor(i => incident.Penalty.Name)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
