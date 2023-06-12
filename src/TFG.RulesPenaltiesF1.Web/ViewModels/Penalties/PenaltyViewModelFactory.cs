@@ -100,6 +100,8 @@ public class PenaltyViewModelFactory
 
       SetCommonProperties(viewModel, timePenalty);
 
+		viewModel.Name = timePenalty.PenaltyType.Name + " - " + timePenalty.Seconds + " seconds";
+
       return viewModel;
    }
 

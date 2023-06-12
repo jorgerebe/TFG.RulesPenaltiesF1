@@ -14,9 +14,9 @@ public class IncidentViewModelService : IIncidentViewModelService
 		_repository = repository;
 	}
 
-	public async Task<List<IncidentViewModel>> GetIncidents()
+	public async Task<PaginatedList<IncidentViewModel>> GetIncidents(string sortOrder, int? driver, int? session, int pageIndex, int pageSize)
 	{
-		List<Incident> incidents =  await _repository.GetIncidents();
+		List<Incident> incidents =  await _repository.GetIncidents(sortOrder, driver, session);
 
 		List<IncidentViewModel> incidentViewModels = new List<IncidentViewModel>();
 
@@ -25,6 +25,26 @@ public class IncidentViewModelService : IIncidentViewModelService
 			incidentViewModels.Add(IncidentViewModel.MapEntityToViewModel(incident));
 		}
 
-		return incidentViewModels;
+		PaginatedList<IncidentViewModel> paginatedIncidents = PaginatedList<IncidentViewModel>.Create(incidentViewModels, pageIndex, pageSize);
+
+		return paginatedIncidents;
+	}
+
+
+	public async Task<IncidentViewModel?> GetIncidentById(int? id)
+	{
+		if(!id.HasValue)
+		{
+			return null!;
+		}
+
+		Incident? incident = await _repository.GetIncidentById((int)id);
+
+		if(incident is null)
+		{
+			return null!;
+		}
+
+		return IncidentViewModel.MapEntityToViewModel(incident);
 	}
 }
