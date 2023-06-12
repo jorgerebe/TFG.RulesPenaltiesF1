@@ -4,5 +4,5 @@ namespace TFG.RulesPenaltiesF1.Web.Interfaces;
 
 public interface IIncidentViewModelService
 {
-	Task<List<IncidentViewModel>> GetIncidents();
+	Task<List<IncidentViewModel>> GetIncidents(int? driver, int? session);
 }

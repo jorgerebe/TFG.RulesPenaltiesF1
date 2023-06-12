@@ -33,9 +33,13 @@ public class IncidentsController : Controller
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> Index()
+	public async Task<IActionResult> Index(int? driver, int? session)
 	{
-		return View(await _incidentViewModelService.GetIncidents());
+		ViewBag.Drivers = await _driverViewModelService.GetAllDrivers();
+		ViewData["Driver"] = driver;
+		ViewData["Session"] = session;
+
+		return View(await _incidentViewModelService.GetIncidents(driver, session));
 	}
 
 	[HttpGet]

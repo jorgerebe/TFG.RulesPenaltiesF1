@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
 
@@ -13,9 +14,9 @@ public class IncidentRepository : EfRepository<Incident>, IIncidentRepository
 		this._dbContext = dbContext;
 	}
 
-	public async Task<List<Incident>> GetIncidents()
+	public async Task<List<Incident>> GetIncidents(int? driver, int? session)
 	{
-		return await _dbContext.Set<Incident>()
+		var incidentsQuery = _dbContext.Set<Incident>()
 			.Include(i => i.Session)
 				.ThenInclude(s => s!.Competition)
 					.ThenInclude(c => c!.Season)
@@ -23,7 +24,22 @@ public class IncidentRepository : EfRepository<Incident>, IIncidentRepository
 				.ThenInclude(s => s!.Competition)
 					.ThenInclude(c => c!.Circuit)
 			.Include(i => i.Session)
-			.ToListAsync();
+			.AsQueryable();
+
+		if (driver.HasValue && session.HasValue)
+		{
+			incidentsQuery = incidentsQuery.Where(i => i.Participation!.Driver!.Id == driver.Value && i.Session!.SessionType == session.Value);
+		}
+		else if (driver.HasValue)
+		{
+			incidentsQuery = incidentsQuery.Where(i => i.Participation!.Driver!.Id == driver.Value);
+		}
+		else if (session.HasValue)
+		{
+			incidentsQuery = incidentsQuery.Where(i => i.Session!.SessionType == session.Value);
+		}
+
+		return await incidentsQuery.AsNoTracking().ToListAsync();
 	}
 
 	public async Task<List<Incident>> GetIncidentsWithPointsFromLastYearToCurrentWeek(int seasonId, int week)

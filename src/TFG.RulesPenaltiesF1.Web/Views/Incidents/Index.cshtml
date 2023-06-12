@@ -1,12 +1,52 @@
-﻿@using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
+﻿@using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+@using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
 @model List<IncidentViewModel>
 
 @{
     ViewData["Title"] = "Incidents";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var drivers = (List<DriverViewModel>)(ViewBag.Drivers);
 }
 
 <h1>Incidents</h1>
+
+<form asp-action="Index" method="get">
+    <p>
+        <span>Driver</span>
+        <select  value="Driver" name="driver" class="btn btn-default border">
+            <option label="----------"></option>
+            @foreach(var driver in drivers)
+            {
+                if ((int?)ViewData["Driver"] is not null && driver.Id == (int)ViewData["Driver"]!)
+                {
+                    <option selected value="@driver.Id">@driver.Name</option>
+                }
+                else
+                {
+                    <option value="@driver.Id">@driver.Name</option>
+                }
+            }
+        </select>
+        <span>Session</span>
+        <select value="Session" name="session" class="btn btn-default border">
+            <option label="----------"></option>
+            @foreach(var session in SessionTypeEnum.List)
+            {
+                if ((int?)ViewData["Session"] is not null && session.Value == (int)ViewData["Session"]!)
+                {
+                    <option selected value="@session.Value">@session.Name</option>
+                }
+                else
+                {
+                    <option value="@session.Value">@session.Name</option>
+                }
+            }
+        </select>
+        <input type="submit" value="Apply Filters" class="btn btn-outline-info" />
+        <a asp-action="Index">Reset Filters</a>
+    </p>
+</form>
 
 <table class="table mt-1">
     <thead>
