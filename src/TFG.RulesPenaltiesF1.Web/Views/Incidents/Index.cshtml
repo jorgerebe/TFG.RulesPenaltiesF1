@@ -44,61 +44,68 @@
             }
         </select>
         <input type="submit" value="Apply Filters" class="btn btn-outline-info" />
-        <a asp-action="Index">Reset Filters</a>
+        <a asp-action="Index" class="btn btn-outline-warning">Reset Filters</a>
     </p>
 </form>
 
-<table class="table mt-1">
-    <thead>
-        <tr>
-            <th>
-                Year
-            </th>
-            <th>
-                Competition
-            </th>
-            <th>
-                Session
-            </th>
-            <th>
-                Driver
-            </th>
-            <th>
-                Competitor
-            </th>
-            <th>
-                Decision
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var incident in Model)
-        {
+@if(Model.Count != 0)
+{
+    <table class="table mt-1">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(s => incident.Session!.Competition!.Year)
-                </td>
-                <td>
-                    @Html.DisplayFor(s => incident.Session!.Competition!.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(s => incident.Session!.Type!.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(i => incident.Driver!.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(i => incident.Competitor!.Name)
-                </td>
-                @if (incident.Penalty is null)
-                {
-                    <td>No further action</td>
-                }
-                else
-                {
-                    <td>@Html.DisplayFor(i => incident.Penalty.Name)</td>
-                }
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Year</a>
+                </th>
+                <th>
+                    Competition
+                </th>
+                <th>
+                    Session
+                </th>
+                <th>
+                    Driver
+                </th>
+                <th>
+                    Competitor
+                </th>
+                <th>
+                    Decision
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var incident in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(s => incident.Session!.Competition!.Year)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(s => incident.Session!.Competition!.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(s => incident.Session!.Type!.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => incident.Driver!.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => incident.Competitor!.Name)
+                    </td>
+                    @if (incident.Penalty is null)
+                    {
+                        <td>No further action</td>
+                    }
+                    else
+                    {
+                        <td>@Html.DisplayFor(i => incident.Penalty.Name)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>There are no incidents that match the specified filters.</h4>
+}

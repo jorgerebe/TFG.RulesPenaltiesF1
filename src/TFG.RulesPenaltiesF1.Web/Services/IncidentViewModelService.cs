@@ -14,9 +14,9 @@ public class IncidentViewModelService : IIncidentViewModelService
 		_repository = repository;
 	}
 
-	public async Task<List<IncidentViewModel>> GetIncidents(int? driver, int? session)
+	public async Task<List<IncidentViewModel>> GetIncidents(string sortOrder, int? driver, int? session)
 	{
-		List<Incident> incidents =  await _repository.GetIncidents(driver, session);
+		List<Incident> incidents =  await _repository.GetIncidents(sortOrder, driver, session);
 
 		List<IncidentViewModel> incidentViewModels = new List<IncidentViewModel>();
 

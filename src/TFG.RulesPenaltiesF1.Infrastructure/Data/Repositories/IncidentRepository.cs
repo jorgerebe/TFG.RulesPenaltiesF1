@@ -14,7 +14,7 @@ public class IncidentRepository : EfRepository<Incident>, IIncidentRepository
 		this._dbContext = dbContext;
 	}
 
-	public async Task<List<Incident>> GetIncidents(int? driver, int? session)
+	public async Task<List<Incident>> GetIncidents(string sortOrder, int? driver, int? session)
 	{
 		var incidentsQuery = _dbContext.Set<Incident>()
 			.Include(i => i.Session)
@@ -25,6 +25,16 @@ public class IncidentRepository : EfRepository<Incident>, IIncidentRepository
 					.ThenInclude(c => c!.Circuit)
 			.Include(i => i.Session)
 			.AsQueryable();
+
+		switch(sortOrder)
+		{
+			case "date_asc":
+				incidentsQuery = incidentsQuery.OrderBy(i => i.Session!.Competition!.Season!.Year);
+				break;
+			case "date_desc":
+				incidentsQuery = incidentsQuery.OrderByDescending(i => i.Session!.Competition!.Season!.Year);
+				break;
+		}
 
 		if (driver.HasValue && session.HasValue)
 		{

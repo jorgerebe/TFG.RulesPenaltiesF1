@@ -33,13 +33,14 @@ public class IncidentsController : Controller
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> Index(int? driver, int? session)
+	public async Task<IActionResult> Index(string sortOrder, int? driver, int? session)
 	{
 		ViewBag.Drivers = await _driverViewModelService.GetAllDrivers();
 		ViewData["Driver"] = driver;
 		ViewData["Session"] = session;
+		ViewData["DateSortParm"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
 
-		return View(await _incidentViewModelService.GetIncidents(driver, session));
+		return View(await _incidentViewModelService.GetIncidents(sortOrder, driver, session));
 	}
 
 	[HttpGet]
