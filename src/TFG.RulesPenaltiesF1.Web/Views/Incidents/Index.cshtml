@@ -1,6 +1,6 @@
 ﻿@using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 @using TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
-@model List<IncidentViewModel>
+@model PaginatedList<IncidentViewModel>
 
 @{
     ViewData["Title"] = "Incidents";
@@ -43,6 +43,7 @@
                 }
             }
         </select>
+        <input hidden type="text" value=@false name="keepFilter"/>
         <input type="submit" value="Apply Filters" class="btn btn-outline-info" />
         <a asp-action="Index" class="btn btn-outline-warning">Reset Filters</a>
     </p>
@@ -54,7 +55,7 @@
         <thead>
             <tr>
                 <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Year</a>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">Year</a>
                 </th>
                 <th>
                     Competition
@@ -115,3 +116,27 @@ else
 {
     <h4>There are no incidents that match the specified filters.</h4>
 }
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["DateSortParam"]"
+   asp-route-driver=@ViewData["Driver"]
+   asp-route-session=@ViewData["Session"]
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-keepFilter=@true
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["DateSortParam"]"
+   asp-route-driver=@ViewData["Driver"]
+   asp-route-session=@ViewData["Session"]
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-keepFilter=@true
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
