@@ -44,6 +44,24 @@ public class IncidentsController : Controller
 	}
 
 	[HttpGet]
+	public async Task<IActionResult> Details(int? id)
+	{
+		if (id == null)
+		{
+			return NotFound();
+		}
+
+		var incident = await _incidentViewModelService.GetIncidentById((int)id);
+
+		if (incident == null)
+		{
+			return NotFound();
+		}
+
+		return View(incident);
+	}
+
+	[HttpGet]
 	[Authorize(Roles = "Steward")]
 	public async Task<IActionResult> Create(int? id)
 	{

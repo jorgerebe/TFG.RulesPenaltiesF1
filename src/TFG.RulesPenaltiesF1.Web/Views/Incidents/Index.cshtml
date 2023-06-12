@@ -71,6 +71,9 @@
                 <th>
                     Decision
                 </th>
+                <th>
+
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -100,6 +103,9 @@
                     {
                         <td>@Html.DisplayFor(i => incident.Penalty.Name)</td>
                     }
+                    <td>
+                        <a asp-action="Details" asp-route-id="@incident.Id">Details</a>
+                    </td>
                 </tr>
             }
         </tbody>

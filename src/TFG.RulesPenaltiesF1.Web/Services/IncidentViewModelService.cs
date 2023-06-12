@@ -27,4 +27,22 @@ public class IncidentViewModelService : IIncidentViewModelService
 
 		return incidentViewModels;
 	}
+
+
+	public async Task<IncidentViewModel?> GetIncidentById(int? id)
+	{
+		if(!id.HasValue)
+		{
+			return null!;
+		}
+
+		Incident? incident = await _repository.GetIncidentById((int)id);
+
+		if(incident is null)
+		{
+			return null!;
+		}
+
+		return IncidentViewModel.MapEntityToViewModel(incident);
+	}
 }

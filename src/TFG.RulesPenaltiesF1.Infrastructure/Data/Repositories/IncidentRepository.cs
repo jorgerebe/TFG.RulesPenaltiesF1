@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
 
@@ -50,6 +49,21 @@ public class IncidentRepository : EfRepository<Incident>, IIncidentRepository
 		}
 
 		return await incidentsQuery.AsNoTracking().ToListAsync();
+	}
+
+	public async Task<Incident?> GetIncidentById(int id)
+	{
+		return await _dbContext.Set<Incident>()
+			.Where(i => i.Id == id)
+			.Include(i => i.Session)
+				.ThenInclude(s => s!.Competition)
+					.ThenInclude(c => c!.Season)
+			.Include(i => i.Session)
+				.ThenInclude(s => s!.Competition)
+					.ThenInclude(c => c!.Circuit)
+			.Include(i => i.Session)
+			.AsNoTracking()
+			.FirstOrDefaultAsync();
 	}
 
 	public async Task<List<Incident>> GetIncidentsWithPointsFromLastYearToCurrentWeek(int seasonId, int week)

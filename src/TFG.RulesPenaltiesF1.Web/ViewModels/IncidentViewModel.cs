@@ -81,6 +81,7 @@ public class IncidentViewModel
 
 		IncidentViewModel viewModel = new()
 		{
+			Id = incident.Id,
 			Created = incident.Created,
 			Driver = DriverViewModel.MapEntityToViewModel(incident.Participation!.Driver!),
 			Competitor = CompetitorViewModel.MapEntityToViewModel(incident.Participation!.Competitor!),
