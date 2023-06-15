@@ -1,5 +1,4 @@
-﻿using MediatR;
-using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Events;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Events;
 using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate.Events;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
