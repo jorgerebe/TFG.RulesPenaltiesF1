@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -13,14 +14,16 @@ public class DriversController : Controller
 	private readonly IDriverService _driverService;
 
    private readonly ICompetitorViewModelService _competitorService;
+	private readonly IDateTimeService _dateTimeService;
 
-   public DriversController(IDriverViewModelService driverViewModelService, IDriverService driverService,
-	ICompetitorViewModelService competitorService)
+	public DriversController(IDriverViewModelService driverViewModelService, IDriverService driverService,
+	ICompetitorViewModelService competitorService, IDateTimeService dateTimeService)
    {
 		_driverViewModelService = driverViewModelService;
 		_driverService = driverService;
 		_competitorService = competitorService;
-   }
+		_dateTimeService = dateTimeService;
+	}
 
    // GET: Drivers
    public async Task<IActionResult> Index()
@@ -70,7 +73,7 @@ public class DriversController : Controller
 				await PopulateCompetitors(driver.CompetitorId);
 				return View(driver);
 			}
-			if(driver.DateBirth.CompareTo(DateOnly.FromDateTime(DateTime.Now.AddYears(-18))) > 0)
+			if(driver.DateBirth.CompareTo(DateOnly.FromDateTime(_dateTimeService.Now().AddYears(-18))) > 0)
 			{
 				ModelState.AddModelError("DateBirth", "A driver must be over 18.");
 				await PopulateCompetitors(driver.CompetitorId);

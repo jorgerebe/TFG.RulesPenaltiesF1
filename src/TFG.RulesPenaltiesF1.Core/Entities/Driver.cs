@@ -15,22 +15,19 @@ public class Driver : EntityBase, IAggregateRoot
 
 	private Driver() { }
 
-	public Driver(string name, DateOnly dateBirth, Competitor? competitor)
+	public Driver(string name, DateOnly dateBirth, Competitor? competitor, IDateTimeService dateTimeService)
 	{
-		ArgumentException.ThrowIfNullOrEmpty(name);
-		ArgumentNullException.ThrowIfNull(dateBirth);
+		CheckArguments(name, dateBirth, dateTimeService);
 
 		Name = name;
 		DateBirth = dateBirth;
 		LicensePoints = 0;
 		AddTeam(competitor);
-		CompetitorId = competitor?.Id;
 	}
 
-	public Driver(string name, DateOnly dateBirth, int competitorId)
+	public Driver(string name, DateOnly dateBirth, int competitorId, IDateTimeService dateTimeService)
 	{
-		ArgumentException.ThrowIfNullOrEmpty(name);
-		ArgumentNullException.ThrowIfNull(dateBirth);
+		CheckArguments(name, dateBirth, dateTimeService);
 
 		Name = name;
 		DateBirth = dateBirth;
@@ -41,6 +38,8 @@ public class Driver : EntityBase, IAggregateRoot
 	public void AddTeam(Competitor? competitor)
 	{
 		Competitor = competitor;
+
+		CompetitorId = competitor is null ? -1 : competitor.Id;
 	}
 
 	public void AddLicensePoints(int points)
@@ -56,5 +55,13 @@ public class Driver : EntityBase, IAggregateRoot
 	public bool CanAddLicensePoints(int points)
 	{
 		return !((points + LicensePoints) > MAX_LICENSE_POINTS);
+	}
+
+	private void CheckArguments(string name, DateOnly dateBirth, IDateTimeService dateTimeService)
+	{
+		if (dateBirth.CompareTo(DateOnly.FromDateTime(dateTimeService.Now().AddYears(-18))) > 0)
+		{
+			throw new ArgumentException("A driver must be over 18");
+		}
 	}
 }
