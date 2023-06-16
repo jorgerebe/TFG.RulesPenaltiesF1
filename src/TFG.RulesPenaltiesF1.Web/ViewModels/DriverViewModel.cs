@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Web.ViewModels;
 
@@ -45,7 +46,7 @@ public class DriverViewModel
 		return driverViewModel;
 	}
 
-	public static Driver? MapViewModelToEntity(DriverViewModel driver)
+	public static Driver? MapViewModelToEntity(DriverViewModel driver, IDateTimeService dateTimeService)
 	{
 		if (driver is null)
 		{
@@ -56,11 +57,11 @@ public class DriverViewModel
 
 		if (driver.CompetitorId == -1)
 		{
-			driverEntity = new Driver(driver.Name, driver.DateBirth, null);
+			driverEntity = new Driver(driver.Name, driver.DateBirth, null, dateTimeService);
 		}
 		else
 		{
-			driverEntity = new Driver(driver.Name, driver.DateBirth, driver.CompetitorId);
+			driverEntity = new Driver(driver.Name, driver.DateBirth, driver.CompetitorId, dateTimeService);
 		}
 
 		driverEntity.Id = driver.Id;

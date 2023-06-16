@@ -86,7 +86,7 @@ public class DriversController : Controller
 				return View(driver);
 			}
 
-			await _driverService.CreateDriverAsync(DriverViewModel.MapViewModelToEntity(driver)!);
+			await _driverService.CreateDriverAsync(DriverViewModel.MapViewModelToEntity(driver, _dateTimeService)!);
 			return RedirectToAction(nameof(Index));
       }
 		await PopulateCompetitors(driver.CompetitorId);
@@ -146,7 +146,7 @@ public class DriversController : Controller
 		{
 			return NotFound();
 		}
-		await _driverService.UpdateDriverAsync(DriverViewModel.MapViewModelToEntity(driverViewModel)!);
+		await _driverService.UpdateDriverAsync(DriverViewModel.MapViewModelToEntity(driverViewModel, _dateTimeService)!);
 
 		return RedirectToAction(nameof(Index));
 	}
