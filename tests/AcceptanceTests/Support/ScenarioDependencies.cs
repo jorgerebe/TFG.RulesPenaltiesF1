@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AcceptanceTests.Drivers;
+﻿using AcceptanceTests.Drivers;
 using AcceptanceTests.Drivers.PageDrivers;
 using AcceptanceTests.Hooks;
 using AcceptanceTests.PageObjects;
 using AcceptanceTests.StepDefinitions;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using FluentAssertions.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SpecFlow.Autofac;
@@ -30,6 +23,7 @@ public static class ScenarioDependencies
    public static void RegisterGlobalDependencies(ContainerBuilder builder)
    {
       builder.RegisterType<DbHooks>().SingleInstance();
+      builder.RegisterType<LoginHooks>().SingleInstance();
 
       builder.RegisterType<WebServerDriver>()
             .SingleInstance();
@@ -42,9 +36,15 @@ public static class ScenarioDependencies
 
       builder.RegisterType<RulesPenaltiesF1DbContext>()
             .InstancePerDependency();
-		
+
+		ConfigureIdentity(builder);
+
+   }
+
+	private static void ConfigureIdentity(ContainerBuilder builder)
+	{
 		builder.RegisterType<RulesPenaltiesF1DbContext>().As<DbContext>()
-            .InstancePerLifetimeScope();
+				.InstancePerLifetimeScope();
 
 		builder.RegisterType<UserStore<ApplicationUser>>().As<IUserStore<ApplicationUser>>().InstancePerLifetimeScope();
 
@@ -70,17 +70,16 @@ public static class ScenarioDependencies
 		builder.RegisterType<RoleStore<IdentityRole>>().As<IRoleStore<IdentityRole>>().InstancePerDependency();
 
 		builder.RegisterType<UserManager<ApplicationUser>>()
-            .InstancePerDependency();
-      builder.RegisterType<RoleManager<IdentityRole>>()
-            .InstancePerDependency();
-
-   }
+				.InstancePerDependency();
+		builder.RegisterType<RoleManager<IdentityRole>>()
+				.InstancePerDependency();
+	}
 
 
    [ScenarioDependencies]
    public static void RegisterDependencies(ContainerBuilder builder)
    {
-      builder.RegisterType<BrowserDriver>().SingleInstance();
+      builder.RegisterType<BrowserDriver>().InstancePerLifetimeScope();
 
       builder.RegisterType<ArticlePageDriver>().InstancePerLifetimeScope();
       builder.RegisterType<ArticlePageObjectModel>().InstancePerLifetimeScope();

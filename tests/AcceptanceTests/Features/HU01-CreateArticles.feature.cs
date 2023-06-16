@@ -83,11 +83,11 @@ namespace AcceptanceTests.Features
         [Xunit.SkippableFactAttribute(DisplayName="[Create article with one subarticle]")]
         [Xunit.TraitAttribute("FeatureTitle", "HU01-CreateArticles")]
         [Xunit.TraitAttribute("Description", "[Create article with one subarticle]")]
-        [Xunit.TraitAttribute("Category", "tag1")]
+        [Xunit.TraitAttribute("Category", "stewardlogin")]
         public void CreateArticleWithOneSubarticle()
         {
             string[] tagsOfScenario = new string[] {
-                    "tag1"};
+                    "stewardlogin"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("[Create article with one subarticle]", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6

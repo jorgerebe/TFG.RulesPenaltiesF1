@@ -2,7 +2,7 @@
 
 A short summary of the feature
 
-@tag1
+@stewardlogin
 Scenario: [Create regulation with one article and two penalties]
 	Given [The steward is creating a regulation]
     When [The steward enters the name of the regulation]
