@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Services;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
@@ -89,6 +91,24 @@ public class ParticipationsController : Controller
 			{
 				return NotFound();
 			}
+
+
+			var competition = await _competitionViewModelService.GetByIdAsync((int)participation.CompetitionId);
+			var competitor = await _competitorViewModelService.GetCompetitorByTeamPrincipal(currentUser.Id);
+
+			if (competitor is null || competition is null)
+			{
+				return NotFound();
+			}
+
+			var drivers = await _driverViewModelService.GetDriversInCompetitorThatCanCompete(competitor.Id, competition.Id);
+
+
+			if(!participation.DriverIds.All(id => drivers.Any(d => d.Id == id)))
+			{
+				return NotFound();
+			}
+
 
 			var participations = ParticipationInputViewModel.MapViewModelToEntity(participation);
 			await _competitionService.AddParticipations(participations);

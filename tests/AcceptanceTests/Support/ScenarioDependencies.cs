@@ -26,7 +26,7 @@ public static class ScenarioDependencies
       builder.RegisterType<LoginHooks>().SingleInstance();
 
       builder.RegisterType<WebServerDriver>()
-            .SingleInstance();
+            .InstancePerLifetimeScope();
 
       builder.Register(c => new DbContextOptionsBuilder<RulesPenaltiesF1DbContext>()
              .UseSqlServer("Data Source=MSI\\SQLEXPRESS;Database=RulesPenaltiesF1Testing;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")

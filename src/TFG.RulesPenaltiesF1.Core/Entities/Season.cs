@@ -32,6 +32,17 @@ public class Season : EntityBase, IAggregateRoot
 		CheckCompetitorsAndCompetitions(competitors, competitions);
 
 		ArgumentNullException.ThrowIfNull(regulation);
+
+
+		_competitors = competitors;
+
+		foreach (var competition in competitions)
+		{
+			competition.Season = this;
+		}
+
+		_competitions = competitions;
+
 		Regulation = regulation;
 		RegulationId = Regulation.Id;
 	}
@@ -41,7 +52,14 @@ public class Season : EntityBase, IAggregateRoot
 		Year = year;
 
 		CheckCompetitorsAndCompetitions(competitors, competitions);
+
 		_competitors = competitors;
+
+		foreach (var competition in competitions)
+		{
+			competition.Season = this;
+		}
+
 		_competitions = competitions;
 
 		RegulationId = regulationId;
@@ -49,6 +67,11 @@ public class Season : EntityBase, IAggregateRoot
 
 	public void CheckCompetitorsAndCompetitions(List<Competitor> competitors, List<Competition> competitions)
 	{
+		if(competitions.Any(c => c.Season != null))
+		{
+			throw new InvalidOperationException("At least one of the specified competitions are already part of a season");
+		}
+
 		if (competitors is null || competitors.Count < MIN_COMPETITORS)
 		{
 			throw new ArgumentException($"There must be at least {MIN_COMPETITORS} competitors");

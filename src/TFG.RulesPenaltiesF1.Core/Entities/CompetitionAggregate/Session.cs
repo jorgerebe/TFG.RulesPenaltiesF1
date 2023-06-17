@@ -4,11 +4,11 @@ namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 public class Session : EntityBase
 {
-	public Competition? Competition { get; set; }
-	public int CompetitionId { get; set; }
+	public Competition? Competition { get; private set; }
+	public int CompetitionId { get; private set; }
 
-	public SessionStateEnum State { get; set; }
-	public SessionTypeEnum? SessionType { get; set; }
+	public SessionStateEnum State { get; private set; }
+	public SessionTypeEnum? SessionType { get; private set; }
 
 	private readonly List<Incident> _incidents = new();
 	public IReadOnlyCollection<Incident> Incidents => _incidents.AsReadOnly();
@@ -19,9 +19,13 @@ public class Session : EntityBase
 		State = SessionStateEnum.NotStarted;
 	}
 
-	public Session(int competitionId, SessionTypeEnum type)
+	public Session(Competition competition, SessionTypeEnum type)
 	{
-		CompetitionId = competitionId;
+		ArgumentNullException.ThrowIfNull(competition);
+		ArgumentNullException.ThrowIfNull(type);
+
+		Competition = competition;
+		CompetitionId = competition.Id;
 		State = SessionStateEnum.NotStarted;
 		SessionType = type;
 	}
