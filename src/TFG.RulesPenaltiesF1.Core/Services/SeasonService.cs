@@ -18,10 +18,6 @@ public class SeasonService : ISeasonService
 	{
 		ArgumentNullException.ThrowIfNull(season);
 
-		List<Competition> competitionsOrdered = season.Competitions.OrderBy(c => c.Week).ToList();
-
-		Season seasonOrdered = new(season.Year, season.Competitors.ToList(), competitionsOrdered, season.RegulationId);
-
-		await _repository.AddSeason(seasonOrdered);
+		await _repository.AddSeason(season);
 	}
 }

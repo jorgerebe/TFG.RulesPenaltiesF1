@@ -60,7 +60,7 @@ public class Season : EntityBase, IAggregateRoot
 			competition.Season = this;
 		}
 
-		_competitions = competitions;
+		_competitions = competitions.OrderBy(c => c.Week).ToList();
 
 		RegulationId = regulationId;
 	}
