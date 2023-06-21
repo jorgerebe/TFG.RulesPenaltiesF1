@@ -42,6 +42,8 @@ public class PenaltyViewModelFactory
 
       SetCommonProperties(viewModel, disqualification);
 
+		viewModel.Name = viewModel.ToString();
+
       return viewModel;
    }
    

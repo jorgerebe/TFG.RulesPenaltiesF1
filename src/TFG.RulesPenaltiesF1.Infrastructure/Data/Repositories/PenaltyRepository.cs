@@ -22,7 +22,22 @@ public class PenaltyRepository : EfRepository<Penalty>, IPenaltyRepository
 
 	public async Task<Penalty?> GetLimitLicensePointsPenalty()
 	{
+		var pepe = await _dbContext.Disqualification.ToListAsync();
+
 		return await _dbContext.Disqualification
-			.Where(d => d.Type.Equals(DisqualificationTypeEnum.LicensePointsLimit)).FirstOrDefaultAsync();
+			.Where(d => d.Type.Equals(DisqualificationTypeEnum.LicensePointsLimit.Value)).FirstOrDefaultAsync();
+	}
+
+	public async Task<PenaltyType?> GetPenaltyTypeByName(string name)
+	{
+		return await _dbContext.PenaltyType
+			.Where(pt => pt.Name == name).FirstOrDefaultAsync();
+	}
+
+	public async Task<PenaltyType> AddPenaltyType(PenaltyType penaltyType)
+	{
+		_dbContext.Add(penaltyType);
+		await _dbContext.SaveChangesAsync();
+		return penaltyType;
 	}
 }

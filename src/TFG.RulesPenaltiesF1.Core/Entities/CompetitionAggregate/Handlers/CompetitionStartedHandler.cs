@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Events;
 using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Handlers;
@@ -35,7 +36,18 @@ public class CompetitionStartedHandler : INotificationHandler<CompetitionStarted
 
 		foreach(var driver in driversWithPenaltyPointsLessThanTwelve)
 		{
-			int sumLicensePoints = incidentsLastTwelveMonths.Where(i => i.Participation!.DriverId == driver.Id).Sum(i => i.LicensePoints is null ? 0 : (int)i.LicensePoints);
+			DateTime dateFrom = DateTime.MinValue;
+
+			List<Incident> incidentsFromDriver = incidentsLastTwelveMonths.Where(i => i.Participation!.DriverId == driver.Id).ToList();
+			 
+			List<Incident> incidentsLimitLicensePoints = await _incidentRepository.GetIncidentsFromDriverMaximumLicensePoints(driver.Id);
+
+			if (incidentsLimitLicensePoints.Count > 0)
+			{
+				dateFrom = incidentsLimitLicensePoints.Max(i => i.Created);
+			}
+
+			int sumLicensePoints = incidentsFromDriver.Where(i => i.Created > dateFrom).Sum(i => i.LicensePoints is null ? 0 : (int)i.LicensePoints);
 			driver.LicensePoints = sumLicensePoints % 12;
 			driversChanged.Add(driver);
 		}

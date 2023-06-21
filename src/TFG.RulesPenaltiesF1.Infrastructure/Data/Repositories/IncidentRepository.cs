@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
+using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
@@ -72,5 +73,11 @@ public class IncidentRepository : EfRepository<Incident>, IIncidentRepository
 
 		return await _dbContext.Set<Incident>()
 			.Where(i => i.LicensePoints != null && _dbContext.Session.Where(s => (s.Competition!.SeasonId == seasonId || (s.Competition.SeasonId == seasonId - 1 && week < s.Competition.Week)) && s.Incidents.Any(nestedIncident => nestedIncident.Id == i.Id)).ToList().Count > 0).ToListAsync();
+	}
+
+	public async Task<List<Incident>> GetIncidentsFromDriverMaximumLicensePoints(int driverId)
+	{
+		return await _dbContext.Set<Incident>()
+			.Where(i => i.Participation!.DriverId == driverId && ((Disqualification)i.Penalty!).Type.Equals(DisqualificationTypeEnum.LicensePointsLimit)).ToListAsync();
 	}
 }
