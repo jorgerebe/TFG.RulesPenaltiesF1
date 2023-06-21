@@ -16,6 +16,13 @@ public class PenaltyRepository : EfRepository<Penalty>, IPenaltyRepository
    {
       return await _dbContext.Penalty
          .Include(p => p.PenaltyType)
+			.Where(p => p.Shown == true)
          .ToListAsync();
    }
+
+	public async Task<Penalty?> GetLimitLicensePointsPenalty()
+	{
+		return await _dbContext.Disqualification
+			.Where(d => d.Type.Equals(DisqualificationTypeEnum.LicensePointsLimit)).FirstOrDefaultAsync();
+	}
 }

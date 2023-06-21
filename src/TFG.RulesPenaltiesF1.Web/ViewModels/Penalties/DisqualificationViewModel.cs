@@ -1,18 +1,28 @@
-﻿namespace TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
+﻿using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+
+namespace TFG.RulesPenaltiesF1.Web.ViewModels.Penalties;
 
 public class DisqualificationViewModel : PenaltyViewModel
 {
-   public bool NextCompetition { get; set; }
+   public DisqualificationTypeEnum? Type { get; set; }
 
    public override string ToString()
    {
-      if (NextCompetition)
-      {
+		if (Type!.Equals(DisqualificationTypeEnum.Next))
+		{
          return "Suspension: The driver is suspended from the next Competition";
       }
-      else
+      else if(Type.Equals(DisqualificationTypeEnum.Current))
       {
          return "Disqualification: The driver is disqualified from the results";
       }
+		else if(Type.Equals(DisqualificationTypeEnum.LicensePointsLimit))
+		{
+			return "Suspension for surpasing the limit of License Points in 12 months";
+		}
+		else
+		{
+			return string.Empty;
+		}
    }
 }

@@ -35,18 +35,18 @@ public class SeedTestData
        PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand", false, false);
        PenaltyType Fine = new PenaltyType("Fine", "The competitor must pay a fine", false, true);
 
-       TimePenalty tp_5 = new TimePenalty(TP, 5);
-       TimePenalty tp_10 = new TimePenalty(TP, 10);
-       DriveThrough dt = new DriveThrough(DT, 20);
-       StopAndGo sag = new StopAndGo(StopAndGo, 10, 20);
-       Reprimand nodrivingReprimand = new Reprimand(Reprimand, false);
-       Reprimand drivingReprimand = new Reprimand(Reprimand, true);
-       DropGridPositions dropGridPositions3 = new DropGridPositions(GP, 3);
-       DropGridPositions dropGridPositions5 = new DropGridPositions(GP, 5);
-       DropGridPositions dropGridPositions10 = new DropGridPositions(GP, 10);
-       Disqualification dq = new Disqualification(DQ, false);
-       Disqualification suspensionNextCompetition = new Disqualification(DQ, true);
-       Fine fine = new Fine(Fine);
+       TimePenalty tp_5 = new TimePenalty(TP, 5, true);
+       TimePenalty tp_10 = new TimePenalty(TP, 10, true);
+       DriveThrough dt = new DriveThrough(DT, 20, true);
+       StopAndGo sag = new StopAndGo(StopAndGo, 10, 20, true);
+       Reprimand nodrivingReprimand = new Reprimand(Reprimand, false, true);
+       Reprimand drivingReprimand = new Reprimand(Reprimand, true, true);
+       DropGridPositions dropGridPositions3 = new DropGridPositions(GP, 3, true);
+       DropGridPositions dropGridPositions5 = new DropGridPositions(GP, 5, true);
+       DropGridPositions dropGridPositions10 = new DropGridPositions(GP, 10, true);
+       Disqualification dq = new Disqualification(DQ, DisqualificationTypeEnum.Current, true);
+       Disqualification suspensionNextCompetition = new Disqualification(DQ, DisqualificationTypeEnum.Next, true);
+       Fine fine = new Fine(Fine, true);
 
       /*Penalty Types*/
       dbContext.PenaltyType.Add(DQ);

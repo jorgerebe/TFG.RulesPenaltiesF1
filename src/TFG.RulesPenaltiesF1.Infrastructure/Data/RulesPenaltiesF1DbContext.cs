@@ -31,6 +31,7 @@ public class RulesPenaltiesF1DbContext : IdentityDbContext
    public DbSet<Article> Article => Set<Article>();
    public DbSet<PenaltyType> PenaltyType => Set<PenaltyType>();
    public DbSet<Penalty> Penalty => Set<Penalty>();
+   public DbSet<Disqualification> Disqualification => Set<Disqualification>();
 
    public DbSet<RegulationArticle> RegulationArticle => Set<RegulationArticle>();
    public DbSet<RegulationPenalty> RegulationPenalty => Set<RegulationPenalty>();

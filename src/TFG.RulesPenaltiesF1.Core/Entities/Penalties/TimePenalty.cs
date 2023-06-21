@@ -5,7 +5,7 @@ public class TimePenalty : Penalty
 
    protected TimePenalty() { }
 
-   public TimePenalty(PenaltyType penaltyType, int seconds) : base(penaltyType)
+   public TimePenalty(PenaltyType penaltyType, int seconds, bool shown) : base(penaltyType, shown)
    {
       Seconds = seconds;
    }
