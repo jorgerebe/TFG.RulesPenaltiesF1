@@ -35,12 +35,14 @@ public class PenaltyViewModelFactory
 
    public static PenaltyViewModel CreateViewModel(Disqualification disqualification)
    {
-      var viewModel = new DisqualificationViewModel
-      {
-         NextCompetition = disqualification.NextCompetition
+		var viewModel = new DisqualificationViewModel
+		{
+			Type = disqualification.Type
       };
 
       SetCommonProperties(viewModel, disqualification);
+
+		viewModel.Name = viewModel.ToString();
 
       return viewModel;
    }

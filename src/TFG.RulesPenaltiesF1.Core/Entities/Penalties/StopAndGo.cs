@@ -5,7 +5,7 @@ public class StopAndGo : DriveThrough
 
    protected StopAndGo() { }
 
-   public StopAndGo(PenaltyType penaltyType, int seconds, int elapsedSeconds) : base(penaltyType, elapsedSeconds)
+   public StopAndGo(PenaltyType penaltyType, int seconds, int elapsedSeconds, bool shown) : base(penaltyType, elapsedSeconds, shown)
    {
       Seconds = seconds;
       ElapsedSeconds = elapsedSeconds;
