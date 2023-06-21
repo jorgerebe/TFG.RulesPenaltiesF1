@@ -54,6 +54,7 @@ public class CompetitionRepository : EfRepository<Competition>, ICompetitionRepo
 		return await _dbContext.Set<Competition>()
 			.Where(c => c.Id == id)
 			.Include(c => c.Sessions)
+			.Include(s => s.Season)
 			.FirstOrDefaultAsync();
 	}
 

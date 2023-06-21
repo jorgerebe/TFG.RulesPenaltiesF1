@@ -27,5 +27,7 @@ public class SeasonConfiguration : IEntityTypeConfiguration<Season>
          HasOne(s => s.Regulation)
          .WithMany()
          .HasForeignKey(s => s.RegulationId);
+
+		builder.Navigation(s => s.Competitors).AutoInclude();
    }
 }

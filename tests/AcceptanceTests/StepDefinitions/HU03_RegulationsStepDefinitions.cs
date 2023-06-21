@@ -1,9 +1,10 @@
 ﻿using AcceptanceTests.Drivers;
+using AcceptanceTests.Drivers.PageDrivers;
 using AcceptanceTests.PageObjects;
 
 namespace AcceptanceTests.StepDefinitions
 {
-   [Binding]
+	[Binding]
    public class HU03_RegulationsStepDefinitions
    {
       private readonly RegulationPageObjectModel _regulationPageObjectModel;
@@ -18,7 +19,7 @@ namespace AcceptanceTests.StepDefinitions
       [Given(@"\[The steward is creating a regulation]")]
       public void GivenTheStewardIsCreatingARegulation()
       {
-         _regulationPageObjectModel.EnsureArticlePageIsOpenAndReset();
+         _regulationPageObjectModel.EnsureRegulationPageIsOpenAndReset();
       }
 
       [When(@"\[The steward enters the name of the regulation]")]

@@ -6,7 +6,7 @@ using OpenQA.Selenium.Support.UI;
 namespace AcceptanceTests.PageObjects;
 public class RegulationPageObjectModel
 {
-   private const string RegulationUrl = "http://localhost:33333/Regulations/Create";
+   private const string RegulationUrl = "https://localhost:33333/Regulations/Create";
 
    private readonly IWebDriver _webDriver;
 
@@ -47,7 +47,7 @@ public class RegulationPageObjectModel
       SubmitRegulation.Click();
    }
 
-   public void EnsureArticlePageIsOpenAndReset()
+   public void EnsureRegulationPageIsOpenAndReset()
    {
       if (_webDriver.Url != RegulationUrl)
       {

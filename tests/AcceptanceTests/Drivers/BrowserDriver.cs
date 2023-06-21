@@ -18,6 +18,7 @@ public class BrowserDriver : IDisposable
    {
       var chromeDriverService = ChromeDriverService.CreateDefaultService();
       var chromeOptions = new ChromeOptions();
+		chromeOptions.AcceptInsecureCertificates = true;
       var chromeDriver = new ChromeDriver(chromeDriverService, chromeOptions);
 
       return chromeDriver;

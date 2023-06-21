@@ -36,21 +36,6 @@ public class CompetitionService : ICompetitionService
 			throw new ArgumentException("Can not add 0 participations");
 		}
 
-		if (participations.DistinctBy(p => p.DriverId).Count() < participations.Count)
-		{
-			throw new ArgumentException("The same driver can not participate twice in the same competition");
-		}
-
-		if (participations.DistinctBy(p => p.CompetitionId).Count() != 1)
-		{
-			throw new ArgumentException("A participation from other competitions can not be added to this competition");
-		}
-
-		if (participations.DistinctBy(p => p.CompetitorId).Count() != 1)
-		{
-			throw new ArgumentException("A participation with more than one competitor can not be added");
-		}
-
 		int competitionId = participations[0].CompetitionId;
 
 		Competition? competition = await _repository.GetCompetitionByIdWithParticipationsAsync(competitionId) ?? throw new ArgumentException("The participations are from a competition that does not exist.");

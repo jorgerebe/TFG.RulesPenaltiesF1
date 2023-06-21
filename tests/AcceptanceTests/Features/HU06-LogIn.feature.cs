@@ -19,7 +19,7 @@ namespace AcceptanceTests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class HU03_RegulationsFeature : object, Xunit.IClassFixture<HU03_RegulationsFeature.FixtureData>, System.IDisposable
+    public partial class HU06_LogInFeature : object, Xunit.IClassFixture<HU06_LogInFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace AcceptanceTests.Features
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "HU03-Regulations.feature"
+#line 1 "HU06-LogIn.feature"
 #line hidden
         
-        public HU03_RegulationsFeature(HU03_RegulationsFeature.FixtureData fixtureData, AcceptanceTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public HU06_LogInFeature(HU06_LogInFeature.FixtureData fixtureData, AcceptanceTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace AcceptanceTests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "HU03-Regulations", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "HU06-LogIn", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,16 +80,16 @@ namespace AcceptanceTests.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="[Create regulation with one article and two penalties]")]
-        [Xunit.TraitAttribute("FeatureTitle", "HU03-Regulations")]
-        [Xunit.TraitAttribute("Description", "[Create regulation with one article and two penalties]")]
-        [Xunit.TraitAttribute("Category", "stewardlogin")]
-        public void CreateRegulationWithOneArticleAndTwoPenalties()
+        [Xunit.SkippableFactAttribute(DisplayName="[User Log In in the system]")]
+        [Xunit.TraitAttribute("FeatureTitle", "HU06-LogIn")]
+        [Xunit.TraitAttribute("Description", "[User Log In in the system]")]
+        [Xunit.TraitAttribute("Category", "tag1")]
+        public void UserLogInInTheSystem()
         {
             string[] tagsOfScenario = new string[] {
-                    "stewardlogin"};
+                    "tag1"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("[Create regulation with one article and two penalties]", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("[User Log In in the system]", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -101,22 +101,19 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 7
- testRunner.Given("[The steward is creating a regulation]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("[The user is in the log in page]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
-    testRunner.When("[The steward enters the name of the regulation]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("[The user enters its email]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 9
- testRunner.And("[The steward selects the article part of the regulation]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("[The user enters its password]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
-    testRunner.And("[The steward selects two penalties for the regulation]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("[The user submits the login form]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
-    testRunner.And("[The steward submits the regulation]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
- testRunner.Then("[The regulation is created]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("[The user is logged in in the system]", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -129,12 +126,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                HU03_RegulationsFeature.FeatureSetup();
+                HU06_LogInFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                HU03_RegulationsFeature.FeatureTearDown();
+                HU06_LogInFeature.FeatureTearDown();
             }
         }
     }
