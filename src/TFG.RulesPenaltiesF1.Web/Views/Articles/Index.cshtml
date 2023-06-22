@@ -4,7 +4,7 @@
     ViewData["Title"] = "Articles";
 }
 
-<h1>Articles - Index</h1>
+<h1>Articles</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -26,18 +26,20 @@
 					@Html.DisplayFor(modelItem => item.Content)
 					</td>
 					<td>
-						<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-						<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-						<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+						<a asp-action="Details" asp-route-id="@item.Id">Details</a>
 					</td>
 				</tr>
 			@if (item.SubArticles.Any())
 			{
-				<tr>
-					<td colspan="2">
+                <tr style="border-style:hidden">
+					<td colspan="4">
 						<partial name = "_SubArticlesTree" model="item.SubArticles">
 					</td>
 				</tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
 			}
 		}
     </tbody>
