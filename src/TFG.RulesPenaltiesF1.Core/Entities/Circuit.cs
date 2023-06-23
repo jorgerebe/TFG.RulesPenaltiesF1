@@ -70,19 +70,14 @@ public class Circuit : EntityBase, IAggregateRoot
          throw new ArgumentException("Laps must be greater than 0");
       }
 
-      if (yearFirstGP > DateTime.Now.Year)
-      {
-         throw new ArgumentException("YearFirstGP must be less than current year");
-      }
-
-      if (millisecondsLapRecord < 0)
+      if (millisecondsLapRecord <= 0)
       {
          throw new ArgumentException("MillisecondsLapRecord must be greater than 0");
       }
 
       ArgumentException.ThrowIfNullOrEmpty(driverLapRecord, nameof(driverLapRecord));
 
-      if (yearLapRecord < yearFirstGP || yearLapRecord > DateTime.Now.Year)
+      if (yearLapRecord < yearFirstGP)
       {
          throw new ArgumentException("YearLapRecord must be greater than YearFirstGP and less than the current year");
       }

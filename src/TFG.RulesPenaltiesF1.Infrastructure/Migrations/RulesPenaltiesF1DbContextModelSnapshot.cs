@@ -558,6 +558,9 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                     b.Property<int>("PenaltyTypeId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Shown")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PenaltyTypeId");
@@ -689,12 +692,12 @@ namespace TFG.RulesPenaltiesF1.Infrastructure.Migrations
                 {
                     b.HasBaseType("TFG.RulesPenaltiesF1.Core.Entities.Penalties.Penalty");
 
-                    b.Property<bool>("NextCompetition")
-                        .HasColumnType("bit");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
-                    b.HasIndex("NextCompetition", "PenaltyTypeId")
+                    b.HasIndex("Type", "PenaltyTypeId")
                         .IsUnique()
-                        .HasFilter("[NextCompetition] IS NOT NULL");
+                        .HasFilter("[Type] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("Disqualification");
                 });

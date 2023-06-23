@@ -6,6 +6,7 @@ using TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
 using Microsoft.AspNetCore.Identity;
 using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Web;
 
@@ -13,8 +14,7 @@ public static class SeedData
    {
       /*ARTICLES*/
       public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.\nHowever, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");
-      public static readonly Article subarticle1 = new ("Any Competitor whose driver exceeds the limit during any practice session will be\nfined €100 for each km/h above the limit, up to a maximum of €1000.");
-      public static readonly Article subarticle2 = new ("During a sprint session or the race, the stewards may impose any of the penalties\nunder Article 54.3a), 54.3b), 54.3c) or 54.3d) on any driver who exceeds the limit.");
+      public static readonly Article subarticle1 = new ("Any Competitor whose driver exceeds the limit during any practice session will be fined €100 for each km/h above the limit, up to a maximum of €1000.");
 
       public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
 
@@ -28,18 +28,19 @@ public static class SeedData
       public static readonly PenaltyType Reprimand = new ("Reprimand", "", false, false);
       public static readonly PenaltyType Fine = new ("Fine", "The competitor must pay a fine", false, true);
 
-      public static readonly TimePenalty tp_5 = new (TP, 5);
-      public static readonly TimePenalty tp_10 = new (TP, 10);
-      public static readonly DriveThrough dt = new (DT, 20);
-      public static readonly StopAndGo sag = new (StopAndGo, 10, 20);
-      public static readonly Reprimand nodrivingReprimand = new (Reprimand, false);
-      public static readonly Reprimand drivingReprimand = new (Reprimand, true);
-      public static readonly DropGridPositions dropGridPositions3 = new (GP, 3);
-      public static readonly DropGridPositions dropGridPositions5 = new (GP, 5);
-      public static readonly DropGridPositions dropGridPositions10 = new (GP, 10);
-      public static readonly Disqualification dq = new (DQ, false);
-      public static readonly Disqualification suspensionNextCompetition = new (Suspension, true);
-      public static readonly Fine fine = new (Fine);
+      public static readonly TimePenalty tp_5 = new (TP, 5, true);
+      public static readonly TimePenalty tp_10 = new (TP, 10, true);
+      public static readonly DriveThrough dt = new (DT, 20, true);
+      public static readonly StopAndGo sag = new (StopAndGo, 10, 20, true);
+      public static readonly Reprimand nodrivingReprimand = new (Reprimand, false, true);
+      public static readonly Reprimand drivingReprimand = new (Reprimand, true, true);
+      public static readonly DropGridPositions dropGridPositions3 = new (GP, 3, true);
+      public static readonly DropGridPositions dropGridPositions5 = new (GP, 5, true);
+      public static readonly DropGridPositions dropGridPositions10 = new (GP, 10, true);
+      public static readonly Disqualification dq = new (DQ, DisqualificationTypeEnum.Current, true);
+      public static readonly Disqualification suspensionNextCompetition = new (Suspension, DisqualificationTypeEnum.Next, true);
+      public static readonly Disqualification disqualificationLimitLicensePoints = new (Suspension, DisqualificationTypeEnum.LicensePointsLimit, false);
+      public static readonly Fine fine = new (Fine, true);
 
       /*REGULATIONS*/
 
@@ -243,16 +244,18 @@ public static class SeedData
          using var dbContext = new RulesPenaltiesF1DbContext(
              serviceProvider.GetRequiredService<DbContextOptions<RulesPenaltiesF1DbContext>>(), null);
          using var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-         // Check if DB has already been seeded before populating
+			var dateTimeService = serviceProvider.GetRequiredService<IDateTimeService>();
+
+			// Check if DB has already been seeded before populating
 
          if (dbContext.Article.Any())
          {
             return;
          }
 
-         await PopulateTestData(dbContext, userManager);
+         await PopulateTestData(dbContext, userManager, dateTimeService);
       }
-      public static async Task PopulateTestData(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager)
+      public static async Task PopulateTestData(RulesPenaltiesF1DbContext dbContext, UserManager<ApplicationUser> userManager, IDateTimeService dateTimeService)
       {
 
          /*Remove every item from then DB*/
@@ -331,7 +334,7 @@ public static class SeedData
          /*Seasons*/
          PopulateSeasons(dbContext);
 		/*Drivers*/
-		PopulateDrivers(dbContext);
+		PopulateDrivers(dbContext, dateTimeService);
 
          // Save again
          dbContext.SaveChanges();
@@ -340,7 +343,6 @@ public static class SeedData
       public static void PopulateArticles(RulesPenaltiesF1DbContext dbContext)
       {
          article1.AddSubArticle(subarticle1);
-         article1.AddSubArticle(subarticle2);
 
          dbContext.Article.Add(article1);
          dbContext.Article.Add(article2);
@@ -428,21 +430,21 @@ public static class SeedData
       }
 
 
-	public static void PopulateDrivers(RulesPenaltiesF1DbContext dbContext)
+	public static void PopulateDrivers(RulesPenaltiesF1DbContext dbContext, IDateTimeService dateTimeService)
 	{
 		//MCLAREN
-		drivers.Add(new Driver("Lando Norris", new DateOnly(1999, 11, 13), competitors[0]));
-		drivers.Add(new Driver("Oscar Piastri", new DateOnly(2001, 4, 6), competitors[0]));
+		drivers.Add(new Driver("Lando Norris", new DateOnly(1999, 11, 13), competitors[0], dateTimeService));
+		drivers.Add(new Driver("Oscar Piastri", new DateOnly(2001, 4, 6), competitors[0], dateTimeService));
 		//RED BULL
-		drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1]));
-		drivers.Add(new Driver("Sergio Pérez", new DateOnly(1990, 1, 26), competitors[1]));
-		drivers.Add(new Driver("Daniel Ricciardo", new DateOnly(1989, 7, 1), competitors[1]));
+		drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1], dateTimeService));
+		drivers.Add(new Driver("Sergio Pérez", new DateOnly(1990, 1, 26), competitors[1], dateTimeService));
+		drivers.Add(new Driver("Daniel Ricciardo", new DateOnly(1989, 7, 1), competitors[1], dateTimeService));
 		//FERRARI
-		drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2]));
-		drivers.Add(new Driver("Charles Leclerc", new DateOnly(1997, 10, 16), competitors[2]));
+		drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2], dateTimeService));
+		drivers.Add(new Driver("Charles Leclerc", new DateOnly(1997, 10, 16), competitors[2], dateTimeService));
 		//MERCEDES
-		drivers.Add(new Driver("Lewis Hamilton", new DateOnly(1985, 1, 7), competitors[3]));
-		drivers.Add(new Driver("George Russell", new DateOnly(1998, 2, 15), competitors[3]));
+		drivers.Add(new Driver("Lewis Hamilton", new DateOnly(1985, 1, 7), competitors[3], dateTimeService));
+		drivers.Add(new Driver("George Russell", new DateOnly(1998, 2, 15), competitors[3], dateTimeService));
 
 		foreach(var driver in drivers)
 		{

@@ -5,7 +5,7 @@ public class Reprimand : Penalty
 
    protected Reprimand() { }
 
-   public Reprimand(PenaltyType penaltyType, bool drivingReprimand) : base(penaltyType)
+   public Reprimand(PenaltyType penaltyType, bool drivingReprimand, bool shown) : base(penaltyType, shown)
    {
       DrivingReprimand = drivingReprimand;
    }

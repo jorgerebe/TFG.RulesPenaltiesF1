@@ -17,7 +17,7 @@ public class Incident : EntityBase, IAggregateRoot
 	public string Fact { get; set; } = string.Empty;
 
 	public Article? Article { get; set; }
-	public int ArticleId { get; set; }
+	public int? ArticleId { get; set; }
 
 	public Penalty? Penalty { get; set; }
 	public int? PenaltyId { get; set; }
@@ -36,7 +36,6 @@ public class Incident : EntityBase, IAggregateRoot
 	public Incident(DateTime created, Participation participation, Session session, string fact, Article article, Penalty penalty,
 		string reason, int? licensePoints, float? fine)
 	{
-		ArgumentNullException.ThrowIfNull(created);
 		ArgumentNullException.ThrowIfNull(participation);
 		ArgumentNullException.ThrowIfNull(session);
 		ArgumentNullException.ThrowIfNull(article);
@@ -77,11 +76,9 @@ public class Incident : EntityBase, IAggregateRoot
 		}
 	}
 
-	public Incident(DateTime created, int participationId, int sessionId, string fact, int articleId, int? penaltyId,
+	public Incident(DateTime created, int participationId, int sessionId, string fact, int? articleId, int? penaltyId,
 		string reason, int? licensePoints, float? fine)
 	{
-		ArgumentNullException.ThrowIfNull(created);
-
 		ArgumentException.ThrowIfNullOrEmpty(fact);
 		ArgumentException.ThrowIfNullOrEmpty(reason);
 

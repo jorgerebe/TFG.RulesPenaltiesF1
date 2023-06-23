@@ -38,12 +38,12 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
-    <PackageVersion Include="Moq" Version="4.18.3" />
+    <PackageVersion Include="Moq" Version="4.18.4" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageVersion Include="ReportGenerator" Version="5.1.13" />
     <PackageVersion Include="Selenium.Support" Version="4.8.1" />
-    <PackageVersion Include="Selenium.WebDriver" Version="4.8.1" />
-    <PackageVersion Include="Selenium.WebDriver.ChromeDriver" Version="112.0.5615.4900" />
+    <PackageVersion Include="Selenium.WebDriver" Version="4.10.0" />
+    <PackageVersion Include="Selenium.WebDriver.ChromeDriver" Version="114.0.5735.9000" />
     <PackageVersion Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageVersion Include="Serilog.Sinks.ApplicationInsights" Version="4.0.1-dev-00040" />
     <PackageVersion Include="SolidToken.SpecFlow.DependencyInjection" Version="3.9.3" />

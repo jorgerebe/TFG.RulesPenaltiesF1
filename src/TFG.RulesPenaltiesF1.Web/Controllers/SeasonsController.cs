@@ -78,7 +78,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles ="Steward")]
-		public async Task<IActionResult> Create([Bind("Year,Competitors,Competitions,RegulationId")] SeasonViewModel season)
+		public async Task<IActionResult> Create([Bind("Competitors,Competitions,RegulationId")] SeasonViewModel season)
 		{
 			if (await _seasonViewModelService.CanCreateAnotherSeason() is false)
 			{
@@ -87,6 +87,8 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 
 			if (ModelState.IsValid)
 			{
+				season.Year = await _seasonViewModelService.GetYearLatestSeason() + 1;
+
 				if (await _seasonViewModelService.ExistsSeasonInYear(season.Year))
 				{
 					ModelState.AddModelError("Year", "There is already a season in the specified year.");

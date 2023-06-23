@@ -1,12 +1,12 @@
 ﻿namespace TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 public class Disqualification : Penalty
 {
-   public bool NextCompetition { get; set; }
+   public DisqualificationTypeEnum Type { get; set; }
 
-   protected Disqualification() { }
+   protected Disqualification() { Type = DisqualificationTypeEnum.Current; }
 
-   public Disqualification(PenaltyType penaltyType, bool nextCompetition) : base(penaltyType)
+   public Disqualification(PenaltyType penaltyType, DisqualificationTypeEnum type, bool shown) : base(penaltyType, shown)
    {
-      NextCompetition = nextCompetition;
+		Type = type;
    }
 }

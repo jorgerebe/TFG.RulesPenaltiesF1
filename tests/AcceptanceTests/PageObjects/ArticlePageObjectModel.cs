@@ -3,7 +3,7 @@
 namespace AcceptanceTests.PageObjects;
 public class ArticlePageObjectModel
 {
-   private const string ArticleUrl = "http://localhost:33333/Articles/Create";
+   private const string ArticleUrl = "https://localhost:33333/Articles/Create";
 
    private readonly IWebDriver _webDriver;
 

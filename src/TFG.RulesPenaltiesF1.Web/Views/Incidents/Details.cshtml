@@ -1,0 +1,67 @@
+﻿@model IncidentViewModel
+
+@{
+    ViewData["Title"] = "Incident Details";
+}
+
+<h1>Incident - @Model.Session!.Competition!.Year @Model.Session!.Competition!.Name</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Driver
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Driver!.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Competitor)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Competitor!.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Date & Time
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Session)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Session!.Type!.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fact)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fact)
+        </dd>
+        @if(Model.Article is not null)
+        {
+            <dt class="col-sm-2">
+                Infringment
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Article!.Content)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            Decision
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Penalty!.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Reason)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Reason)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -10,7 +10,6 @@ public class SeasonViewModel
    public int Id { get; set; }
 
    [Required]
-	[Range(1950, 2100, ErrorMessage ="A season must be on or before 2100 and on or after 1950")]
    public int Year { get; set; }
 
    [Required]

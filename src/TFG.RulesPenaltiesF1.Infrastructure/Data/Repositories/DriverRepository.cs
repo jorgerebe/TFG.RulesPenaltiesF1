@@ -52,7 +52,7 @@ public class DriverRepository : EfRepository<Driver>, IDriverRepository
 	{
 		return await _dbContext.Set<Driver>()
 			.Where(d => d.LicensePoints < 12 && d.CompetitorId == competitorId
-			&& _dbContext.Competition.Where(c => c.Id == (competitionId-1) && c.Sessions.Any(s => s.Incidents.Any(i => i.Participation!.DriverId == d.Id && ((Disqualification)i.Penalty!).NextCompetition == true))).ToList().Count == 0)
+			&& _dbContext.Competition.Where(c => c.Id == (competitionId-1) && c.Sessions.Any(s => s.Incidents.Any(i => i.Participation!.DriverId == d.Id && ((Disqualification)i.Penalty!).Type == DisqualificationTypeEnum.Next.Value))).ToList().Count == 0)
 			.AsNoTracking()
 			.ToListAsync();
 	}

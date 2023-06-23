@@ -70,6 +70,11 @@ public class DefaultInfrastructureModule : Module
         .InstancePerLifetimeScope();
 
       builder
+        .RegisterType<DateTimeService>()
+        .As<IDateTimeService>()
+        .InstancePerLifetimeScope();
+
+      builder
          .RegisterType<ArticleRepository>()
          .As<IArticleRepository>()
          .InstancePerLifetimeScope();

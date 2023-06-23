@@ -15,7 +15,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
 
    public static int Port = 33333;
 
-   public static string HostUrl = "http://localhost:"+ Port; // we can use any free port
+   public static string HostUrl = "https://localhost:"+ Port; // we can use any free port
 
    protected override void ConfigureWebHost(IWebHostBuilder builder)
    {

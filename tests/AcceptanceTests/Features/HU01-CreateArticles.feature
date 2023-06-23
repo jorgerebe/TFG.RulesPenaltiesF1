@@ -2,7 +2,7 @@
 
 A short summary of the feature
 
-@tag1
+@stewardlogin
 Scenario: [Create article with one subarticle]
 	Given [The steward is creating an article]
 	When [The steward enters the content of the article]

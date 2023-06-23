@@ -1,6 +1,9 @@
-﻿using TFG.RulesPenaltiesF1.Core.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using TFG.RulesPenaltiesF1.Core.Entities;
 using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
+using TFG.RulesPenaltiesF1.Core.Entities.Users;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
 
 namespace AcceptanceTests;
 
@@ -32,18 +35,18 @@ public class SeedTestData
        PenaltyType Reprimand = new PenaltyType("Reprimand", "Reprimand", false, false);
        PenaltyType Fine = new PenaltyType("Fine", "The competitor must pay a fine", false, true);
 
-       TimePenalty tp_5 = new TimePenalty(TP, 5);
-       TimePenalty tp_10 = new TimePenalty(TP, 10);
-       DriveThrough dt = new DriveThrough(DT, 20);
-       StopAndGo sag = new StopAndGo(StopAndGo, 10, 20);
-       Reprimand nodrivingReprimand = new Reprimand(Reprimand, false);
-       Reprimand drivingReprimand = new Reprimand(Reprimand, true);
-       DropGridPositions dropGridPositions3 = new DropGridPositions(GP, 3);
-       DropGridPositions dropGridPositions5 = new DropGridPositions(GP, 5);
-       DropGridPositions dropGridPositions10 = new DropGridPositions(GP, 10);
-       Disqualification dq = new Disqualification(DQ, false);
-       Disqualification suspensionNextCompetition = new Disqualification(DQ, true);
-       Fine fine = new Fine(Fine);
+       TimePenalty tp_5 = new TimePenalty(TP, 5, true);
+       TimePenalty tp_10 = new TimePenalty(TP, 10, true);
+       DriveThrough dt = new DriveThrough(DT, 20, true);
+       StopAndGo sag = new StopAndGo(StopAndGo, 10, 20, true);
+       Reprimand nodrivingReprimand = new Reprimand(Reprimand, false, true);
+       Reprimand drivingReprimand = new Reprimand(Reprimand, true, true);
+       DropGridPositions dropGridPositions3 = new DropGridPositions(GP, 3, true);
+       DropGridPositions dropGridPositions5 = new DropGridPositions(GP, 5, true);
+       DropGridPositions dropGridPositions10 = new DropGridPositions(GP, 10, true);
+       Disqualification dq = new Disqualification(DQ, DisqualificationTypeEnum.Current, true);
+       Disqualification suspensionNextCompetition = new Disqualification(DQ, DisqualificationTypeEnum.Next, true);
+       Fine fine = new Fine(Fine, true);
 
       /*Penalty Types*/
       dbContext.PenaltyType.Add(DQ);
@@ -70,4 +73,60 @@ public class SeedTestData
       dbContext.Penalty.Add(tp_10);
       dbContext.Penalty.Add(fine);
    }
+
+	public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+	{
+		// Seed roles
+		foreach (UserRole role in Enum.GetValues(typeof(UserRole)))
+		{
+			if (!await roleManager.RoleExistsAsync(role.ToString()))
+			{
+				await roleManager.CreateAsync(new IdentityRole(role.ToString()));
+			}
+		}
+
+		if (await userManager.FindByEmailAsync("steward@steward.com") == null)
+		{
+			ApplicationUser user = new ApplicationUser
+			{
+				FullName = "Nish Shetty",
+				UserName = "steward@steward.com",
+				Email = "steward@steward.com"
+			};
+
+			IdentityResult result = await userManager.CreateAsync(user, "Steward.");
+
+			if (result.Succeeded)
+			{
+				await userManager.AddToRoleAsync(user, "Steward");
+			}
+		}
+
+		await PopulateUsers("steward@steward.com", "Nish Shetty", UserRole.Steward, "Steward.", userManager, roleManager);
+		await PopulateUsers("horner@teamprincipal.com", "Christian Horner", UserRole.TeamPrincipal, "Horner.", userManager, roleManager);
+		await PopulateUsers("stella@teamprincipal.com", "Andrea Stella", UserRole.TeamPrincipal, "Stella.", userManager, roleManager);
+		await PopulateUsers("wolff@teamprincipal.com", "Toto Wolff", UserRole.TeamPrincipal, "Wolff.", userManager, roleManager);
+		await PopulateUsers("vasseur@teamprincipal.com", "Frédéric Vasseur", UserRole.TeamPrincipal, "Vasseur.", userManager, roleManager);
+		await PopulateUsers("szafnauer@teamprincipal.com", "Otmar Szafnauer", UserRole.TeamPrincipal, "Szafnauer.", userManager, roleManager);
+	}
+
+	private static async Task PopulateUsers(string email, string name, UserRole role, string password, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+	{
+		if (await userManager.FindByEmailAsync(email) == null)
+		{
+			ApplicationUser user = new ApplicationUser
+			{
+				FullName = name,
+				UserName = email,
+				Email = email
+			};
+
+			IdentityResult result = await userManager.CreateAsync(user, password);
+
+			if (result.Succeeded)
+			{
+				await userManager.AddToRoleAsync(user, role.ToString());
+			}
+		}
+	}
 }

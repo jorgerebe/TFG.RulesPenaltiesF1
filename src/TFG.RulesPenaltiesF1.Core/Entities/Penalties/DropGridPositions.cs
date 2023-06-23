@@ -5,7 +5,7 @@ public class DropGridPositions : Penalty
 
    protected DropGridPositions() { }
 
-   public DropGridPositions(PenaltyType penaltyType, int positions) : base(penaltyType)
+   public DropGridPositions(PenaltyType penaltyType, int positions, bool shown) : base(penaltyType, shown)
    {
       Positions = positions;
    }

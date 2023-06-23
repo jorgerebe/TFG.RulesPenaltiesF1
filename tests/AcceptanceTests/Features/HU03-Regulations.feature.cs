@@ -83,11 +83,11 @@ namespace AcceptanceTests.Features
         [Xunit.SkippableFactAttribute(DisplayName="[Create regulation with one article and two penalties]")]
         [Xunit.TraitAttribute("FeatureTitle", "HU03-Regulations")]
         [Xunit.TraitAttribute("Description", "[Create regulation with one article and two penalties]")]
-        [Xunit.TraitAttribute("Category", "tag1")]
+        [Xunit.TraitAttribute("Category", "stewardlogin")]
         public void CreateRegulationWithOneArticleAndTwoPenalties()
         {
             string[] tagsOfScenario = new string[] {
-                    "tag1"};
+                    "stewardlogin"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("[Create regulation with one article and two penalties]", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
