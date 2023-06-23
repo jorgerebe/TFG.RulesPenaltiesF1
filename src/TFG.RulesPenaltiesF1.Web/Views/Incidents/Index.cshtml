@@ -122,21 +122,25 @@ else
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["DateSortParam"]"
-   asp-route-driver=@ViewData["Driver"]
-   asp-route-session=@ViewData["Session"]
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-keepFilter=@true
-   class="btn btn-default @prevDisabled">
-    Previous
-</a>
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["DateSortParam"]"
-   asp-route-driver=@ViewData["Driver"]
-   asp-route-session=@ViewData["Session"]
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-keepFilter=@true
-   class="btn btn-default @nextDisabled">
-    Next
-</a>
+@if(Model.Count > 0)
+{
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["DateSortParam"]"
+       asp-route-driver=@ViewData["Driver"]
+       asp-route-session=@ViewData["Session"]
+       asp-route-pageNumber=(Model.PageIndex - 1)
+       asp-route-keepFilter=@true
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <span>Page @Model.PageIndex / @Model.TotalPages</span>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["DateSortParam"]"
+       asp-route-driver=@ViewData["Driver"]
+       asp-route-session=@ViewData["Session"]
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-keepFilter=@true
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+}
