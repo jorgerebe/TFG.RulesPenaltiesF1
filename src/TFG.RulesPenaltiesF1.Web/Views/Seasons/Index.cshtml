@@ -1,0 +1,44 @@
+﻿@using TFG.RulesPenaltiesF1.Web.Interfaces;
+@model IEnumerable<SeasonViewModel>
+@inject ISeasonViewModelService SeasonViewModelService
+
+@{
+    ViewData["Title"] = "Seasons";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool canCreate = await SeasonViewModelService.CanCreateAnotherSeason();
+}
+
+<h1>Seasons</h1>
+
+@{
+    if (canCreate)
+    {
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,25 @@
+﻿@model ArticleViewModel
+
+<h2>Article Details</h2>
+
+<div>
+<ul>
+	<li>
+		<strong>Content:</strong> @Model.Content
+	</li>
+	@if (Model.SubArticles != null && Model.SubArticles.Any())
+	{
+			<li>
+				<strong>Subarticles:</strong>
+				@foreach (var subArticle in Model.SubArticles)
+				{
+					<ul><li style="margin-left: 20px;">@subArticle.Content</li></ul>
+				}
+			</li>
+	}
+</ul>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>

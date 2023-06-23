@@ -45,6 +45,9 @@ Generated\ Files/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# CoverageReport
+coveragereport/
+
 # NUnit
 *.VisualState.xml
 TestResult.xml
@@ -361,3 +364,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/src/TFG.RulesPenaltiesF1.Web/database.sqlite

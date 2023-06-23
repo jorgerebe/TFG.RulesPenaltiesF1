@@ -1,0 +1,221 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
+@using TFG.RulesPenaltiesF1.Core.Entities.Users;
+@using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+@using TFG.RulesPenaltiesF1.Web.Interfaces;
+@model CompetitionViewModel
+@inject ICompetitionViewModelService _viewModelService
+@inject UserManager<ApplicationUser> _userManager
+
+@{
+    ViewData["Title"] = $"{Model.Name} - {Model.Year}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var currentUser = await _userManager.GetUserAsync(User);
+
+    bool canAddParticipation = false;
+    bool canAdvance = false;
+    bool isSteward = false;
+
+    if (currentUser is not null)
+    {
+        canAddParticipation = await _viewModelService.CanAddParticipation(Model.Id, currentUser.Id);
+
+        if(await _userManager.IsInRoleAsync(currentUser, UserRole.Steward.ToString()))
+        {
+            isSteward = true;
+
+            if(await _viewModelService.CanAdvanceSession(Model.Id))
+            {
+                canAdvance = true;
+            }
+        }
+    }
+}
+
+<h1>@Model.Name - @Model.Year</h1>
+
+<div>
+    <hr/>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Circuit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Circuit!.Name)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Week)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Week)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CompetitionState)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CompetitionState.Name)
+        </dd>
+    </dl>
+    @if(isSteward && await _viewModelService.CanStartCompetition(Model.Id))
+    {
+        <form action="/Competitions/StartCompetition/@Model.Id/" method="post">
+            <button type="submit" class="btn btn-success">Start Competition</button>
+        </form>
+    }
+<hr/>
+
+    @if(Model.Participations.Count > 0)
+    {
+        <h4>Participations</h4>
+
+         <table class="table mt-1">
+            <thead>
+                <tr>
+                    <th>
+                        Driver
+                    </th>
+                    <th>
+                        Team
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var participation in Model.Participations)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(s => participation.Driver!.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(s => participation.Competitor!.Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (canAddParticipation)
+    {
+        <a href="/Participations/Create/@Model.Id" class="btn btn-success" tabindex="-1" role="button" aria-disabled="true">Add Participation</a>
+    }
+
+    @if(Model.Sessions.Count > 0)
+    {
+        <h4>Sessions</h4>
+
+        <table class="table mt-1">
+            <thead>
+                <tr>
+                    <th>
+                        Session Type
+                    </th>
+                    <th>
+                        State
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var session in Model.Sessions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(s => session.Type!.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(s => session.State!.Name)
+                        </td>
+                        <td>
+                            @if(!session.State.Equals(SessionStateEnum.Finished) && canAdvance)
+                            {
+                                canAdvance = false;
+                                <form asp-action="Advance" asp-route-id="@Model.Id">
+                                    <div class="form-group">
+                                        <input type="submit" value="Advance" class="btn btn-info" id="submit" />
+                                    </div>
+                                </form>
+                            }
+                        </td>
+                        <td>
+                            @if (isSteward && await _viewModelService.CanAddIncident(session.SessionId))
+                            {
+                                <form asp-controller="Incidents" asp-action="Create" asp-route-id="@session.SessionId" method="get">
+                                    <div class="form-group">
+                                        <input type="submit" value="Add Incident" class="btn btn-warning" id="submit" />
+                                    </div>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if(Model.Sessions.Any(s => s.Incidents.Count > 0))
+    {
+        <h4>Incidents</h4>
+
+        <table class="table mt-1">
+            <thead>
+                <tr>
+                    <th>
+                        Session
+                    </th>
+                    <th>
+                        Driver
+                    </th>
+                    <th>
+                        Competitor
+                    </th>
+                    <th>
+                        Decision
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var session in Model.Sessions)
+                {
+                    @foreach(var incident in session.Incidents)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(s => session.Type!.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => incident.Driver!.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => incident.Competitor!.Name)
+                            </td>
+                            @if(incident.Penalty is null)
+                            {
+                                <td>No further action</td>
+                            }
+                            else
+                            {
+                                <td>@Html.DisplayFor(i => incident.Penalty.Name)</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div>
+    <br />
+    <a asp-controller="Seasons" asp-action="Details" asp-route-id="@Model.SeasonId">Back to Season @Model.Year</a>
+</div>

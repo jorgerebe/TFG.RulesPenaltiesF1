@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Testing",
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
+        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+      }
+    },
+    "Testing": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Testing",
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
+        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\launchSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+
+    <PackageReference Include="Selenium.Support" />
+
+    <PackageReference Include="Selenium.WebDriver" />
+
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" />
+
+    <PackageReference Include="SpecFlow" />
+
+    <PackageReference Include="SpecFlow.Autofac" />
+
+    <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" />
+    <PackageVersion Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
+    
+    <PackageReference Include="SpecFlow.xUnit" />
+    <PackageVersion Include="SpecFlow.xUnit" Version="3.9.74" />
+    
+    <PackageReference Include="xunit" />
+    
+    <PackageReference Include="xunit.runner.visualstudio" />
+    
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\" />
+    <Folder Include="StepDefinitions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TFG.RulesPenaltiesF1.Web\TFG.RulesPenaltiesF1.Web.csproj" />
+  </ItemGroup>
+
+</Project>

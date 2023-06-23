@@ -1,0 +1,172 @@
+﻿@using TFG.RulesPenaltiesF1.Web.Interfaces;
+@model SeasonViewModel
+@inject ISeasonViewModelService viewModelService
+
+@{
+    ViewData["Title"] = "Create Season";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int year = await viewModelService.GetYearLatestSeason()+1;
+}
+
+<h1>Create</h1>
+
+<h4>Season</h4>
+<hr />
+<form asp-action="Create">
+    <div class="row">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label"></label>
+                <input type="number" min="@year" max="@year" readonly asp-for="Year" class="form-control" value="@year"/>
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+			    @Html.LabelFor(m => m.Competitors, new { @class = "control-label" })
+			    @{
+
+				    var competitorsList = ((List<CompetitorViewModel>)ViewBag.Competitors).Select(a => new SelectListItem
+				    {
+					    Value = a.Id.ToString(),
+					    Text =  a.Name
+				    });
+			    }
+			    @Html.ListBoxFor(m => m.Competitors, competitorsList, new { @class = "form-control", @multiple = "multiple" })
+
+			    @Html.ValidationMessageFor(m => m.Competitors, "", new { @class = "text-danger" })
+		    </div>
+            <div class="form-group">
+                <h5><label class="control-label mt-4">Competitions</label></h5>
+                <div id="competitions" style="margin-left:20px">
+                    @if(Model != null && Model.Competitions.Count > 0)
+                    {
+                        int n = 0;
+                        foreach(var competition in Model.Competitions)
+                        {
+                            <div class="competition mt-3">
+                                <h6>Competition @(n+1)</h6>
+                                <div class="competition" style=margin-left:20px;>
+                                    <div class="form-group mt-3">
+                                        <label asp-for="@Model.Competitions[@n].Name" class="control-label"></label>
+                                        <input type="text" asp-for="@Model.Competitions[n].Name" class="form-control">
+		                                <span asp-validation-for="@Model.Competitions[n].Name" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group mt-3">
+                                        <label asp-for="@Model.Competitions[@n].CircuitId" class="control-label"></label>
+                                        <select asp-for="@Model.Competitions[@n].CircuitId" class ="form-control" asp-items="@(new SelectList(ViewBag.Circuits, "Id", "Name"))"></select>
+                                        <span asp-validation-for="@Model.Competitions[n].CircuitId" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group mt-3">
+                                        <label asp-for="@Model.Competitions[@n].IsSprint" class="control-label"></label>
+                                        <input class="form-check-input" type="checkbox" asp-for="@Model.Competitions[n].IsSprint" class="form-control">
+		                                <span asp-validation-for="@Model.Competitions[n].IsSprint" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group mt-3">
+                                        <label asp-for="@Model.Competitions[@n].Week" class="control-label"></label>
+                                        <input type="number" asp-for="@Model.Competitions[n].Week" class="form-control">
+		                                <span asp-validation-for="@Model.Competitions[n].Week" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            n++;
+                        }
+                    }
+                </div>
+                <button type="button" onclick="addCompetition()" class="btn btn-primary mt-3" id="add-competition-btn">Add Competition</button>
+            </div>
+        </div>
+    </div>
+        <div class="form-group mt-4 align-items-center">
+            <div class="row">
+                <div class="col-md-3">
+                    <label asp-for="RegulationId" class="control-label"></label>
+                    <select asp-for="RegulationId" class ="form-control" asp-items="ViewBag.RegulationId"></select>
+                </div>
+                <div class="col-md-3">
+                    <a class="mt-2" id="regulationlink" href="/Regulations/Details/2" target="_blank">See regulation</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group mt-3">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+</form>
+
+<div>
+    <br/>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+
+        @{int nCompetitions = Model == null ? 0 : Model.Competitions.Count;}
+        var n = @nCompetitions;
+
+        $('#RegulationId').on('change', onChangeRegulation);
+
+        onChangeRegulation();
+
+
+        function onChangeRegulation(){
+            console.log("onchange");
+            var selectedValue = $('#RegulationId').val();
+            $('#regulationlink').attr('href', '/Regulations/Details/' + selectedValue);
+        }
+
+
+        function addCompetition() {
+
+            console.log("adding competition");
+
+            // Create a new competition form template using the current number of competitions
+            var competitionFormTemplate = `
+            <div class="competition mt-3">
+                <h6>Competition ${n + 1}</h6>
+                <div class="competition" style="margin-left: 20px;">
+                    <div class="form-group mt-3">
+                        <label for="Competitions_${n}__Name" class="control-label">Name</label>
+                        <input type="text" id="Competitions_${n}__Name" name="Competitions[${n}].Name" class="form-control">
+                        <span class="text-danger" id="Competitions_${n}__Name-error" data-valmsg-for="Competitions[${n}].Name"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="Competitions_${n}__CircuitId" class="control-label">Circuit</label>
+                        <select id="Competitions_${n}__CircuitId" name="Competitions[${n}].CircuitId" class="form-control">
+                            @foreach (var circuit in ViewBag.Circuits)
+                            {
+                                <option value="@circuit.Id">@circuit.Name</option>
+                            }
+                        </select>
+                        <span class="text-danger" id="Competitions_${n}__CircuitId-error" data-valmsg-for="Competitions[${n}].CircuitId"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label class="control-label" for="Competitions_${n}__IsSprint">Sprint Race</label>
+                        <input class="form-check-input" type="checkbox" data-val="true" data-val-required="The Sprint Race field is required." id="Competitions_${n}__IsSprint" name="Competitions[${n}].IsSprint" value="true">
+                        <span class="text-danger" id="Competitions_${n}__IsSprint-error" data-valmsg-for="Competitions[${n}].IsSprint"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="Competitions_${n}__Week" class="control-label">Week</label>
+                        <input type="number" id="Competitions_${n}__Week" name="Competitions[${n}].Week" class="form-control">
+                        <span class="text-danger" id="Competitions_${n}__Week-error" data-valmsg-for="Competitions[${n}].Week"></span>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            $('#competitions').append(competitionFormTemplate);
+
+            n++;
+        }
+    </script>
+}

@@ -1,0 +1,83 @@
+﻿@model SeasonViewModel
+
+@{
+    ViewData["Title"] = $"Season {Model.Year}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h2>Season @Model.Year</h2>
+    <hr/>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Competitors)
+        </dt>
+    </dl>
+    <ul>
+        @foreach(var competitor in Model.CompetitorsContent)
+        {
+            <li><a href="/Competitors/Details/@(competitor.Id)" target="_blank">@competitor.Name</a></li>
+        }
+    </ul>
+    <dl class="row mt-4">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Competitions)
+        </dt>
+    </dl>
+    <table class="table mt-1">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Week
+                </th>
+                <th>
+                    Sprint
+                </th>
+                <th>
+                    Circuit
+                </th>
+                <th>
+                    State
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var competition in Model.Competitions) {
+            <tr>
+                <td>
+                    <a href="/Competitions/Details/@competition.Id" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">@Html.DisplayFor(modelItem => competition.Name)</a>
+                </td>
+                <td>
+                    @competition.Week
+                </td>
+                <td>
+                    @(competition.IsSprint ? "Yes" : "No")
+                </td>
+                <td>
+                    <a href="/Circuits/Details/@(competition.CircuitId)" target="_blank">@competition.Circuit!.Name</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => competition.CompetitionState.Name)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <dl class="row mt-4">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Regulation)
+        </dt>
+        <dd class = "col-sm-2">
+            @Html.DisplayFor(model => model.Regulation!.Name)
+        </dd>
+        <dd class = "col-sm-2">
+            <a href="/Regulations/Details/@Model.RegulationId" target="_blank">See regulation</a>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

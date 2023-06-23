@@ -6,19 +6,22 @@ using Module = Autofac.Module;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using TFG.RulesPenaltiesF1.Infrastructure.Data.Repositories;
+using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
+using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 
 namespace TFG.RulesPenaltiesF1.Infrastructure;
 
 public class DefaultInfrastructureModule : Module
 {
    private readonly bool _isDevelopment = false;
-   private readonly List<Assembly> _assemblies = new List<Assembly>();
+   private readonly List<Assembly> _assemblies = new();
 
    public DefaultInfrastructureModule(bool isDevelopment, Assembly? callingAssembly = null)
    {
       _isDevelopment = isDevelopment;
       var coreAssembly =
-        Assembly.GetAssembly(typeof(Object)); // TODO: Replace "Object" with any type from your Core project
+        Assembly.GetAssembly(typeof(Incident)); // TODO: Replace "Object" with any type from your Core project
       var infrastructureAssembly = Assembly.GetAssembly(typeof(StartupSetup));
       if (coreAssembly != null)
       {
@@ -66,6 +69,56 @@ public class DefaultInfrastructureModule : Module
         .As<IDomainEventDispatcher>()
         .InstancePerLifetimeScope();
 
+      builder
+        .RegisterType<DateTimeService>()
+        .As<IDateTimeService>()
+        .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<ArticleRepository>()
+         .As<IArticleRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<PenaltyRepository>()
+         .As<IPenaltyRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<RegulationRepository>()
+         .As<IRegulationRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<CircuitRepository>()
+         .As<ICircuitRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<CompetitorRepository>()
+         .As<ICompetitorRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<SeasonRepository>()
+         .As<ISeasonRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<DriverRepository>()
+         .As<IDriverRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<CompetitionRepository>()
+         .As<ICompetitionRepository>()
+         .InstancePerLifetimeScope();
+
+      builder
+         .RegisterType<IncidentRepository>()
+         .As<IIncidentRepository>()
+         .InstancePerLifetimeScope();
+
       builder.Register<ServiceFactory>(context =>
       {
          var c = context.Resolve<IComponentContext>();
@@ -75,11 +128,11 @@ public class DefaultInfrastructureModule : Module
 
       var mediatrOpenTypes = new[]
       {
-   typeof(IRequestHandler<,>),
-   typeof(IRequestExceptionHandler<,,>),
-   typeof(IRequestExceptionAction<,>),
-   typeof(INotificationHandler<>),
- };
+			typeof(IRequestHandler<,>),
+			typeof(IRequestExceptionHandler<,,>),
+			typeof(IRequestExceptionAction<,>),
+			typeof(INotificationHandler<>),
+		};
 
       foreach (var mediatrOpenType in mediatrOpenTypes)
       {
@@ -90,14 +143,14 @@ public class DefaultInfrastructureModule : Module
       }
    }
 
-   private void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)
+   private static void RegisterDevelopmentOnlyDependencies(ContainerBuilder builder)
    {
       // NOTE: Add any development only services here
       builder.RegisterType<FakeEmailSender>().As<IEmailSender>()
         .InstancePerLifetimeScope();
    }
 
-   private void RegisterProductionOnlyDependencies(ContainerBuilder builder)
+   private static void RegisterProductionOnlyDependencies(ContainerBuilder builder)
    {
       // NOTE: Add any production only services here
       builder.RegisterType<SmtpEmailSender>().As<IEmailSender>()

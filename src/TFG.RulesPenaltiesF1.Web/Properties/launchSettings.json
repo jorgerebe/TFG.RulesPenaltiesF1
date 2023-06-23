@@ -48,8 +48,7 @@
       "publishAllPorts": true,
       "useSSL": true,
       "environmentVariables": {
-        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/",
-        "AZURE_USERNAME": "jorge.rebe@estudiantes.uva.es"
+        "VaultUri": "https://rulespenaltiesf1keyvault.vault.azure.net/"
       }
     }
   },

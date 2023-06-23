@@ -1,0 +1,15 @@
+﻿@model IEnumerable<ArticleViewModel>
+
+<ul>
+	@foreach (var subArticle in Model)
+	{
+			<li>
+				<div>@subArticle.Content</div>
+
+			@if (subArticle.SubArticles != null && subArticle.SubArticles.Any())
+			{
+				@Html.PartialAsync("_SubArticlesTree", subArticle.SubArticles)
+			}
+			</li>
+	}
+</ul>

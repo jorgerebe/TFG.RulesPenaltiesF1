@@ -2,26 +2,30 @@
 using Autofac.Extensions.DependencyInjection;
 using TFG.RulesPenaltiesF1.Core;
 using TFG.RulesPenaltiesF1.Infrastructure;
-using TFG.RulesPenaltiesF1.Infrastructure.Data;
-using TFG.RulesPenaltiesF1.Web;
 using Serilog;
-using Azure.Identity;
+using TFG.RulesPenaltiesF1.Web.Configuration;
+using TFG.RulesPenaltiesF1.Web;
+using TFG.RulesPenaltiesF1.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
+using TFG.RulesPenaltiesF1.Infrastructure.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
-{
-   var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri")!);
-   builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-}
-
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Configuration));
 
-string? connectionString = builder.Configuration["DefaultConnection"];
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddCoreServices(builder.Configuration);
+builder.Services.AddWebServices(builder.Configuration);
+
+
+Console.WriteLine(environment);
+Console.WriteLine(connectionString!);
 
 builder.Services.AddDbContext(connectionString!);
 
@@ -32,8 +36,25 @@ builder.Services.AddRazorPages();
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
   containerBuilder.RegisterModule(new DefaultCoreModule());
-  containerBuilder.RegisterModule(new DefaultInfrastructureModule(builder.Environment.EnvironmentName == "Development"));
+  containerBuilder.RegisterModule(new DefaultInfrastructureModule(false));
 });
+
+
+/*END IDENTITY*/
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+   options.User.RequireUniqueEmail = true;
+   options.Password.RequireNonAlphanumeric = false;
+   options.Password.RequireUppercase = false;
+   options.Password.RequireLowercase = false;
+   options.Password.RequireDigit = false;
+})
+.AddEntityFrameworkStores<RulesPenaltiesF1DbContext>()
+.AddDefaultUI()
+.AddDefaultTokenProviders();
+
+/*END IDENTITY*/
 
 var app = builder.Build();
 
@@ -47,6 +68,13 @@ else
   app.UseHsts();
 }
 app.UseRouting();
+
+/**/
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+/**/
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -66,9 +94,15 @@ using (var scope = app.Services.CreateScope())
   try
   {
     var context = services.GetRequiredService<RulesPenaltiesF1DbContext>();
-    //                    context.Database.Migrate();
+
+    //context.Database.Migrate();
     context.Database.EnsureCreated();
-    SeedData.Initialize(services);
+
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await SeedDataIdentity.SeedAsync(userManager, roleManager);
+    await SeedData.Initialize(services);
   }
   catch (Exception ex)
   {

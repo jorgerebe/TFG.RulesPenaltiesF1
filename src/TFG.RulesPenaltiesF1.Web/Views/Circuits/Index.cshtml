@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CircuitViewModel>
+
+@{
+    ViewData["Title"] = "Circuits";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Circuits</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Length)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Laps)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YearFirstGP)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Length) km
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Laps)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearFirstGP)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
