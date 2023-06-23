@@ -7,7 +7,7 @@ using TFG.RulesPenaltiesF1.Web.ViewModels;
 
 namespace TFG.RulesPenaltiesF1.Web.Controllers
 {
-   public class CircuitsController : Controller
+	public class CircuitsController : Controller
     {
         private readonly ICircuitService _service;
         private readonly ICircuitViewModelService _viewModelService;
@@ -61,12 +61,27 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var circuitEntity = CircuitViewModel.MapViewModelToEntity(circuit!);
-                if(circuitEntity is not null)
-                {
-                     await _service.CreateCircuitAsync(circuitEntity!);
-                     return RedirectToAction(nameof(Index));
-                }
+					if(circuit.YearFirstGP > circuit.YearLapRecord)
+					{
+						ModelState.AddModelError("YearFirstGP", "Year of first GP can not be greater than year of lap record");
+					}
+					else if (await _viewModelService.ExistsCircuitByName(circuit.Name))
+					{
+						ModelState.AddModelError("Name", "A circuit with this name already exists");
+					}
+					else if (((float)circuit.MinutesLapRecord + circuit.SecondsLapRecord) == 0)
+					{
+						ModelState.AddModelError("SecondsLapRecord", "Lap record can not be equal to 0");
+					}
+					else
+					{
+						var circuitEntity = CircuitViewModel.MapViewModelToEntity(circuit!);
+						if (circuitEntity is not null)
+						{
+							await _service.CreateCircuitAsync(circuitEntity!);
+							return RedirectToAction(nameof(Index));
+						}
+					}
             }
             ViewData["CountryId"] = new SelectList(await _viewModelService.GetAllCountries(), "Id", "Name", circuit.CountryId);
             return View(new CircuitViewModel());

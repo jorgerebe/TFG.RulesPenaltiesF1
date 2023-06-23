@@ -26,4 +26,11 @@ public class CircuitRepository : EfRepository<Circuit>, ICircuitRepository
                     .Include(b => b.Country)
                     .FirstOrDefaultAsync();
    }
+
+	public async Task<Circuit?> GetCircuitByName(string name)
+	{
+		return await _dbContext.Circuit
+			.Where(c => c.Name.ToLower() == name.ToLower())
+			.FirstOrDefaultAsync();
+	}
 }

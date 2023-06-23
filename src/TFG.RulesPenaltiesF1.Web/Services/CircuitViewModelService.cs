@@ -15,7 +15,12 @@ public class CircuitViewModelService : ICircuitViewModelService
       _countryRepository = countryRepository;
    }
 
-   public async Task<List<CircuitViewModel>> GetAllCircuits()
+	public async Task<bool> ExistsCircuitByName(string name)
+	{
+		return await _circuitRepository.GetCircuitByName(name) is not null;
+	}
+
+	public async Task<List<CircuitViewModel>> GetAllCircuits()
    {
       var circuits = await _circuitRepository.GetAllCircuits();
 

@@ -65,7 +65,7 @@ namespace TFG.RulesPenaltiesF1.Web.Controllers
 
             if (exists)
             {
-                  ModelState.AddModelError("Name", "A regulation with name '" + competitor.Name + "' already exists");
+                  ModelState.AddModelError("Name", "A competitor with name '" + competitor.Name + "' already exists");
                   ViewData["TeamPrincipalID"] = new SelectList(await _viewModelService.GetAllTeamPrincipals(), "Id", "FullName");
                   return View(competitor);
             }

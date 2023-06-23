@@ -64,4 +64,11 @@ public class SeasonRepository : EfRepository<Season>, ISeasonRepository
 			.Where(s => s.Competitors.Any(c => c.Id == competitorId))
 			.FirstOrDefaultAsync();
 	}
+
+	public async Task<Season?> GetLatestSeason()
+	{
+		return await _dbContext.Set<Season>()
+			.OrderByDescending(s => s.Year)
+			.FirstOrDefaultAsync();
+	}
 }

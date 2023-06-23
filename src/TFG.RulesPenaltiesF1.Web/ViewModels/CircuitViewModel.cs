@@ -15,23 +15,23 @@ public class CircuitViewModel
    public CountryViewModel Country { get; set; } = new();
 
    [Required]
-   public string Name { get; set; } = string.Empty;
+	[MinLength(5, ErrorMessage = "Name can not be empty")]
+	public string Name { get; set; } = string.Empty;
 
    [Required]
    [Range(0, 100)]
    public float Length { get; set; }
 
    [Required]
-   [Range(1, 1000)]
+   [Range(1, 200)]
    public int Laps { get; set; }
 
    [DisplayName("Race Distance")]
    public float RaceDistance { get; set; }
 
-   [Required]
-   [Range(1900, 3000)]
-   [DisplayName("Year First GP")]
-   public int YearFirstGP { get; set; }
+	[Required]
+	[DisplayName("Year of first GP")]
+	public int YearFirstGP { get; set; }
 
    [Required]
    [Range(0, 20)]
@@ -47,11 +47,12 @@ public class CircuitViewModel
    public int MillisecondsLapRecord { get; set; }
 
    [Required]
+	[MinLength(5, ErrorMessage ="Driver name can not be empty")]
    public string DriverLapRecord { get; set; } = string.Empty;
 
    [Required]
-   [Range(1900, 3000)]
-   public int YearLapRecord { get; set; }
+	[DisplayName("Year Lap Record")]
+	public int YearLapRecord { get; set; }
 
    [DisplayName("Lap Record")]
    public string InfoLapRecord { get; set; } = string.Empty;
@@ -90,7 +91,7 @@ public class CircuitViewModel
 		var milliseconds = circuit.MinutesLapRecord * 60000 + (int)(circuit.SecondsLapRecord * 1000);
 
 		Circuit circuitEntity = new Circuit(circuit.CountryId, circuit.Name, circuit.Length,
-			 circuit.Laps, circuit.YearFirstGP, milliseconds, circuit.DriverLapRecord, circuit.YearFirstGP);
+			 circuit.Laps, circuit.YearFirstGP, milliseconds, circuit.DriverLapRecord, circuit.YearLapRecord);
 
 		return circuitEntity;
 	}

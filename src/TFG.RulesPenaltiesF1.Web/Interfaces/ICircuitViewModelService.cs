@@ -8,4 +8,5 @@ public interface ICircuitViewModelService
    Task<List<CountryViewModel>> GetAllCountries();
    Task<List<CircuitViewModel>> GetAllCircuits();
    Task<CircuitViewModel?> GetByIdAsync(int id);
+   Task<bool> ExistsCircuitByName(string name);
 }
