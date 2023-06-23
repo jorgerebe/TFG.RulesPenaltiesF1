@@ -75,7 +75,9 @@ public class CompetitorRepository : EfRepository<Competitor>, ICompetitorReposit
 	public async Task<List<Competitor>> GetAllCompetitorsWithTeamPrincipals()
 	{
 		return await _dbContext.Set<Competitor>()
-			.Where(c => c.TeamPrincipalID != null).ToListAsync();
+			.Where(c => c.TeamPrincipalID != null)
+			.AsNoTracking()
+			.ToListAsync();
 	}
 
 	public async Task<bool> ExistsCompetitorByName(string name)

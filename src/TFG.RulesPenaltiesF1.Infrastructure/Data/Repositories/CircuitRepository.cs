@@ -16,6 +16,7 @@ public class CircuitRepository : EfRepository<Circuit>, ICircuitRepository
    {
       return await _dbContext.Circuit
                      .Include(c => c.Country)
+							.AsNoTracking()
                      .ToListAsync();
    }
 

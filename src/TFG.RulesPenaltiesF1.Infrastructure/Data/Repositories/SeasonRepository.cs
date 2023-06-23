@@ -69,6 +69,7 @@ public class SeasonRepository : EfRepository<Season>, ISeasonRepository
 	{
 		return await _dbContext.Set<Season>()
 			.OrderByDescending(s => s.Year)
+			.AsNoTracking()
 			.FirstOrDefaultAsync();
 	}
 }
