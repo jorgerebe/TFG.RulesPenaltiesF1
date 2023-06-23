@@ -1,4 +1,5 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Entities;
+using TFG.RulesPenaltiesF1.Core.Interfaces;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 using TFG.RulesPenaltiesF1.Web.Interfaces;
 using TFG.RulesPenaltiesF1.Web.ViewModels;
@@ -8,11 +9,12 @@ namespace TFG.RulesPenaltiesF1.Web.Services;
 public class SeasonViewModelService : ISeasonViewModelService
 {
 	private readonly ISeasonRepository _repository;
+	private readonly IDateTimeService _dateTimeService;
 
-
-	public SeasonViewModelService(ISeasonRepository repository)
+	public SeasonViewModelService(ISeasonRepository repository, IDateTimeService dateTimeService)
    {
 		_repository = repository;
+		_dateTimeService = dateTimeService;
 	}
 
 
@@ -62,5 +64,19 @@ public class SeasonViewModelService : ISeasonViewModelService
 	public async Task<bool> CanCreateAnotherSeason()
 	{
 		return await _repository.GetCurrentSeason() is null;
+	}
+
+	public async Task<int> GetYearLatestSeason()
+	{
+		Season? latestSeason = await _repository.GetLatestSeason();
+
+		if(latestSeason is null)
+		{
+			return _dateTimeService.Now().Year;
+		}
+		else
+		{
+			return latestSeason.Year;
+		}
 	}
 }

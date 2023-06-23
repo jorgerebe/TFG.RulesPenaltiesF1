@@ -16,6 +16,7 @@ public class CircuitRepository : EfRepository<Circuit>, ICircuitRepository
    {
       return await _dbContext.Circuit
                      .Include(c => c.Country)
+							.AsNoTracking()
                      .ToListAsync();
    }
 
@@ -26,4 +27,11 @@ public class CircuitRepository : EfRepository<Circuit>, ICircuitRepository
                     .Include(b => b.Country)
                     .FirstOrDefaultAsync();
    }
+
+	public async Task<Circuit?> GetCircuitByName(string name)
+	{
+		return await _dbContext.Circuit
+			.Where(c => c.Name.ToLower() == name.ToLower())
+			.FirstOrDefaultAsync();
+	}
 }

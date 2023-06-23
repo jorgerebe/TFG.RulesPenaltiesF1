@@ -16,7 +16,7 @@ public class CompetitorViewModelService : ICompetitorViewModelService
 
    public async Task<List<CompetitorViewModel>> GetAllCompetitors()
    {
-      var competitors = await _repository.GetAllAsync();
+      var competitors = await _repository.GetAllCompetitorsWithTeamPrincipals();
 
 
       List<CompetitorViewModel> competitorViewModels = new ();

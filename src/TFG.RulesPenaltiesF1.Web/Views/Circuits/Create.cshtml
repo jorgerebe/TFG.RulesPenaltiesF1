@@ -1,8 +1,12 @@
-﻿@model CircuitViewModel
+﻿@using TFG.RulesPenaltiesF1.Web.Interfaces;
+@model CircuitViewModel
+@inject ISeasonViewModelService seasonViewModelService
 
 @{
     ViewData["Title"] = "Create Circuit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int maxYear = await seasonViewModelService.GetYearLatestSeason() + 1;
 }
 
 <h1>Create</h1>
@@ -19,22 +23,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input type="text" asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Length" class="control-label">Length (km)</label>
-                <input asp-for="Length" class="form-control" />
+                <input type="number" min="0.1" max="100" asp-for="Length" class="form-control" />
                 <span asp-validation-for="Length" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Laps" class="control-label"></label>
-                <input asp-for="Laps" class="form-control" />
+                <input type="number" min="1" max="200" asp-for="Laps" class="form-control" />
                 <span asp-validation-for="Laps" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="YearFirstGP" class="control-label"></label>
-                <input asp-for="YearFirstGP" class="form-control" />
+                <input type="number" min="1950" max="@maxYear" asp-for="YearFirstGP" class="form-control" />
                 <span asp-validation-for="YearFirstGP" class="text-danger"></span>
             </div>
 
@@ -42,26 +46,26 @@
 
 			<div class="form-inline">
 				<div class="form-group">
-					<label asp-for="MinutesLapRecord" class="control-label"></label>
-					<input asp-for="MinutesLapRecord" class="form-control" />
+					<label asp-for="MinutesLapRecord" class="control-label">Minutes of lap record</label>
+					<input type="number" min="0" max="20" asp-for="MinutesLapRecord" class="form-control" />
 					<span asp-validation-for="MinutesLapRecord" class="text-danger"></span>
 				</div>
 				<div class="form-group">
-					<label asp-for="SecondsLapRecord" class="control-label"></label>
-					<input asp-for="SecondsLapRecord" class="form-control" />
+					<label asp-for="SecondsLapRecord" class="control-label">Seconds of lap record (including milliseconds)</label>
+                    <input type="number" min="0" asp-for="SecondsLapRecord" class="form-control" />
 					<span asp-validation-for="SecondsLapRecord" class="text-danger"></span>
 				</div>
 			</div>
 
 
             <div class="form-group">
-                <label asp-for="DriverLapRecord" class="control-label"></label>
-                <input asp-for="DriverLapRecord" class="form-control" />
+                <label asp-for="DriverLapRecord" class="control-label">Driver with the lap record</label>
+                <input type="text" asp-for="DriverLapRecord" class="form-control" />
                 <span asp-validation-for="DriverLapRecord" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="YearLapRecord" class="control-label"></label>
-                <input asp-for="YearLapRecord" class="form-control" />
+                <label asp-for="YearLapRecord" class="control-label">Year of the lap record</label>
+                <input type="number" max="@maxYear" asp-for="YearLapRecord" class="form-control" />
                 <span asp-validation-for="YearLapRecord" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
