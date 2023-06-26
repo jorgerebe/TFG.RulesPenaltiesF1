@@ -46,10 +46,10 @@ public class IncidentViewModel
 
 	[Range(0, 6, ErrorMessage = "A maximum of 6 license points can be added to a driver")]
 	[DisplayName("License Points")]
-	public int? LicensePoints { get; set; } = 0;
+	public int LicensePoints { get; set; } = 0;
 
 	[Range(0, 100000, ErrorMessage = "The maximum value for the fine is 100 0000")]
-	public float? Fine { get; set; } = 0;
+	public float Fine { get; set; } = 0;
 
 	public static Incident MapViewModelToEntity(IncidentViewModel viewModel)
 	{
@@ -57,11 +57,11 @@ public class IncidentViewModel
 		float? fine = null;
 		int? penaltyId = null;
 
-		if(viewModel.LicensePoints != 0)
+		if(viewModel.LicensePoints > 0)
 		{
 			licensePoints = viewModel.LicensePoints;
 		}
-		if(viewModel.Fine != 0)
+		if(viewModel.Fine > 0)
 		{
 			fine = viewModel.Fine;
 		}
@@ -94,10 +94,18 @@ public class IncidentViewModel
 			Fact = incident.Fact,
 			Article = ArticleViewModel.MapEntityToViewModel(incident.Article!),
 			Penalty = incident.Penalty is null ? null : PenaltyViewModelFactory.CreateViewModel(incident.Penalty),
-			Reason = incident.Reason,
-			LicensePoints = incident.LicensePoints,
-			Fine = incident.Fine
+			Reason = incident.Reason
 		};
+
+		if(incident.LicensePoints is not null)
+		{
+			viewModel.LicensePoints = incident.LicensePoints.Value;
+		}
+
+		if(incident.Fine is not null)
+		{
+			viewModel.Fine = incident.Fine.Value;
+		}
 
 		if(incident.Session.Competition is not null)
 		{
