@@ -80,7 +80,7 @@ public class DriverTests
 		driver.AddTeam(null);
 
 		driver.Competitor.Should().Be(null);
-		driver.CompetitorId.Should().Be(-1);
+		driver.CompetitorId.Should().Be(null);
 	}
 
 	[Fact]
