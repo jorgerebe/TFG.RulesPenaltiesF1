@@ -33,12 +33,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Laps" class="control-label"></label>
-                <input type="number" min="1" max="200" asp-for="Laps" class="form-control" />
+                <input type="number" min="1" max="200" step="1" asp-for="Laps" class="form-control" />
                 <span asp-validation-for="Laps" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="YearFirstGP" class="control-label"></label>
-                <input type="number" min="1950" max="@maxYear" asp-for="YearFirstGP" class="form-control" />
+                <input type="number" min="1950" max="@maxYear" step="1" asp-for="YearFirstGP" class="form-control" />
                 <span asp-validation-for="YearFirstGP" class="text-danger"></span>
             </div>
 
@@ -47,7 +47,7 @@
 			<div class="form-inline">
 				<div class="form-group">
 					<label asp-for="MinutesLapRecord" class="control-label">Minutes of lap record</label>
-					<input type="number" min="0" max="20" asp-for="MinutesLapRecord" class="form-control" />
+					<input type="number" min="0" max="20" step="1" asp-for="MinutesLapRecord" class="form-control" />
 					<span asp-validation-for="MinutesLapRecord" class="text-danger"></span>
 				</div>
 				<div class="form-group">
@@ -65,7 +65,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="YearLapRecord" class="control-label">Year of the lap record</label>
-                <input type="number" max="@maxYear" asp-for="YearLapRecord" class="form-control" />
+                <input type="number" max="@maxYear" step="1" asp-for="YearLapRecord" class="form-control" />
                 <span asp-validation-for="YearLapRecord" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">

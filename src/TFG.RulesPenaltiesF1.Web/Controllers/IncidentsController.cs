@@ -147,7 +147,7 @@ public class IncidentsController : Controller
 				return NotFound();
 			}
 
-			if(incident.LicensePoints is not null)
+			if(incident.LicensePoints > 0)
 			{
 				(bool canAdd, int points) = await _driverViewModelService.CanAddLicensePoints(incident.ParticipationId, (int)incident.LicensePoints);
 

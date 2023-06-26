@@ -42,7 +42,7 @@
 				var penaltiesList = ((List<PenaltyViewModel>)ViewBag.Penalties).Select(a => new SelectListItem
 				{
 					Value = a.Id.ToString(),
-					Text =  a.Name + ": " + a.ToString()
+					Text =  a.ToString()
 				});
 			}
 			@Html.ListBoxFor(m => m.Penalties, penaltiesList, new { @class = "form-control", @multiple = "multiple", @size=6 })

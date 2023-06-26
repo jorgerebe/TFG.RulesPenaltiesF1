@@ -13,13 +13,19 @@ namespace TFG.RulesPenaltiesF1.Web;
 public static class SeedData
    {
       /*ARTICLES*/
-      public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.\nHowever, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");
+      public static readonly Article article1 = new ("A speed limit of 80km/h will be imposed in the pit lane during the whole Competition.However, this limit may be amended by the Race Director following a recommendation\nfrom the Safety Delegate.");
       public static readonly Article subarticle1 = new ("Any Competitor whose driver exceeds the limit during any practice session will be fined €100 for each km/h above the limit, up to a maximum of €1000.");
 
       public static readonly Article article2 = new("Drivers must make every reasonable effort to use the track at all times and may not leave the track without a justifiable reason.");
 
-      /*PENALTIES*/
-      public static readonly PenaltyType DQ = new ("Disqualification", "Disqualification from the results", true, false);
+		public static readonly Article article3 = new("A car will be deemed to have been released either when it has been driven out of its designated garage area (when leaving from the garage) or after it has completely cleared its pit stop position following a pit stop)");
+		public static readonly Article subarticle3_1 = new("Cars must not be released from a garage or pit stop position in way that could endanger pit lane personnel or another driver.");
+		public static readonly Article subarticle3_2 = new("Competitors must provide a means of clearly establishing, when being viewed from both above and in the front of the car, when a car was released.");
+
+		public static readonly Article article4 = new("Any driver taking part in any free practice session, the qualifying session or the sprint shootout who, in the opinion of the stewards, stops unnecessarily on the circuit or unnecessarily impedes another driver shall be subject to the penalties");
+
+		/*PENALTIES*/
+		public static readonly PenaltyType DQ = new ("Disqualification", "Disqualification from the results", true, false);
       public static readonly PenaltyType Suspension = new ("Suspension", "Suspension from the driver’s next Competition", true, false);
       public static readonly PenaltyType TP = new ("Time Penalty", "Applied during the pit stop or after the race", true, false);
       public static readonly PenaltyType GP = new ("Drop Grid Positions", "Drop of grid positions at the driver's next race", true, false);
@@ -219,7 +225,8 @@ public static class SeedData
       public static readonly List<Circuit> circuits = new()
       {
          new(countries[12],"Bahrain International Circuit",5.412f,57,2004,91447,"Pedro de la Rosa", 2005),
-         new(countries[8],"Albert Park Circuit",5.278f,58,1996,80260,"Charles Leclerc", 2022)
+         new(countries[8],"Albert Park Circuit",5.278f,58,1996,80260,"Charles Leclerc", 2022),
+         new(countries[155],"Silverstone Circuit",5.891f,52,1950,87097,"Max Verstappen Leclerc", 2020)
       };
 
       /*Competitors in its method*/
@@ -331,10 +338,10 @@ public static class SeedData
          PopulateCircuits(dbContext);
          /*Competitors*/
          await PopulateCompetitors(dbContext, userManager);
-         /*Seasons*/
-         PopulateSeasons(dbContext);
-		/*Drivers*/
-		PopulateDrivers(dbContext, dateTimeService);
+			/*Drivers*/
+			await PopulateDrivers(dbContext, dateTimeService);
+			/*Seasons*/
+			PopulateSeasons(dbContext);
 
          // Save again
          dbContext.SaveChanges();
@@ -344,8 +351,13 @@ public static class SeedData
       {
          article1.AddSubArticle(subarticle1);
 
+         article3.AddSubArticle(subarticle3_1);
+         article3.AddSubArticle(subarticle3_2);
+
          dbContext.Article.Add(article1);
          dbContext.Article.Add(article2);
+         dbContext.Article.Add(article3);
+         dbContext.Article.Add(article4);
       }
 
       public static void PopulatePenalties(RulesPenaltiesF1DbContext dbContext)
@@ -383,6 +395,7 @@ public static class SeedData
          regulation.AddPenalty(tp_5);
          regulation.AddPenalty(tp_10);
          regulation.AddPenalty(nodrivingReprimand);
+         regulation.AddPenalty(fine);
          dbContext.Regulation.Add(regulation);
       }
 
@@ -416,21 +429,32 @@ public static class SeedData
          }
       }
 
-      public static void PopulateSeasons(RulesPenaltiesF1DbContext dbContext)
-      {
+   public static void PopulateSeasons(RulesPenaltiesF1DbContext dbContext)
+   {
 		List<Competitor> seasonCompetitors = new()
 		{
 			competitors[1],
 			competitors[3]
 		};
 
-         Season season1 = new Season(2023, seasonCompetitors, competitions, regulation);
+      Season season1 = new Season(2023, seasonCompetitors, competitions, regulation);
 
-         dbContext.Season.Add(season1);
-      }
+		competitions[0].StartCompetition();
+
+		List<Participation> participations_2 = new();
+		Participation participation_3 = new(competitions[0], competitors[3], drivers[7]);
+		Participation participation_4 = new(competitions[0], competitors[3], drivers[8]);
+		participations_2.Add(participation_3);
+		participations_2.Add(participation_4);
+
+		competitions[0].AddParticipations(participations_2);
 
 
-	public static void PopulateDrivers(RulesPenaltiesF1DbContext dbContext, IDateTimeService dateTimeService)
+		dbContext.Season.Add(season1);
+	}
+
+
+	public async static Task PopulateDrivers(RulesPenaltiesF1DbContext dbContext, IDateTimeService dateTimeService)
 	{
 		//MCLAREN
 		drivers.Add(new Driver("Lando Norris", new DateOnly(1999, 11, 13), competitors[0], dateTimeService));
@@ -438,7 +462,7 @@ public static class SeedData
 		//RED BULL
 		drivers.Add(new Driver("Max Verstappen", new DateOnly(1997, 9, 30), competitors[1], dateTimeService));
 		drivers.Add(new Driver("Sergio Pérez", new DateOnly(1990, 1, 26), competitors[1], dateTimeService));
-		drivers.Add(new Driver("Daniel Ricciardo", new DateOnly(1989, 7, 1), competitors[1], dateTimeService));
+		drivers.Add(new Driver("Daniel Ricciardo", new DateOnly(1989, 7, 1), null, dateTimeService));
 		//FERRARI
 		drivers.Add(new Driver("Carlos Sainz", new DateOnly(1994, 9, 1), competitors[2], dateTimeService));
 		drivers.Add(new Driver("Charles Leclerc", new DateOnly(1997, 10, 16), competitors[2], dateTimeService));
@@ -450,5 +474,6 @@ public static class SeedData
 		{
 			dbContext.Driver.Add(driver);
 		}
+		await dbContext.SaveChangesAsync();
 	}
    }

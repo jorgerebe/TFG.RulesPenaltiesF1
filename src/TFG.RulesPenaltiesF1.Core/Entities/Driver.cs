@@ -39,7 +39,14 @@ public class Driver : EntityBase, IAggregateRoot
 	{
 		Competitor = competitor;
 
-		CompetitorId = competitor is null ? -1 : competitor.Id;
+		if(competitor is null)
+		{
+			CompetitorId = null;
+		}
+		else
+		{
+			CompetitorId = competitor.Id;
+		}
 	}
 
 	public void AddLicensePoints(int points)
