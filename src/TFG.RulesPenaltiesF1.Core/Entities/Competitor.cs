@@ -2,6 +2,11 @@
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities;
+
+/// <summary>
+/// Class <c>Competitor</c> models a competitor in F1 that can compete in a season
+/// </summary>
+
 public class Competitor : EntityBase, IAggregateRoot
 {
 	public string Name { get; set; } = string.Empty;

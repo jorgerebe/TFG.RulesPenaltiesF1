@@ -2,6 +2,10 @@
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
+/// <summary>
+/// Class <c>Session</c> models a session that is part of a competition
+/// </summary>
+
 public class Session : EntityBase
 {
 	public Competition? Competition { get; private set; }

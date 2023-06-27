@@ -4,6 +4,10 @@ using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
 
+/// <summary>
+/// Class <c>Incident</c> models an incident that happens in a session where a driver is involved.
+/// </summary>
+
 public class Incident : EntityBase, IAggregateRoot
 {
 	public DateTime Created { get; set; }
