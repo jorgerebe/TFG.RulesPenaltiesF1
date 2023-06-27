@@ -1,6 +1,11 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities;
+
+/// <summary>
+/// Class <c>Article</c> models an article from a regulation.
+/// </summary>
+
 public class Article : EntityBase, IAggregateRoot
 {
    public string Content { get; private set; }

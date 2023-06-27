@@ -1,6 +1,11 @@
 ﻿using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities;
+
+/// <summary>
+/// Class <c>Circuit</c> models a circuit that can be part of a competition
+/// </summary>
+
 public class Circuit : EntityBase, IAggregateRoot
 {
    public Country? Country { get; set; } = null;
@@ -46,6 +51,11 @@ public class Circuit : EntityBase, IAggregateRoot
       DriverLapRecord = driverLapRecord;
       YearLapRecord = yearLapRecord;
    }
+
+	/// <summary>
+	/// Formats the milliseconds of the fastest lap of the circuit to a typical min:seconds.milliseconds
+	/// </summary>
+	/// <returns>A string with the fastest lap formatted</returns>
 
    public string FormatFastLap()
    {

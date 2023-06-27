@@ -5,6 +5,10 @@ using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
+/// <summary>
+/// Class <c>Competition</c> models a competition of a season
+/// </summary>
+
 public class Competition : EntityBase, IAggregateRoot
 {
 	public Season? Season { get; set; }

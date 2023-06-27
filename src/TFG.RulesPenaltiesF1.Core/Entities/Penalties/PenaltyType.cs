@@ -2,6 +2,11 @@
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 
+/// <summary>
+/// Class <c>PenaltyType</c> models the type of a penalty: name, description and if a fine or license points
+/// can be applied.
+/// </summary>
+
 public class PenaltyType : EntityBase, IAggregateRoot
 {
 	public string Name { get; private set; }

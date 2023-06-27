@@ -2,6 +2,10 @@
 
 namespace TFG.RulesPenaltiesF1.Core.Entities;
 
+/// <summary>
+/// Class <c>Driver</c> models a driver that can be part of a team
+/// </summary>
+
 public class Driver : EntityBase, IAggregateRoot
 {
 	public const int MAX_LICENSE_POINTS = 12;
@@ -35,6 +39,14 @@ public class Driver : EntityBase, IAggregateRoot
 		CompetitorId = competitorId;
 	}
 
+	/// <summary>
+	/// Updates the team of the driver.
+	/// <example>
+	/// If the competitor is null, that means that the driver is no longer part of a team.
+	/// </example>
+	/// </summary>
+	/// <param name="competitor">New competitor for the driver</param>
+
 	public void AddTeam(Competitor? competitor)
 	{
 		Competitor = competitor;
@@ -48,6 +60,14 @@ public class Driver : EntityBase, IAggregateRoot
 			CompetitorId = competitor.Id;
 		}
 	}
+
+	/// <summary>
+	/// Adds license points to the driver after they have been given a penalty that includes license points
+	/// </summary>
+	/// <param name="points">License points to be added to the driver</param>
+	/// <exception cref="ArgumentException">If the number of points trying to be added plus the existent license
+	/// points is greater than the maximum number of license points.
+	/// </exception>
 
 	public void AddLicensePoints(int points)
 	{

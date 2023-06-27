@@ -1,5 +1,4 @@
 ﻿using Ardalis.SmartEnum;
-using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 

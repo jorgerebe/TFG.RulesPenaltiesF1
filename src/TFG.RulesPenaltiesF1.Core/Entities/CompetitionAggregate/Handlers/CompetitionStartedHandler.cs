@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Events;
 using TFG.RulesPenaltiesF1.Core.Entities.IncidentAggregate;
-using TFG.RulesPenaltiesF1.Core.Entities.Penalties;
 using TFG.RulesPenaltiesF1.Core.Interfaces.Repositories;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate.Handlers;
