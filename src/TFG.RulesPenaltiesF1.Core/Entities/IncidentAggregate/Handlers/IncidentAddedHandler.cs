@@ -37,7 +37,7 @@ public class IncidentAddedHandler : INotificationHandler<IncidentAddedEvent>
 		{
 
 			driver.AddLicensePoints((int)incidentEvent.LicensePoints);
-			if(driver.LicensePoints == 12)
+			if(driver.LicensePoints == Driver.MAX_LICENSE_POINTS)
 			{
 				Penalty? penaltyLimitPoints = await _penaltyRepository.GetLimitLicensePointsPenalty();
 

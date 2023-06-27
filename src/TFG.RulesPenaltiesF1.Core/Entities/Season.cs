@@ -4,6 +4,10 @@ using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities;
 
+/// <summary>
+/// Class <c>Season</c> models a season of F1, including its year, regulation, their competitors and competitions.
+/// </summary>
+
 public class Season : EntityBase, IAggregateRoot
 {
 	const int MIN_COMPETITORS = 2;

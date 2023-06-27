@@ -1,5 +1,9 @@
 ﻿namespace TFG.RulesPenaltiesF1.Core.Entities.CompetitionAggregate;
 
+/// <summary>
+/// Class <c>Participation</c> models a participation of a driver for a competitor in a competition
+/// </summary>
+
 public class Participation : EntityBase
 {
 	public int CompetitionId { get; set; }

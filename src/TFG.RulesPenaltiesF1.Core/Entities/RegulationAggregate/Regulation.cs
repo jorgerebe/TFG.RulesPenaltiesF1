@@ -2,6 +2,12 @@
 using TFG.RulesPenaltiesF1.Core.Interfaces;
 
 namespace TFG.RulesPenaltiesF1.Core.Entities.RegulationAggregate;
+
+/// <summary>
+/// The class <c>Regulation</c> models a regulation that could be used in a season, that includes
+/// a list of penalties and articles, at least one of each.
+/// </summary>
+
 public class Regulation : EntityBase, IAggregateRoot
 {
 	public string Name { get; set; } = string.Empty;
@@ -17,19 +23,24 @@ public class Regulation : EntityBase, IAggregateRoot
 
 	}
 
-	public Regulation(int id)
+	public Regulation(string name)
 	{
-		Id = id;
+		Name = name;
 	}
 
-	public Regulation(string name)
+	public Regulation(string name, List<RegulationArticle> articles, List<RegulationPenalty> penalties)
    {
       Name = name;
-   }
 
-   public Regulation(string name, List<RegulationArticle> articles, List<RegulationPenalty> penalties)
-   {
-      Name = name;
+		ArgumentException.ThrowIfNullOrEmpty(name);
+		ArgumentNullException.ThrowIfNull(articles);
+		ArgumentNullException.ThrowIfNull(penalties);
+
+		if(articles.Count == 0 || penalties.Count == 0)
+		{
+			throw new ArgumentException("There must be at least an article and a penalty in a regulation");
+		}
+
       _articles = articles;
       _penalties = penalties;
    }
@@ -46,6 +57,11 @@ public class Regulation : EntityBase, IAggregateRoot
 
    public void RemoveArticle(Article article)
    {
+		if(_articles.Count <= 1)
+		{
+			throw new ArgumentException("There must be at least an article and a penalty in a regulation");
+		}
+
       if (article is null)
       {
          throw new ArgumentNullException(nameof(article));
@@ -60,7 +76,7 @@ public class Regulation : EntityBase, IAggregateRoot
    }
    public void AddPenalty(Penalty penalty)
    {
-      if(penalty is null)
+		if (penalty is null)
       {
          throw new ArgumentNullException(nameof(penalty));
       }
@@ -70,7 +86,12 @@ public class Regulation : EntityBase, IAggregateRoot
 
    public void RemovePenalty(Penalty penalty)
    {
-      if (penalty is null)
+		if (_penalties.Count <= 1)
+		{
+			throw new ArgumentException("There must be at least an article and a penalty in a regulation");
+		}
+
+		if (penalty is null)
       {
          throw new ArgumentNullException(nameof(penalty));
       }
